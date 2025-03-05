@@ -59,9 +59,9 @@ quanlykho-frontend/
 
 - **dist/**: Chứa các css, hình ảnh và js chính.
 - **pages/**: Chứa các tệp tĩnh và tệp HTML chính.
-  - **lichsugiaohang/**: Chứa hình ảnh, biểu tượng và các tệp tĩnh khác.
-  - **quanlygiaohang/**: Chứa các thành phần giao diện dùng chung.
-  - **quanlyhanghoa/**: Chứa các trang của ứng dụng.
-  - **quanlykho/**: Chứa các tệp liên quan đến gọi API và xử lý logic.
-  - **quanlynguoidung/**: Tệp chính của ứng dụng React.
-  - **quanlyphieu/**: Điểm vào của ứng dụng React.
+  - **lichsugiaohang/**: Chứa tệp HTML của lịch sử giao hàng.
+  - **quanlygiaohang/**: Chứa các tệp HTML của quản lý giao hàng.
+  - **quanlyhanghoa/**: Chứa các tệp HTML của quản lý hàng hoá.
+  - **quanlykho/**: Chứa các tệp HTML của quản lý kho.
+  - **quanlynguoidung/**: Chứa các tệp HTML của quản lý người dùng.
+  - **quanlyphieu/**: Chứa các tệp HTML của quản lý phiếu.
