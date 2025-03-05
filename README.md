@@ -108,27 +108,29 @@ Dưới đây là cấu trúc thư mục chính của dự án:
 
 quanlykho-frontend/
 ├── public/
-│   ├── index.html
-│   └── ...
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── App.js
-│   └── index.js
-├── .env
-├── package.json
-└── README.md
+│   ├── dist/
+│      ├── css/
+│      ├── img/
+│      └── js/
+├── pages/
+│   ├── lichsugiaohang/
+│   ├── quanlygiaohang/
+│   ├── quanlyhanghoa/
+│   ├── quanlykho/
+│   ├── quanlynguoidung/
+│   └── quanlyphieu/
+├── plugins/
+├── dashboard.html
+└── login.html
 ```
 
 
 
-- **public/**: Chứa các tệp tĩnh và tệp HTML chính.
-- **src/**: Chứa mã nguồn chính của ứng dụng.
-  - **assets/**: Chứa hình ảnh, biểu tượng và các tệp tĩnh khác.
-  - **components/**: Chứa các thành phần giao diện dùng chung.
-  - **pages/**: Chứa các trang của ứng dụng.
-  - **services/**: Chứa các tệp liên quan đến gọi API và xử lý logic.
-  - **App.js**: Tệp chính của ứng dụng React.
-  - **index.js**: Điểm vào của ứng dụng React.
+- **dist/**: Chứa các css, hình ảnh và js chính.
+- **pages/**: Chứa các tệp tĩnh và tệp HTML chính.
+  - **lichsugiaohang/**: Chứa hình ảnh, biểu tượng và các tệp tĩnh khác.
+  - **quanlygiaohang/**: Chứa các thành phần giao diện dùng chung.
+  - **quanlyhanghoa/**: Chứa các trang của ứng dụng.
+  - **quanlykho/**: Chứa các tệp liên quan đến gọi API và xử lý logic.
+  - **quanlynguoidung/**: Tệp chính của ứng dụng React.
+  - **quanlyphieu/**: Điểm vào của ứng dụng React.
