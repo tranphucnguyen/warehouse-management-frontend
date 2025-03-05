@@ -394,12 +394,9 @@
     
 
     <section class="content">
-
-      <!-- Default box -->
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Projects</h3>
-
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
@@ -411,75 +408,120 @@
         </div>
         <div class="card-body p-0">
           <table class="table table-striped projects">
-              <thead>
-                  <tr>
-                      <th style="width: 1%">
-                          #
-                      </th>
-                      <th style="width: 20%">
-                          Tên người dùng
-                      </th>
-                      <th style="width: 30%">
-                           Họ tên
-                      </th>
-                      <th>
-                        Email 
-                      </th>
-                      <th style="width: 8%" class="text-center">
-                        Chức vụ
-                      </th>
-                      <th style="width: 20%">
-                      </th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>
-                          #
-                      </td>
-                      <td>
-                          <a>
-                              AdminLTE v3
-                          </a>
-                          <br>
-                          <small>
-                              Created 01.01.2019
-                          </small>
-                      </td>
-                      <td>
-                         Nguyen Van A
-                      </td>
-                      <td class="account-mail">
-                         nguyenvana@gmail.com
-                      </td>
-                      <td class="account-role">
-                          Giám đốc
-                      </td>
-                      <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
-                              <i class="fas fa-folder">
-                              </i>
-                              View
-                          </a>
-                          <a class="btn btn-info btn-sm" href="#">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                          </a>
-                          <a class="btn btn-danger btn-sm" href="#">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                          </a>
-                      </td>
-                  </tr>
-              </tbody>
+            <thead>
+              <tr>
+                <th style="width: 1%">#</th>
+                <th style="width: 10%">Tên người dùng</th>
+                <th style="width: 10%">Họ tên</th>
+                <th style="width: 10%">Email</th>
+                <th style="width: 10%" class="text-center">Chức vụ</th>
+                <th style="width: 20%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>AdminLTE v3</td>
+                <td>Nguyen Van A</td>
+                <td>nguyenvana@gmail.com</td>
+                <td class="text-center">Giám đốc</td>
+                <td class="project-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick="viewUser('AdminLTE v3', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
+                    <i class="fas fa-folder"></i> View
+                  </button>
+                  <button class="btn btn-info btn-sm" onclick="editUser('AdminLTE v3', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteUser(this)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
-
+    
+      <!-- View Modal -->
+      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+              <p><strong>Tên người dùng:</strong> <span id="viewUserName"></span></p>
+              <p><strong>Họ tên:</strong> <span id="viewFullName"></span></p>
+              <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+              <p><strong>Chức vụ:</strong> <span id="viewRole"></span></p>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    
+      <!-- Edit Modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+              <label for="editUserName">Tên người dùng:</label>
+              <input type="text" id="editUserName" class="form-control">
+    
+              <label for="editFullName" class="mt-2">Họ tên:</label>
+              <input type="text" id="editFullName" class="form-control">
+    
+              <label for="editEmail" class="mt-2">Email:</label>
+              <input type="text" id="editEmail" class="form-control">
+    
+              <label for="editRole" class="mt-2">Chức vụ:</label>
+              <input type="text" id="editRole" class="form-control">
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+              <button type="button" class="btn btn-primary" onclick="saveUserChanges()">Lưu thay đổi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function viewUser(username, fullname, email, role) {
+          document.getElementById('viewUserName').textContent = username;
+          document.getElementById('viewFullName').textContent = fullname;
+          document.getElementById('viewEmail').textContent = email;
+          document.getElementById('viewRole').textContent = role;
+          new bootstrap.Modal(document.getElementById('viewModal')).show();
+        }
+    
+        function editUser(username, fullname, email, role) {
+          document.getElementById('editUserName').value = username;
+          document.getElementById('editFullName').value = fullname;
+          document.getElementById('editEmail').value = email;
+          document.getElementById('editRole').value = role;
+          new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+    
+        function saveUserChanges() {
+          alert('Đã lưu thay đổi');
+          const modalElement = document.getElementById('editModal');
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal.hide();
+        }
+    
+        function deleteUser(btn) {
+          if (confirm('Bạn có chắc chắn muốn xoá người dùng này?')) {
+            btn.closest('tr').remove();
+          }
+        }
+      </script>
     </section>
 
 

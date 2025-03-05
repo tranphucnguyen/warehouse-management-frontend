@@ -395,12 +395,9 @@
     
 
     <section class="content">
-
-      <!-- Default box -->
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Projects</h3>
-
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
@@ -412,71 +409,115 @@
         </div>
         <div class="card-body p-0">
           <table class="table table-striped projects">
-              <thead>
-                  <tr>
-                      <th style="width: 1%">
-                          #
-                      </th>
-                      <th style="width: 20%">
-                          Tên kho
-                      </th>
-                      <th style="width: 30%">
-                          Địa chỉ
-                      </th>
-                      <th style="width: 30%">
-                          Liên hệ
-                      </th>
-                      <th style="width: 20%">
-                      </th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td>
-                          #
-                      </td>
-                      <td>
-                          <a>
-                              AdminLTE v3
-                          </a>
-                          <br>
-                          <small>
-                              Created 01.01.2019
-                          </small>
-                      </td>
-                      <td>
-                         Hà Nội
-                      </td>
-                      
-                      <td class="project-contact">
-                         fadsfads
-                      </td>
-                      <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
-                              <i class="fas fa-folder">
-                              </i>
-                              View
-                          </a>
-                          <a class="btn btn-info btn-sm" href="#">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                          </a>
-                          <a class="btn btn-danger btn-sm" href="#">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                          </a>
-                      </td>
-                  </tr>
-              </tbody>
+            <thead>
+              <tr>
+                <th style="width: 1%">#</th>
+                <th style="width: 15%">Tên kho</th>
+                <th style="width: 15%">Địa chỉ</th>
+                <th style="width: 15%">Liên hệ</th>
+                <th style="width: 20%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>AdminLTE v3</td>
+                <td>Hà Nội</td>
+                <td>fadsfads</td>
+                <td class="project-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick="viewWarehouse('AdminLTE v3', 'Hà Nội', 'fadsfads')">
+                    <i class="fas fa-folder"></i> View
+                  </button>
+                  <button class="btn btn-info btn-sm" onclick="editWarehouse('AdminLTE v3', 'Hà Nội', 'fadsfads')">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteWarehouse(this)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
-
+    
+      <!-- View Modal -->
+      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="viewModalLabel">Chi tiết kho</h5>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+              <p><strong>Tên kho:</strong> <span id="viewWarehouseName"></span></p>
+              <p><strong>Địa chỉ:</strong> <span id="viewWarehouseAddress"></span></p>
+              <p><strong>Liên hệ:</strong> <span id="viewWarehouseContact"></span></p>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    
+      <!-- Edit Modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editModalLabel">Chỉnh sửa kho</h5>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+              <label for="editWarehouseName">Tên kho:</label>
+              <input type="text" id="editWarehouseName" class="form-control">
+    
+              <label for="editWarehouseAddress" class="mt-2">Địa chỉ:</label>
+              <input type="text" id="editWarehouseAddress" class="form-control">
+    
+              <label for="editWarehouseContact" class="mt-2">Liên hệ:</label>
+              <input type="text" id="editWarehouseContact" class="form-control">
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
+              <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <script>
+        function viewWarehouse(name, address, contact) {
+          document.getElementById('viewWarehouseName').textContent = name;
+          document.getElementById('viewWarehouseAddress').textContent = address;
+          document.getElementById('viewWarehouseContact').textContent = contact;
+          new bootstrap.Modal(document.getElementById('viewModal')).show();
+        }
+    
+        function editWarehouse(name, address, contact) {
+          document.getElementById('editWarehouseName').value = name;
+          document.getElementById('editWarehouseAddress').value = address;
+          document.getElementById('editWarehouseContact').value = contact;
+          new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+    
+        function saveChanges() {
+          alert('Đã lưu thay đổi');
+          const modalElement = document.getElementById('editModal');
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal.hide();
+        }
+    
+        function deleteWarehouse(btn) {
+          if (confirm('Bạn có chắc chắn muốn xoá kho này?')) {
+            btn.closest('tr').remove();
+          }
+        }
+      </script>
     </section>
+
+    
 
 
 
