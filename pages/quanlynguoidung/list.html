@@ -27,6 +27,9 @@
   <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
   <!-- bonus css-->
    <link rel="stylesheet" href="../../dist/css/bonus_css.css">
+      <!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -210,8 +213,8 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-warehouse"></i>
               <p>
                 Kho
                 <i class="right fas fa-angle-left"></i>
@@ -221,7 +224,7 @@
               
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh mục kho
                     <i class="right fas fa-angle-left"></i>
@@ -246,7 +249,7 @@
               </li>
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh sách kho
                     <i class="right fas fa-angle-left"></i>
@@ -279,8 +282,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-box"></i>
               <p>
                 Quản lý danh sách hàng hoá
                 <i class="right fas fa-angle-left"></i>
@@ -302,8 +305,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Quản lý người dùng
                 <i class="right fas fa-angle-left"></i>
@@ -325,8 +328,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
                 Quản lý xuất/nhập phiếu
                 <i class="right fas fa-angle-left"></i>
@@ -396,7 +399,7 @@
     <section class="content">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Projects</h3>
+          <h3 class="card-title">User Management</h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
@@ -407,32 +410,35 @@
           </div>
         </div>
         <div class="card-body p-0">
-          <table class="table table-striped projects">
+          <table class="table table-striped users">
             <thead>
               <tr>
                 <th style="width: 1%">#</th>
-                <th style="width: 10%">Tên người dùng</th>
-                <th style="width: 10%">Họ tên</th>
-                <th style="width: 10%">Email</th>
-                <th style="width: 10%" class="text-center">Chức vụ</th>
-                <th style="width: 20%"></th>
+                <th style="width: 20%">Tên người dùng</th>
+                <th style="width: 20%">Họ tên</th>
+                <th style="width: 25%">Email</th>
+                <th style="width: 15%">Chức vụ</th>
+                <th style="width: 19%"></th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1</td>
-                <td>AdminLTE v3</td>
+                <td>
+                  <a>NguyenVanA</a><br>
+                  <!-- <small>Created 01.01.2023</small> -->
+                </td>
                 <td>Nguyen Van A</td>
                 <td>nguyenvana@gmail.com</td>
-                <td class="text-center">Giám đốc</td>
-                <td class="project-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewUser('AdminLTE v3', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
+                <td>Giám đốc</td>
+                <td class="user-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick="viewUser('NguyenVanA', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
                     <i class="fas fa-folder"></i> View
                   </button>
-                  <button class="btn btn-info btn-sm" onclick="editUser('AdminLTE v3', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
+                  <button class="btn btn-info btn-sm" onclick="editUser('NguyenVanA', 'Nguyen Van A', 'nguyenvana@gmail.com', 'Giám đốc')">
                     <i class="fas fa-pencil-alt"></i> Edit
                   </button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteUser(this)">
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
                     <i class="fas fa-trash"></i> Delete
                   </button>
                 </td>
@@ -444,86 +450,160 @@
     
       <!-- View Modal -->
       <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
-              <p><strong>Tên người dùng:</strong> <span id="viewUserName"></span></p>
-              <p><strong>Họ tên:</strong> <span id="viewFullName"></span></p>
+              <p><strong>Tên người dùng:</strong> <span id="viewUsername"></span></p>
+              <p><strong>Họ tên:</strong> <span id="viewFullname"></span></p>
               <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-              <p><strong>Chức vụ:</strong> <span id="viewRole"></span></p>
+              <p><strong>Chức vụ:</strong> <span id="viewPosition"></span></p>
             </div>
-            <!-- <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div> -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
+            </div>
           </div>
         </div>
       </div>
     
       <!-- Edit Modal -->
       <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
-              <label for="editUserName">Tên người dùng:</label>
-              <input type="text" id="editUserName" class="form-control">
+              <label for="editUsername">Tên người dùng:</label>
+              <input type="text" id="editUsername" class="form-control" readonly>
     
-              <label for="editFullName" class="mt-2">Họ tên:</label>
-              <input type="text" id="editFullName" class="form-control">
+              <label for="editFullname" class="mt-2">Họ tên:</label>
+              <input type="text" id="editFullname" class="form-control">
     
               <label for="editEmail" class="mt-2">Email:</label>
-              <input type="text" id="editEmail" class="form-control">
+              <input type="email" id="editEmail" class="form-control">
     
-              <label for="editRole" class="mt-2">Chức vụ:</label>
-              <input type="text" id="editRole" class="form-control">
+              <label for="editPosition" class="mt-2">Chức vụ:</label>
+              <input type="text" id="editPosition" class="form-control">
             </div>
             <div class="modal-footer">
-              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button> -->
-              <button type="button" class="btn btn-primary" onclick="saveUserChanges()">Lưu thay đổi</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
+              <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+            </div>
+            <div class="modal-body">
+              Bạn có chắc chắn muốn xóa danh mục này không?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
             </div>
           </div>
         </div>
       </div>
     
       <script>
-        function viewUser(username, fullname, email, role) {
-          document.getElementById('viewUserName').textContent = username;
-          document.getElementById('viewFullName').textContent = fullname;
+        function viewUser(username, fullname, email, position) {
+          document.getElementById('viewUsername').textContent = username;
+          document.getElementById('viewFullname').textContent = fullname;
           document.getElementById('viewEmail').textContent = email;
-          document.getElementById('viewRole').textContent = role;
-          new bootstrap.Modal(document.getElementById('viewModal')).show();
+          document.getElementById('viewPosition').textContent = position;
+          openModal('viewModal');
         }
     
-        function editUser(username, fullname, email, role) {
-          document.getElementById('editUserName').value = username;
-          document.getElementById('editFullName').value = fullname;
+        function editUser(username, fullname, email, position) {
+          document.getElementById('editUsername').value = username;
+          document.getElementById('editFullname').value = fullname;
           document.getElementById('editEmail').value = email;
-          document.getElementById('editRole').value = role;
-          new bootstrap.Modal(document.getElementById('editModal')).show();
+          document.getElementById('editPosition').value = position;
+          openModal('editModal');
         }
     
-        function saveUserChanges() {
-          alert('Đã lưu thay đổi');
-          const modalElement = document.getElementById('editModal');
-          const modal = bootstrap.Modal.getInstance(modalElement);
-          modal.hide();
+        function openModal(id) {
+          const modal = new bootstrap.Modal(document.getElementById(id));
+          modal.show();
         }
     
-        function deleteUser(btn) {
-          if (confirm('Bạn có chắc chắn muốn xoá người dùng này?')) {
-            btn.closest('tr').remove();
-          }
+        function closeModal(id) {
+          const modal = document.getElementById(id);
+          const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+          bootstrapModal.hide();
+        }
+    
+        function saveChanges() {
+          const fullname = document.getElementById('editFullname').value;
+          const email = document.getElementById('editEmail').value;
+          const position = document.getElementById('editPosition').value;
+    
+          const row = document.querySelector('.users tbody tr');
+          row.querySelector('td:nth-child(3)').textContent = fullname;
+          row.querySelector('td:nth-child(4)').textContent = email;
+          row.querySelector('td:nth-child(5)').textContent = position;
+
+          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
+          toast.show();
+    
+          closeModal('editModal');
+        }
+    
+        let deleteButton;
+
+        // Mở modal xác nhận xóa
+        function openDeleteModal(button) {
+          deleteButton = button;
+          openModal('deleteModal');
+        }
+
+        // Xác nhận xóa
+        function confirmDelete() {
+          const row = deleteButton.closest('tr');
+          row.remove();
+          closeModal('deleteModal');
+          showToast('deleteToast');
+        }
+
+        // Hiển thị Toast theo id
+        function showToast(id) {
+          const toast = new bootstrap.Toast(document.getElementById(id));
+          toast.show();
         }
       </script>
     </section>
+    <!-- Toast thông báo -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            🟢 Đã lưu thay đổi thành công!
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
 
+    <!-- Toast thông báo xóa -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            🔴 Đã xóa danh mục thành công!
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -580,5 +660,7 @@
 <script src="../../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../../dist/js/pages/dashboard.js"></script>
+<!-- Bootstrap 5 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -27,6 +27,9 @@
   <link rel="stylesheet" href="../../../plugins/summernote/summernote-bs4.min.css">
   <!-- bonus css-->
    <link rel="stylesheet" href="../../../dist/css/bonus_css.css">
+   <!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -210,8 +213,8 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-warehouse"></i>
               <p>
                 Kho
                 <i class="right fas fa-angle-left"></i>
@@ -221,7 +224,7 @@
               
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh mục kho
                     <i class="right fas fa-angle-left"></i>
@@ -246,7 +249,7 @@
               </li>
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh sách kho
                     <i class="right fas fa-angle-left"></i>
@@ -279,8 +282,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-box"></i>
               <p>
                 Quản lý danh sách hàng hoá
                 <i class="right fas fa-angle-left"></i>
@@ -302,8 +305,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Quản lý người dùng
                 <i class="right fas fa-angle-left"></i>
@@ -325,8 +328,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
                 Quản lý xuất/nhập phiếu
                 <i class="right fas fa-angle-left"></i>
@@ -433,7 +436,7 @@
                   <button class="btn btn-info btn-sm" onclick="editProject('AdminLTE v3', 'ĐỒ điện tử')">
                     <i class="fas fa-pencil-alt"></i> Edit
                   </button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteProject(this)">
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
                     <i class="fas fa-trash"></i> Delete
                   </button>
                 </td>
@@ -444,78 +447,160 @@
       </div>
     
       <!-- View Modal -->
-      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewModalLabel">Chi tiết danh mục</h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal('viewModal')"></button> -->
-            </div>
-            <div class="modal-body">
-              <p><strong>Tên danh mục:</strong> <span id="viewName"></span></p>
-              <p><strong>Mô tả:</strong> <span id="viewDescription"></span></p>
-            </div>
-            <!-- <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
-            </div> -->
-          </div>
-        </div>
-      </div>
-    
-      <!-- Edit Modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Chỉnh sửa danh mục</h5>
-              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal('editModal')"></button> -->
-            </div>
-            <div class="modal-body">
-              <label for="editName">Tên danh mục:</label>
-              <input type="text" id="editName" class="form-control">
-    
-              <label for="editDescription" class="mt-2">Mô tả:</label>
-              <textarea id="editDescription" class="form-control"></textarea>
-            </div>
-            <div class="modal-footer">
-              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button> -->
-              <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered"> <!-- Thêm modal-dialog-centered -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel">Chi tiết danh mục</h5>
+              </div>
+              <div class="modal-body">
+                <p><strong>Tên danh mục:</strong> <span id="viewName"></span></p>
+                <p><strong>Mô tả:</strong> <span id="viewDescription"></span></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered"> <!-- Thêm modal-dialog-centered -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa danh mục</h5>
+              </div>
+              <div class="modal-body">
+                <label for="editName">Tên danh mục:</label>
+                <input type="text" id="editName" class="form-control">
+
+                <label for="editDescription" class="mt-2">Mô tả:</label>
+                <textarea id="editDescription" class="form-control"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+              </div>
+              <div class="modal-body">
+                Bạn có chắc chắn muốn xóa danh mục này không?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <script>
+        // Hiển thị modal 'Xem chi tiết'
         function viewProject(name, description) {
           document.getElementById('viewName').textContent = name;
           document.getElementById('viewDescription').textContent = description;
-          new bootstrap.Modal(document.getElementById('viewModal')).show();
+          openModal('viewModal');
         }
-    
+
+        // Hiển thị modal 'Chỉnh sửa'
         function editProject(name, description) {
           document.getElementById('editName').value = name;
           document.getElementById('editDescription').value = description;
-          new bootstrap.Modal(document.getElementById('editModal')).show();
+          openModal('editModal');
         }
-    
+
+        // Mở modal theo id
+        function openModal(id) {
+          const modal = new bootstrap.Modal(document.getElementById(id));
+          modal.show();
+        }
+
+        // Đóng modal theo id
+        function closeModal(id) {
+          const modal = document.getElementById(id);
+          const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+          bootstrapModal.hide();
+        }
+
+
         function saveChanges() {
-          alert('Đã lưu thay đổi');
+          const newName = document.getElementById('editName').value;
+          const newDescription = document.getElementById('editDescription').value;
+
+          // Cập nhật thông tin trong bảng (giả sử sửa hàng đầu tiên)
+          const row = document.querySelector('.projects tbody tr');
+          row.querySelector('td:nth-child(2) a').textContent = newName;
+          row.querySelector('td:nth-child(3)').textContent = newDescription;
+
+          // Hiển thị thông báo Toast
+          const saveToast = new bootstrap.Toast(document.getElementById('saveToast'));
+          saveToast.show();
+
+          // Đóng modal
           closeModal('editModal');
         }
-    
-        function deleteProject(btn) {
-          if (confirm('Bạn có chắc chắn muốn xoá danh mục này?')) {
-            btn.closest('tr').remove();
-          }
+
+
+
+        let deleteButton;
+
+        // Mở modal xác nhận xóa
+        function openDeleteModal(button) {
+          deleteButton = button;
+          openModal('deleteModal');
         }
-    
-        function closeModal(modalId) {
-          const modalElement = document.getElementById(modalId);
-          const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-          modal.hide();
+
+        // Xác nhận xóa
+        function confirmDelete() {
+          const row = deleteButton.closest('tr');
+          row.remove();
+          closeModal('deleteModal');
+          showToast('deleteToast');
         }
+
+        // Hiển thị Toast theo id
+        function showToast(id) {
+          const toast = new bootstrap.Toast(document.getElementById(id));
+          toast.show();
+        }
+
       </script>
     </section>
+    <!-- Toast thông báo -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            🟢 Đã lưu thay đổi thành công!
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast thông báo xóa -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            🔴 Đã xóa danh mục thành công!
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+
     
 <!--  -->
 
@@ -574,5 +659,7 @@
 <script src="../../../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../../../dist/js/pages/dashboard.js"></script>
+<!-- Bootstrap 5 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

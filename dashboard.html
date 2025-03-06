@@ -210,8 +210,8 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-warehouse"></i>
               <p>
                 Kho
                 <i class="right fas fa-angle-left"></i>
@@ -220,8 +220,8 @@
             <ul class="nav nav-treeview">
               
               <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh mục kho
                     <i class="right fas fa-angle-left"></i>
@@ -245,8 +245,8 @@
                 </ul>
               </li>
               <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Dạnh sách kho
                     <i class="right fas fa-angle-left"></i>
@@ -279,8 +279,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-box"></i>
               <p>
                 Quản lý danh sách hàng hoá
                 <i class="right fas fa-angle-left"></i>
@@ -302,8 +302,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Quản lý người dùng
                 <i class="right fas fa-angle-left"></i>
@@ -325,8 +325,8 @@
             </ul>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
                 Quản lý xuất/nhập phiếu
                 <i class="right fas fa-angle-left"></i>
@@ -394,165 +394,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="sc-ct">
-      <div class="container-sc">
-          <div class="sc-managemet">
-              <div class="sc-main">
-                  <div class="box-orders">
-                      <div class="box-title">
-                          <div class="box-title-lt">
-                              <h1>Đơn đặt hàng</h1>
-                          </div>
-                          <div class="box-title-rt">
-                              <div class="box-btnorder">
-                                  <button class="btn-expect">
-                                      Xuất file Excel
-                                  </button>
-                                  <button class="btn-addorder"  id="Btn-addorder">
-                                      + Thêm đơn hàng
-                                  </button>
-                                  <!-- The Modal -->
-                                  <div id="myaddOrder" class="modal addOrder">
-
-                                      <!-- Modal content -->
-                                      <div class="modal-content">
-                                          <span class="close">&times;</span>
-                                          <p>Thêm đơn hàng</p>
-                                      </div>
-
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="box-content">
-                          <div class="box-search">
-                              <div class="search-ct">
-                                  <input type="text" placeholder="Search order ID">
-                                  <i class="fa-solid fa-search"></i>
-                              </div>
-                              <div class="box-filter">
-                                  <div class="box-filter-date">
-                                      <input type="date" id="birthday" name="birthday">
-                                  </div>
-                                  <div class="box-filter-name">
-                                      <div class="store-box">
-                                          <div class="store-btn">Tên cửa hàng <i
-                                                  class="fa-solid fa-chevron-down" ></i></div>
-                                          <ul class="store-list">
-                                              <li data-value="store1">Cửa hàng 1</li>
-                                              <li data-value="store2">Cửa hàng 2</li>
-                                              <li data-value="store3">Cửa hàng 3</li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                                  <div class="box-filter-status">
-                                      <div class="status-box">
-                                          <div class="status-btn">Trạng thái <i
-                                                  class="fa-solid fa-chevron-down"></i></div>
-                                          <ul class="status-list">
-                                              <li data-value="">Trạng thái</li>
-                                              <li data-value="store1">Kích hoạt</li>
-                                              <li data-value="store2">Chưa kích hoạt</li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                                  <div class="box-filter-btn">
-                                      <div class="filter-box">
-                                          <div class="filter-btn">Lọc <i class="fa-solid fa-chevron-down"></i>
-                                          </div>
-                                          <ul class="filter-list">
-
-                                              <li data-value="store1">Lọc 1</li>
-                                              <li data-value="store2">Lọc 2</li>
-                                          </ul>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="box-tb">
-                              <table>
-                                  <thead>
-                                      <tr>
-                                          <th><input type="checkbox"></th>
-                                          <th>Mã đơn</th>
-                                          <th>Ngày</th>
-                                          <th>Khách hàng</th>
-                                          <th>Kênh bán hàng</th>
-                                          <th>Nơi nhận hàng</th>
-                                          <th>Số lượng</th>
-                                          <th>Trạng thái</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td><input type="checkbox"></td>
-                                          <td>#1234</td>
-                                          <td>17/01/2025</td>
-                                          <td>Vũ Văn A</td>
-                                          <td>Cửa hàng 1</td>
-                                          <td>Hồ Nội</td>
-                                          <td>5</td>
-                                          <td class="status-completed">
-                                              <p>Hoàn thành</p>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td><input type="checkbox"></td>
-                                          <td>#5678</td>
-                                          <td>16/01/2025</td>
-                                          <td>Trần Thị B</td>
-                                          <td>Cửa hàng 2</td>
-                                          <td>Hồ Chí Minh</td>
-                                          <td>2</td>
-                                          <td class="status-pending">
-                                              <p>Chờ xử lý</p>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td><input type="checkbox"></td>
-                                          <td>#9101</td>
-                                          <td>15/01/2025</td>
-                                          <td>Lê Hoàng C</td>
-                                          <td>Cửa hàng 2</td>
-                                          <td>Đà Nẵng</td>
-                                          <td>7</td>
-                                          <td class="status-completed">
-                                              <p>Hoàn thành</p>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td><input type="checkbox"></td>
-                                          <td>#1213</td>
-                                          <td>16/01/2025</td>
-                                          <td>Phạm Văn D</td>
-                                          <td>Cửa hàng 1</td>
-                                          <td>Cần Thơ</td>
-                                          <td>3</td>
-                                          <td class="status-cancelled">
-                                              <p>Đã huỷ</p>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td><input type="checkbox"></td>
-                                          <td>#1415</td>
-                                          <td>15/01/2025</td>
-                                          <td>Đỗ Thị E</td>
-                                          <td>Cửa hàng 3</td>
-                                          <td>Hải Phòng</td>
-                                          <td>4</td>
-                                          <td class="status-completed">
-                                              <p>Hoàn thành</p>
-                                          </td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </section>
+    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
