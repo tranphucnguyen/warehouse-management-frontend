@@ -396,13 +396,13 @@
 
     <section class="content">
       <div class="row">
+        <!-- Cột 1: Tạo người dùng -->
         <div class="col-md-6">
           <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Tạo người dùng</h3>
-
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
@@ -410,33 +410,31 @@
             <div class="card-body">
               <div class="form-group">
                 <label for="inputName">Tên người dùng</label>
-                <input type="text" id="inputName" class="form-control">
+                <input type="text" id="inputName" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="inputFullname">Họ tên</label>
-                <input type="text" id="inputFullname" class="form-control">
+                <input type="text" id="inputFullname" class="form-control" required>
               </div>
-              
               <div class="form-group">
                 <label for="inputClientPassword">Mật khẩu</label>
-                <input type="password" id="inputClientPassword" class="form-control">
+                <input type="password" id="inputClientPassword" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="inputRole">Chức vụ</label>
-                <input type="text" id="inputRole" class="form-control">
+                <input type="text" id="inputRole" class="form-control" required>
               </div>
             </div>
-            <!-- /.card-body -->
           </div>
-          <!-- /.card -->
         </div>
+    
+        <!-- Cột 2: Thông tin cá nhân -->
         <div class="col-md-6">
           <div class="card card-secondary">
             <div class="card-header">
               <h3 class="card-title">Thông tin cá nhân</h3>
-
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
@@ -444,26 +442,27 @@
             <div class="card-body">
               <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="email" id="inputEmail" class="form-control">
+                <input type="email" id="inputEmail" class="form-control" required>
               </div>
               <div class="form-group">
                 <label for="inputCccd">Mã căn cước công dân</label>
-                <input type="number" id="inputCccd" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="inputBanknumber">Tài khoản ngân hàng</label>
-                <input type="number" id="inputBanknumber" class="form-control">
-              </div>
+                <input type="text" id="inputCccd" class="form-control" required>
             </div>
-            <!-- /.card-body -->
+            <div class="form-group">
+                <label for="inputBanknumber">Tài khoản ngân hàng</label>
+                <input type="text" id="inputBanknumber" class="form-control">
+            </div>
+            
+            </div>
           </div>
-          <!-- /.card -->
         </div>
       </div>
+    
+      <!-- Nút gửi -->
       <div class="row">
         <div class="col-12">
-          <a href="#" class="btn btn-secondary">Cancel</a>
-          <input type="submit" value="Tạo tài khoản" class="btn btn-success float-right">
+          <button class="btn btn-secondary" id="btnCancel">Hủy</button>
+          <button type="submit" id="btnSubmit" class="btn btn-success float-right">Tạo tài khoản</button>
         </div>
       </div>
     </section>
@@ -490,6 +489,67 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+<script>
+  document.getElementById("btnSubmit").addEventListener("click", function () {
+    let username = document.getElementById("inputName").value.trim();
+    let fullname = document.getElementById("inputFullname").value.trim();
+    let password = document.getElementById("inputClientPassword").value.trim();
+    let role = document.getElementById("inputRole").value.trim();
+    let email = document.getElementById("inputEmail").value.trim();
+    let cccd = document.getElementById("inputCccd").value.trim();
+    let banknumber = document.getElementById("inputBanknumber").value.trim();
+
+    // 🔍 Kiểm tra dữ liệu hợp lệ
+    let usernameRegex = /^[a-zA-Z0-9_]+$/; // Chỉ cho phép chữ, số, _
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Kiểm tra email hợp lệ
+    let cccdRegex = /^\d{12}$/; // CCCD phải đúng 12 số
+    let bankRegex = /^\d{8,16}$/; // Tài khoản ngân hàng từ 8-16 số
+
+    if (!username || !fullname || !password || !role || !email || !cccd) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+    if (!usernameRegex.test(username)) {
+        alert("Tên người dùng không được chứa ký tự đặc biệt!");
+        return;
+    }
+    if (password.length < 6 || password.trim().length === 0) {
+        alert("Mật khẩu phải có ít nhất 6 ký tự và không chỉ chứa khoảng trắng!");
+        return;
+    }
+    if (!emailRegex.test(email)) {
+        alert("Email không hợp lệ!");
+        return;
+    }
+    if (!cccdRegex.test(cccd)) {
+        alert("CCCD phải có đúng 12 số!");
+        return;
+    }
+    if (banknumber && !bankRegex.test(banknumber)) {
+        alert("Số tài khoản ngân hàng không hợp lệ!");
+        return;
+    }
+
+    // ✅ Nếu hợp lệ, lưu vào localStorage và chuyển trang
+    let userData = { username, fullname, role, email, password, cccd, banknumber };
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+users.push(userData);
+localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Thêm tài khoản thành công!");
+
+    // Xóa dữ liệu form
+    document.getElementById("inputName").value = "";
+    document.getElementById("inputFullname").value = "";
+    document.getElementById("inputClientPassword").value = "";
+    document.getElementById("inputRole").value = "";
+    document.getElementById("inputEmail").value = "";
+    document.getElementById("inputCccd").value = "";
+    document.getElementById("inputBanknumber").value = "";
+});
+
+</script>
 
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>

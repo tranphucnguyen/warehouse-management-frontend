@@ -421,27 +421,10 @@
                 <th style="width: 20%"></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <a>AdminLTE v3</a><br>
-                  <small>Created 01.01.2019</small>
-                </td>
-                <td>ĐỒ điện tử</td>
-                <td class="project-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewProject('AdminLTE v3', 'ĐỒ điện tử')">
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editProject('AdminLTE v3', 'ĐỒ điện tử')">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="categoryTableBody">
+              <!-- Danh mục sẽ được hiển thị ở đây -->
+          </tbody>
+          
           </table>
         </div>
       </div>
@@ -464,117 +447,52 @@
           </div>
         </div>
 
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered"> <!-- Thêm modal-dialog-centered -->
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa danh mục</h5>
-              </div>
-              <div class="modal-body">
-                <label for="editName">Tên danh mục:</label>
-                <input type="text" id="editName" class="form-control">
-
-                <label for="editDescription" class="mt-2">Mô tả:</label>
-                <textarea id="editDescription" class="form-control"></textarea>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
-              </div>
-            </div>
+        <!-- Modal Chỉnh sửa -->
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Chỉnh sửa danh mục</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-        </div>
-
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+          <div class="modal-body">
+              <input type="hidden" id="editIndex">
+              <div class="mb-3">
+                  <label for="editName" class="form-label">Tên danh mục</label>
+                  <input type="text" id="editName" class="form-control">
               </div>
-              <div class="modal-body">
-                Bạn có chắc chắn muốn xóa danh mục này không?
+              <div class="mb-3">
+                  <label for="editDescription" class="form-label">Mô tả</label>
+                  <textarea id="editDescription" class="form-control"></textarea>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-              </div>
-            </div>
           </div>
-        </div>
+          <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+          </div>
+      </div>
+  </div>
+</div>
+       <!-- Modal Xóa -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Xác nhận xóa</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+              <p>Bạn có chắc chắn muốn xóa danh mục này không?</p>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+          </div>
+      </div>
+  </div>
+</div>
 
-      <script>
-        // Hiển thị modal 'Xem chi tiết'
-        function viewProject(name, description) {
-          document.getElementById('viewName').textContent = name;
-          document.getElementById('viewDescription').textContent = description;
-          openModal('viewModal');
-        }
-
-        // Hiển thị modal 'Chỉnh sửa'
-        function editProject(name, description) {
-          document.getElementById('editName').value = name;
-          document.getElementById('editDescription').value = description;
-          openModal('editModal');
-        }
-
-        // Mở modal theo id
-        function openModal(id) {
-          const modal = new bootstrap.Modal(document.getElementById(id));
-          modal.show();
-        }
-
-        // Đóng modal theo id
-        function closeModal(id) {
-          const modal = document.getElementById(id);
-          const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-          bootstrapModal.hide();
-        }
-
-
-        function saveChanges() {
-          const newName = document.getElementById('editName').value;
-          const newDescription = document.getElementById('editDescription').value;
-
-          // Cập nhật thông tin trong bảng (giả sử sửa hàng đầu tiên)
-          const row = document.querySelector('.projects tbody tr');
-          row.querySelector('td:nth-child(2) a').textContent = newName;
-          row.querySelector('td:nth-child(3)').textContent = newDescription;
-
-          // Hiển thị thông báo Toast
-          const saveToast = new bootstrap.Toast(document.getElementById('saveToast'));
-          saveToast.show();
-
-          // Đóng modal
-          closeModal('editModal');
-        }
-
-
-
-        let deleteButton;
-
-        // Mở modal xác nhận xóa
-        function openDeleteModal(button) {
-          deleteButton = button;
-          openModal('deleteModal');
-        }
-
-        // Xác nhận xóa
-        function confirmDelete() {
-          const row = deleteButton.closest('tr');
-          row.remove();
-          closeModal('deleteModal');
-          showToast('deleteToast');
-        }
-
-        // Hiển thị Toast theo id
-        function showToast(id) {
-          const toast = new bootstrap.Toast(document.getElementById(id));
-          toast.show();
-        }
-
-      </script>
+     
     </section>
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -623,8 +541,107 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let tableBody = document.getElementById("categoryTableBody");
+
+    // Lấy danh sách từ LocalStorage
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+
+    if (categories.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='4' class='text-center'>Chưa có danh mục nào!</td></tr>";
+        return;
+    }
+
+    categories.forEach((category, index) => {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>
+                <a>${category.name}</a><br>
+                <small>Created ${category.created_at}</small>
+            </td>
+            <td>${category.description}</td>
+            <td class="text-right">
+                <button class="btn btn-info btn-sm" onclick="viewCategory(${index})">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <button class="btn btn-warning btn-sm" onclick="editCategory(${index})">
+                    <i class="fas fa-pencil-alt"></i> Sửa
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${index})">
+                    <i class="fas fa-trash"></i> Xóa
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+});
+
+// Hiển thị modal 'Xem chi tiết'
+function viewCategory(index) {
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    let category = categories[index];
+
+    document.getElementById("viewName").textContent = category.name;
+    document.getElementById("viewDescription").textContent = category.description;
+    openModal("viewModal");
+}
+
+// Hiển thị modal 'Chỉnh sửa'
+function editCategory(index) {
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    let category = categories[index];
+
+    document.getElementById("editIndex").value = index; // Lưu index để cập nhật sau
+    document.getElementById("editName").value = category.name;
+    document.getElementById("editDescription").value = category.description;
+
+    openModal("editModal");
+}
+
+// Lưu chỉnh sửa danh mục
+function saveChanges() {
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    let index = document.getElementById("editIndex").value;
+    
+    categories[index].name = document.getElementById("editName").value;
+    categories[index].description = document.getElementById("editDescription").value;
+
+    localStorage.setItem("categories", JSON.stringify(categories));
+    location.reload(); // Refresh trang để cập nhật danh sách
+}
+
+// Mở modal xác nhận xóa
+function openDeleteModal(index) {
+    document.getElementById("confirmDeleteBtn").setAttribute("onclick", `confirmDelete(${index})`);
+    openModal("deleteModal");
+}
+
+// Xác nhận xóa danh mục
+function confirmDelete(index) {
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    categories.splice(index, 1); // Xóa danh mục
+
+    localStorage.setItem("categories", JSON.stringify(categories));
+    location.reload(); // Refresh trang để cập nhật danh sách
+}
+
+// Mở modal theo id
+function openModal(id) {
+    let modal = new bootstrap.Modal(document.getElementById(id));
+    modal.show();
+}
+
+// Đóng modal theo id
+function closeModal(id) {
+    let modal = bootstrap.Modal.getInstance(document.getElementById(id));
+    if (modal) modal.hide();
+}
+
+  </script>
+<script src="../../../dist/js/main.js"></script>
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->

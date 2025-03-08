@@ -421,28 +421,8 @@
                 <th style="width: 20%"></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <a>AdminLTE v3</a><br>
-                  <!-- <small>Created 01.01.2019</small> -->
-                </td>
-                <td>Hà Nội</td>
-                <td>0987-654-321</td>
-                <td class="project-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewProject('AdminLTE v3', 'Hà Nội', '0987-654-321')">
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editProject('AdminLTE v3', 'Hà Nội', '0987-654-321')">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="warehouseList"></tbody>
+
           </table>
         </div>
       </div>
@@ -478,7 +458,7 @@
               <input type="text" id="editName" class="form-control">
     
               <label for="editAddress" class="mt-2">Địa chỉ:</label>
-              <input id="editAddress" class="form-control"></input>
+              <input id="editAddress" class="form-control">
     
               <label for="editContact" class="mt-2">Liên hệ:</label>
               <input type="text" id="editContact" class="form-control">
@@ -508,70 +488,95 @@
           </div>
         </div>
       </div>
-    
       <script>
-        function viewProject(name, description, contact) {
+        function loadWarehouses() {
+          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+          let tableBody = document.getElementById("warehouseList");
+      
+          tableBody.innerHTML = ""; // Xóa nội dung cũ trước khi cập nhật
+      
+          warehouses.forEach((warehouse, index) => {
+            let row = `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${warehouse.name}</td>
+                <td>${warehouse.address}</td>
+                <td>${warehouse.contact}</td>
+                <td class="project-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick="viewWarehouse('${warehouse.name}', '${warehouse.address}', '${warehouse.contact}')">
+                    <i class="fas fa-folder"></i> Xem
+                  </button>
+                  <button class="btn btn-info btn-sm" onclick="editWarehouse(${warehouse.id})">
+                    <i class="fas fa-pencil-alt"></i> Sửa
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${warehouse.id})">
+                    <i class="fas fa-trash"></i> Xóa
+                  </button>
+                </td>
+              </tr>
+            `;
+            tableBody.innerHTML += row;
+          });
+        }
+      
+        function viewWarehouse(name, address, contact) {
           document.getElementById('viewName').textContent = name;
-          document.getElementById('viewAddress').textContent = description;
+          document.getElementById('viewAddress').textContent = address;
           document.getElementById('viewContact').textContent = contact;
           openModal('viewModal');
         }
-    
-        function editProject(name, description, contact) {
-          document.getElementById('editName').value = name;
-          document.getElementById('editAddress').value = description;
-          document.getElementById('editContact').value = contact;
-          openModal('editModal');
+      
+        let editingId = null;
+        function editWarehouse(id) {
+          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+          let warehouse = warehouses.find(w => w.id === id);
+          if (warehouse) {
+            document.getElementById('editName').value = warehouse.name;
+            document.getElementById('editAddress').value = warehouse.address;
+            document.getElementById('editContact').value = warehouse.contact;
+            editingId = id;
+            openModal('editModal');
+          }
         }
-    
+      
+        function saveChanges() {
+          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+          let index = warehouses.findIndex(w => w.id === editingId);
+          if (index !== -1) {
+            warehouses[index].name = document.getElementById('editName').value;
+            warehouses[index].address = document.getElementById('editAddress').value;
+            warehouses[index].contact = document.getElementById('editContact').value;
+            localStorage.setItem("warehouses", JSON.stringify(warehouses));
+            loadWarehouses();
+            closeModal('editModal');
+          }
+        }
+      
+        let deleteId = null;
+        function openDeleteModal(id) {
+          deleteId = id;
+          openModal('deleteModal');
+        }
+      
+        function confirmDelete() {
+          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+          warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
+          localStorage.setItem("warehouses", JSON.stringify(warehouses));
+          loadWarehouses();
+          closeModal('deleteModal');
+        }
+      
         function openModal(id) {
           const modal = new bootstrap.Modal(document.getElementById(id));
           modal.show();
         }
-    
+      
         function closeModal(id) {
-          const modal = document.getElementById(id);
-          const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-          bootstrapModal.hide();
+          const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+          if (modal) modal.hide();
         }
-    
-        function saveChanges() {
-          const newName = document.getElementById('editName').value;
-          const newDescription = document.getElementById('editAddress').value;
-          const newContact = document.getElementById('editContact').value;
-    
-          const row = document.querySelector('.projects tbody tr');
-          row.querySelector('td:nth-child(2) a').textContent = newName;
-          row.querySelector('td:nth-child(3)').textContent = newDescription;
-          row.querySelector('td:nth-child(4)').textContent = newContact;
-
-          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
-          toast.show();
-    
-          closeModal('editModal');
-        }
-    
-        let deleteButton;
-
-        // Mở modal xác nhận xóa
-        function openDeleteModal(button) {
-          deleteButton = button;
-          openModal('deleteModal');
-        }
-
-        // Xác nhận xóa
-        function confirmDelete() {
-          const row = deleteButton.closest('tr');
-          row.remove();
-          closeModal('deleteModal');
-          showToast('deleteToast');
-        }
-
-        // Hiển thị Toast theo id
-        function showToast(id) {
-          const toast = new bootstrap.Toast(document.getElementById(id));
-          toast.show();
-        }
+      
+        document.addEventListener("DOMContentLoaded", loadWarehouses);
       </script>
     </section>
     <!-- Toast thông báo -->

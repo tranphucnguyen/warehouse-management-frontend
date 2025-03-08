@@ -25,57 +25,32 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Đăng nhập</p>
 
-      <form action="./dashboard.html" method="post">
+
+      <form id="loginForm">
+
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Tên người dùng">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+            <input type="text" id="loginUsername" class="form-control" placeholder="Tên người dùng">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                </div>
             </div>
-          </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Mật khẩu">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+            <input type="password" id="loginPassword" class="form-control" placeholder="Mật khẩu">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
             </div>
-          </div>
         </div>
         <div class="row">
-          <div class="col-7">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Ghi nhớ mật khẩu
-              </label>
+            <div class="col-5">
+                <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
             </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-5 ">
-            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
-          </div>
-          <!-- /.col -->
         </div>
-      </form>
-
-      <!-- <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div>
-      /.social-auth-links -->
-
-      <!-- <p class="mb-1">
-        <a href="forgot-password.html">Quên mật khẩu</a>
-      </p> -->
-      <!-- <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p> -->
+    </form>
+    
     </div>
     <!-- /.login-card-body -->
   </div>
@@ -85,6 +60,27 @@
 <script></script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let username = document.getElementById("loginUsername").value.trim();
+    let password = document.getElementById("loginPassword").value.trim();
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // Kiểm tra tài khoản
+    let user = users.find(user => user.username === username);
+    
+    if (user && user.password === password) {
+        alert("Đăng nhập thành công!");
+        window.location.href = "dashboard.html"; // Chuyển trang
+    } else {
+        alert("Email hoặc mật khẩu không đúng!");
+    }
+});
+
+</script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->

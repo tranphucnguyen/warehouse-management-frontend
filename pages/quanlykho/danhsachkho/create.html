@@ -430,7 +430,8 @@
       <div class="row">
         <div class="col-12">
           <a href="#" class="btn btn-secondary">Cancel</a>
-          <input type="submit" value="Tạo kho" class="btn btn-success float-right">
+          <input type="submit" value="Tạo kho" class="btn btn-success float-right" onclick="addWarehouse()">
+
         </div>
       </div>
     </section>
@@ -456,7 +457,38 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+<script>
+  function addWarehouse() {
+    let name = document.getElementById("inputNameWarehouse").value.trim();
+    let address = document.getElementById("inputDescWarehouse").value.trim();
+    let contact = document.getElementById("inputContactWare").value.trim();
 
+    if (!name || !address || !contact) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+
+    let newWarehouse = {
+        id: Date.now(),
+        name: name,
+        address: address,
+        contact: contact,
+        created_at: new Date().toLocaleString()
+    };
+
+    warehouses.push(newWarehouse);
+    localStorage.setItem("warehouses", JSON.stringify(warehouses));
+
+    alert("Thêm kho thành công!");
+   // Xóa dữ liệu form
+   document.getElementById("inputNameWarehouse").value = "";
+   document.getElementById("inputDescWarehouse").value = "";
+   document.getElementById("inputContactWare").value = "";
+}
+
+</script>
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
