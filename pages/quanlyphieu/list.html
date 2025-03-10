@@ -401,7 +401,7 @@
     <section class="content">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">User Management</h3>
+          <h3 class="card-title">Phiếu Management</h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
               <i class="fas fa-minus"></i>
@@ -412,16 +412,18 @@
           </div>
         </div>
         <div class="card-body p-0">
-          <table class="table table-striped users">
+          <table class="table table-striped phieu">
             <thead>
               <tr>
                 <th style="width: 1%">#</th>
-                <th style="width: 15%">Loại phiếu</th>
-                <th style="width: 15%">Mã phiếu</th>
-                <th style="width: 15%">Ngày lập phiếu</th>
-                <th style="width: 15%">Kho chứa</th>
-                <th style="width: 20%">Nhà cung cấp / Khách hàng</th>
-                <th style="width: 19%">Ghi chú</th>
+                <th style="width: 10%">Loại phiếu</th>
+                <th style="width: 10%">Mã phiếu</th>
+                <th style="width: 10%">Ngày lập phiếu</th>
+                <th style="width: 10%">Kho chứa</th>
+                <th style="width: 15%">Nhà cung cấp / Khách hàng</th>
+                <th style="width: 10%">Ghi chú</th>
+                <th style="width: 10%">Trạng thái</th>
+                <th style="width: 20%"></th>
               </tr>
             </thead>
             <tbody>
@@ -433,6 +435,18 @@
                 <td>Kho A</td>
                 <td>Công ty ABC</td>
                 <td>Ghi chú mẫu</td>
+                <td>Hoàn thành</td>
+                <td class="phieu-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick="viewPhieu('Nhập kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
+                    <i class="fas fa-folder"></i> View
+                  </button>
+                  <button class="btn btn-info btn-sm" onclick="editPhieu('Nhập kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -447,12 +461,27 @@
               <h5 class="modal-title" id="viewModalLabel">Chi tiết phiếu</h5>
             </div>
             <div class="modal-body">
-              <p><strong>Loại phiếu:</strong> <span id="viewType"></span></p>
-              <p><strong>Mã phiếu:</strong> <span id="viewCode"></span></p>
-              <p><strong>Ngày lập phiếu:</strong> <span id="viewDate"></span></p>
-              <p><strong>Kho chứa:</strong> <span id="viewWarehouse"></span></p>
-              <p><strong>Nhà cung cấp / Khách hàng:</strong> <span id="viewPartner"></span></p>
-              <p><strong>Ghi chú:</strong> <span id="viewNote"></span></p>
+              <p><strong>Loại phiếu:</strong> <span id="viewLoaiPhieu"></span></p>
+              <p><strong>Mã phiếu:</strong> <span id="viewMaPhieu"></span></p>
+              <p><strong>Ngày lập phiếu:</strong> <span id="viewNgayLapPhieu"></span></p>
+              <p><strong>Kho chứa:</strong> <span id="viewKhoChua"></span></p>
+              <p><strong>Nhà cung cấp / Khách hàng:</strong> <span id="viewNCCKhachHang"></span></p>
+              <p><strong>Ghi chú:</strong> <span id="viewGhiChu"></span></p>
+              <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
+
+              <h5>Danh sách sản phẩm</h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                  </tr>
+                </thead>
+                <tbody id="viewDanhSachSanPham">
+                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
+                </tbody>
+              </table>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
@@ -469,23 +498,41 @@
               <h5 class="modal-title" id="editModalLabel">Chỉnh sửa phiếu</h5>
             </div>
             <div class="modal-body">
-              <label for="editType">Loại phiếu:</label>
-              <input type="text" id="editType" class="form-control">
+              <label for="editLoaiPhieu">Loại phiếu:</label>
+              <input type="text" id="editLoaiPhieu" class="form-control">
 
-              <label for="editCode" class="mt-2">Mã phiếu:</label>
-              <input type="text" id="editCode" class="form-control">
+              <label for="editMaPhieu" class="mt-2">Mã phiếu:</label>
+              <input type="text" id="editMaPhieu" class="form-control" readonly>
 
-              <label for="editDate" class="mt-2">Ngày lập phiếu:</label>
-              <input type="date" id="editDate" class="form-control">
+              <label for="editNgayLapPhieu" class="mt-2">Ngày lập phiếu:</label>
+              <input type="date" id="editNgayLapPhieu" class="form-control">
 
-              <label for="editWarehouse" class="mt-2">Kho chứa:</label>
-              <input type="text" id="editWarehouse" class="form-control">
+              <label for="editKhoChua" class="mt-2">Kho chứa:</label>
+              <input type="text" id="editKhoChua" class="form-control">
 
-              <label for="editPartner" class="mt-2">Nhà cung cấp / Khách hàng:</label>
-              <input type="text" id="editPartner" class="form-control">
+              <label for="editNCCKhachHang" class="mt-2">Nhà cung cấp / Khách hàng:</label>
+              <input type="text" id="editNCCKhachHang" class="form-control">
 
-              <label for="editNote" class="mt-2">Ghi chú:</label>
-              <input type="text" id="editNote" class="form-control">
+              <label for="editGhiChu" class="mt-2">Ghi chú:</label>
+              <textarea id="editGhiChu" class="form-control"></textarea>
+
+              <label for="editTrangThai" class="mt-2">Trạng thái:</label>
+              <input type="text" id="editTrangThai" class="form-control">
+
+              <h5 class="mt-3">Danh sách sản phẩm</h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="editDanhSachSanPham">
+                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
+                </tbody>
+              </table>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
@@ -495,43 +542,187 @@
         </div>
       </div>
 
-      <!-- Delete Confirmation Modal -->
+      <!-- Delete Modal -->
       <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xoá phiếu</h5>
+              <h5 class="modal-title" id="deleteModalLabel">Xóa phiếu</h5>
             </div>
-            <div class="modal-body" id="deleteModalBody">
-              Bạn có chắc chắn muốn xoá phiếu này không?
+            <div class="modal-body">
+              Bạn có chắc chắn muốn xóa phiếu này không?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xoá</button>
+              <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
             </div>
           </div>
         </div>
       </div>
-
       <script>
-        function viewRecord(type, code, date, warehouse, partner, note) {
-          document.getElementById('viewType').textContent = type;
-          document.getElementById('viewCode').textContent = code;
-          document.getElementById('viewDate').textContent = date;
-          document.getElementById('viewWarehouse').textContent = warehouse;
-          document.getElementById('viewPartner').textContent = partner;
-          document.getElementById('viewNote').textContent = note;
-          openModal('viewModal');
+        // Hàm hiển thị danh sách phiếu
+        function loadInvoices() {
+          const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+          const tbody = document.querySelector(".phieu tbody");
+          tbody.innerHTML = "";
+
+          invoices.forEach((invoice, index) => {
+            const row = `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${invoice.type}</td>
+                <td>${invoice.code}</td>
+                <td>${invoice.date}</td>
+                <td>${invoice.warehouse}</td>
+                <td>${invoice.partner}</td>
+                <td>${invoice.note}</td>
+                <td>${invoice.totalAmount}</td>
+                <td class="phieu-actions text-right">
+                  <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
+                    <i class="fas fa-folder"></i> View
+                  </button>
+                  <button class="btn btn-info btn-sm" onclick='editInvoice(${JSON.stringify(invoice)})'>
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${invoice.code}')">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            `;
+            tbody.innerHTML += row;
+          });
         }
 
-        function editRecord(type, code, date, warehouse, partner, note) {
-          document.getElementById('editType').value = type;
-          document.getElementById('editCode').value = code;
-          document.getElementById('editDate').value = date;
-          document.getElementById('editWarehouse').value = warehouse;
-          document.getElementById('editPartner').value = partner;
-          document.getElementById('editNote').value = note;
-          openModal('editModal');
+        // Tải danh sách phiếu khi load trang
+        window.onload = loadInvoices;
+
+
+        let deleteCode = null; // Biến lưu trữ mã phiếu cần xóa
+
+        // Mở modal xác nhận xóa
+        function deleteInvoice(code) {
+          deleteCode = code; // Lưu mã phiếu cần xóa
+          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+          deleteModal.show();
+        }
+
+        // Xác nhận xóa phiếu
+        function confirmDelete() {
+          if (!deleteCode) return;
+
+          let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+          invoices = invoices.filter(invoice => invoice.code !== deleteCode);
+          localStorage.setItem("invoices", JSON.stringify(invoices));
+          
+          deleteCode = null; // Reset lại biến
+          loadInvoices(); // Cập nhật lại danh sách phiếu
+
+          // Ẩn modal sau khi xóa
+          const deleteModalElement = document.getElementById('deleteModal');
+          const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalElement);
+          deleteModalInstance.hide();
+
+          // Hiển thị toast thông báo
+          showDeleteToast();
+        }
+
+        // Hiển thị toast thông báo xóa
+        function showDeleteToast() {
+          const toastElement = document.getElementById('deleteToast');
+          const toast = new bootstrap.Toast(toastElement);
+          toast.show();
+        }
+
+
+
+        function viewInvoice(invoice) {
+          console.log("Chi tiết phiếu:", invoice);
+          alert(`
+            Loại phiếu: ${invoice.type}
+            Mã phiếu: ${invoice.code}
+            Ngày lập: ${invoice.date}
+            Kho: ${invoice.warehouse}
+            Đối tác: ${invoice.partner}
+            Ghi chú: ${invoice.note}
+            Tổng tiền: ${invoice.totalAmount}
+            Sản phẩm:
+            ${invoice.products.map(p => `${p.name} - SL: ${p.quantity} - Giá: ${p.price}`).join("\n")}
+          `);
+        }
+
+
+
+        // Hiển thị modal chi tiết phiếu
+        function viewInvoice(invoice) {
+          document.getElementById("viewLoaiPhieu").textContent = invoice.type;
+          document.getElementById("viewMaPhieu").textContent = invoice.code;
+          document.getElementById("viewNgayLapPhieu").textContent = invoice.date;
+          document.getElementById("viewKhoChua").textContent = invoice.warehouse;
+          document.getElementById("viewNCCKhachHang").textContent = invoice.partner;
+          document.getElementById("viewGhiChu").textContent = invoice.note;
+          document.getElementById("viewTrangThai").textContent = invoice.totalAmount;
+
+          const productList = document.getElementById("viewDanhSachSanPham");
+          productList.innerHTML = invoice.products.map(product => `
+            <tr>
+              <td>${product.name}</td>
+              <td>${product.quantity}</td>
+              <td>${product.price}</td>
+            </tr>
+          `).join("");
+
+          const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
+          viewModal.show();
+        }
+
+        // Hàm mở modal và đổ dữ liệu vào form
+        function editInvoice(invoice) {
+          if (!invoice || typeof invoice !== 'object') {
+            console.error('Dữ liệu phiếu không hợp lệ:', invoice);
+            return;
+          }
+
+          // Gán thông tin vào form chỉnh sửa
+          document.getElementById("editLoaiPhieu").value = invoice.type || "";
+          document.getElementById("editMaPhieu").value = invoice.code || "";
+          document.getElementById("editNgayLapPhieu").value = invoice.date || "";
+          document.getElementById("editKhoChua").value = invoice.warehouse || "";
+          document.getElementById("editNCCKhachHang").value = invoice.partner || "";
+          document.getElementById("editGhiChu").value = invoice.note || "";
+          document.getElementById("editTrangThai").value = invoice.status || "";
+
+          // Xử lý danh sách sản phẩm
+          const editProductList = document.getElementById("editDanhSachSanPham");
+          editProductList.innerHTML = "";
+
+          if (Array.isArray(invoice.products) && invoice.products.length > 0) {
+            invoice.products.forEach((product, index) => {
+              const row = `
+                <tr id="productRow-${index}">
+                  <td><input type="text" class="form-control" value="${product.name || ''}" id="editProductName-${index}"></td>
+                  <td><input type="number" class="form-control" value="${product.quantity || 0}" id="editProductQuantity-${index}"></td>
+                  <td><input type="number" class="form-control" value="${product.price || 0}" id="editProductPrice-${index}"></td>
+                  <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">Xóa</button></td>
+                </tr>
+              `;
+              editProductList.insertAdjacentHTML("beforeend", row);
+            });
+          } else {
+            editProductList.innerHTML = `<tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>`;
+          }
+
+          // Hiển thị modal chỉnh sửa
+          const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+          editModal.show();
+        }
+
+        // Hàm xóa sản phẩm khỏi danh sách
+        function removeProduct(index) {
+          const productRow = document.getElementById(`productRow-${index}`);
+          if (productRow) {
+            productRow.remove();
+          }
         }
 
         function openModal(id) {
@@ -539,41 +730,70 @@
           modal.show();
         }
 
-        function closeModal(id) {
-          const modal = document.getElementById(id);
-          const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
-          bootstrapModal.hide();
+        // Hàm đóng modal
+        function closeModal(modalId) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+          if (modal) modal.hide();
         }
 
-        function saveChanges() {
-          closeModal('editModal');
-          showToast('saveToast');
-        }
-
-        function showToast(id) {
-          const toast = new bootstrap.Toast(document.getElementById(id));
+        // Hiển thị Toast thông báo
+        function showSaveToast() {
+          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
           toast.show();
         }
 
-        let deleteBtn, deleteCode;
+        // Cập nhật lại thông tin phiếu trên giao diện
+        // function updatePhieuOnUI(updatedPhieu) {
+        //   const phieuRow = document.querySelector(`[data-ma-phieu="${updatedPhieu.maPhieu}"]`);
+        //   if (phieuRow) {
+        //     phieuRow.querySelector('.phieu-loai').textContent = updatedPhieu.loaiPhieu;
+        //     phieuRow.querySelector('.phieu-ngay').textContent = updatedPhieu.ngayLapPhieu;
+        //     phieuRow.querySelector('.phieu-kho').textContent = updatedPhieu.khoChua;
+        //     phieuRow.querySelector('.phieu-ncc').textContent = updatedPhieu.nccKhachHang;
+        //     phieuRow.querySelector('.phieu-ghi-chu').textContent = updatedPhieu.ghiChu;
+        //     phieuRow.querySelector('.phieu-trang-thai').textContent = updatedPhieu.trangThai;
+        //   }
+        // }
 
-        function deleteRecord(btn, code) {
-          deleteBtn = btn;
-          deleteCode = code;
-          document.getElementById('deleteModalBody').textContent = 'Bạn có chắc chắn muốn xoá phiếu ' + code + ' không?';
-          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-          deleteModal.show();
+        /// Hàm lưu thay đổi và hiển thị Toast thông báo
+        function saveChanges() {
+          const updatedInvoice = {
+            type: document.getElementById("editLoaiPhieu").value,
+            code: document.getElementById("editMaPhieu").value,
+            date: document.getElementById("editNgayLapPhieu").value,
+            warehouse: document.getElementById("editKhoChua").value,
+            partner: document.getElementById("editNCCKhachHang").value,
+            note: document.getElementById("editGhiChu").value,
+            status: document.getElementById("editTrangThai").value,
+            products: []
+          };
+
+          const rows = document.querySelectorAll("#editDanhSachSanPham tr");
+          rows.forEach((row, index) => {
+            const name = document.getElementById(`editProductName-${index}`).value;
+            const quantity = parseInt(document.getElementById(`editProductQuantity-${index}`).value) || 0;
+            const price = parseFloat(document.getElementById(`editProductPrice-${index}`).value) || 0;
+
+            if (name && quantity > 0 && price > 0) {
+              updatedInvoice.products.push({ name, quantity, price });
+            }
+          });
+
+          console.log("Dữ liệu cập nhật:", updatedInvoice);
+
+          // Hiển thị thông báo thành công
+          showSaveToast();
+
+          closeModal('editModal');
         }
 
-        function confirmDelete() {
-          const row = deleteBtn.closest('tr');
-          row.remove();
-          const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-          deleteModal.hide();
-          alert('Phiếu ' + deleteCode + ' đã được xoá.');
-        }
+
+        // Khởi chạy: Tải danh sách phiếu khi trang load
+        window.addEventListener('DOMContentLoaded', loadPhieuList);
+
       </script>
     </section>
+
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
       <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">

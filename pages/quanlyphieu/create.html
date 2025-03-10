@@ -412,8 +412,8 @@
                 <label for="inputType">Loại phiếu</label>
                 <select id="inputType" class="form-control custom-select">
                   <option value="" disabled selected>Chọn loại phiếu</option>
-                  <option value="Nhập">Phiếu nhập</option>
-                  <option value="Xuất">Phiếu xuất</option>
+                  <option value="Phiếu nhập">Phiếu nhập</option>
+                  <option value="Phiếu xuất">Phiếu xuất</option>
                 </select>
               </div>
     
@@ -446,6 +446,25 @@
                 <label for="inputNote">Ghi chú</label>
                 <textarea id="inputNote" class="form-control" rows="4" placeholder="Nhập ghi chú (nếu có)"></textarea>
               </div>
+    
+              <!-- Danh sách sản phẩm -->
+              <h4>Danh sách sản phẩm</h4>
+              <div id="productList">
+                <div class="product-item d-flex align-items-center mb-2">
+                  <input type="text" class="form-control product-name mr-2" placeholder="Tên sản phẩm">
+                  <input type="number" class="form-control product-quantity mr-2" placeholder="Số lượng" oninput="updateTotal(this)">
+                  <input type="number" class="form-control product-price mr-2" placeholder="Đơn giá" oninput="updateTotal(this)">
+                  <input type="text" class="form-control product-total mr-2" placeholder="Thành tiền" readonly>
+                  <button type="button" class="btn btn-danger" onclick="removeProduct(this)">Xóa</button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary mt-2" onclick="addProduct()">Thêm sản phẩm</button>
+    
+              <!-- Hiển thị tổng tiền -->
+              <div class="form-group mt-3">
+                <label for="totalAmount">Tổng tiền</label>
+                <input type="text" id="totalAmount" class="form-control" readonly>
+              </div>
             </div>
           </div>
         </div>
@@ -460,54 +479,99 @@
     </section>
     
     <script>
-      document.getElementById('btnCreate').addEventListener('click', (e) => {
-        e.preventDefault();
-    
-        const type = document.getElementById('inputType').value;
-        const code = document.getElementById('inputCode').value.trim();
-        const date = document.getElementById('inputDate').value;
-        const warehouse = document.getElementById('inputWarehouse').value;
-        const partner = document.getElementById('inputPartner').value.trim();
-        const note = document.getElementById('inputNote').value.trim();
-    
-        if (!type) {
-          alert('Vui lòng chọn loại phiếu!');
-          return;
-        }
-        if (!code) {
-          alert('Vui lòng nhập mã phiếu!');
-          return;
-        }
-        if (!date) {
-          alert('Vui lòng chọn ngày lập phiếu!');
-          return;
-        }
-        if (!warehouse) {
-          alert('Vui lòng chọn kho chứa!');
-          return;
-        }
-        if (!partner) {
-          alert('Vui lòng nhập tên nhà cung cấp hoặc khách hàng!');
-          return;
-        }
-    
-        const newReceipt = {
-          id: Date.now(),
-          type,
-          code,
-          date,
-          warehouse,
-          partner,
-          note
-        };
-    
-        const receipts = JSON.parse(localStorage.getItem('receipts')) || [];
-        receipts.push(newReceipt);
-        localStorage.setItem('receipts', JSON.stringify(receipts));
-    
-        alert('Tạo phiếu thành công!');
-        window.location.href = './list.html';
+      // Khởi tạo sự kiện khi tải trang
+      window.addEventListener("DOMContentLoaded", () => {
+        loadFormData();
       });
+
+      // Thêm sản phẩm mới
+      function addProduct() {
+        const productList = document.getElementById("productList");
+        const productItem = document.createElement("div");
+        productItem.className = "product-item d-flex align-items-center mb-2";
+
+        productItem.innerHTML = `
+          <input type="text" class="form-control product-name mr-2" placeholder="Tên sản phẩm">
+          <input type="number" class="form-control product-quantity mr-2" placeholder="Số lượng" oninput="updateTotal()">
+          <input type="number" class="form-control product-price mr-2" placeholder="Đơn giá" oninput="updateTotal()">
+          <input type="text" class="form-control product-total mr-2" placeholder="Thành tiền" readonly>
+          <button type="button" class="btn btn-danger" onclick="removeProduct(this)">Xóa</button>
+        `;
+
+        productList.appendChild(productItem);
+      }
+
+      // Xóa sản phẩm
+      function removeProduct(button) {
+        button.parentElement.remove();
+        updateTotal();
+      }
+
+      // Tính tổng tiền
+      function updateTotal() {
+        let total = 0;
+        document.querySelectorAll(".product-item").forEach(item => {
+          const quantity = parseFloat(item.querySelector(".product-quantity").value) || 0;
+          const price = parseFloat(item.querySelector(".product-price").value) || 0;
+          const totalField = item.querySelector(".product-total");
+
+          const subtotal = quantity * price;
+          totalField.value = subtotal.toFixed(2);
+          total += subtotal;
+        });
+        document.getElementById("totalAmount").value = total.toFixed(2);
+      }
+
+      // Lưu dữ liệu phiếu vào localStorage
+      function saveFormData() {
+        const formData = {
+          type: document.getElementById("inputType").value,
+          code: document.getElementById("inputCode").value,
+          date: document.getElementById("inputDate").value,
+          warehouse: document.getElementById("inputWarehouse").value,
+          partner: document.getElementById("inputPartner").value,
+          note: document.getElementById("inputNote").value,
+          products: Array.from(document.querySelectorAll(".product-item")).map(item => ({
+            name: item.querySelector(".product-name").value,
+            quantity: item.querySelector(".product-quantity").value,
+            price: item.querySelector(".product-price").value,
+            total: item.querySelector(".product-total").value,
+          })),
+          totalAmount: document.getElementById("totalAmount").value
+        };
+
+        let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+        invoices.push(formData);
+        localStorage.setItem("invoices", JSON.stringify(invoices));
+
+        alert("Đã lưu phiếu thành công!");
+        clearForm();
+      }
+
+      // Xóa dữ liệu form sau khi lưu
+      function clearForm() {
+        document.getElementById("inputType").value = "";
+        document.getElementById("inputCode").value = "";
+        document.getElementById("inputDate").value = "";
+        document.getElementById("inputWarehouse").value = "";
+        document.getElementById("inputPartner").value = "";
+        document.getElementById("inputNote").value = "";
+        document.getElementById("productList").innerHTML = "";
+        document.getElementById("totalAmount").value = "";
+        addProduct();
+      }
+
+      // Tải lại dữ liệu nếu có
+      function loadFormData() {
+        document.getElementById("productList").innerHTML = ""; // Xóa các sản phẩm cũ
+        addProduct();
+        const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+        console.log("Danh sách phiếu:", invoices);
+      }
+
+      // Gắn sự kiện cho nút tạo phiếu
+      document.getElementById("btnCreate").addEventListener("click", saveFormData);
+
     </script>
     
     <!-- /.content -->
