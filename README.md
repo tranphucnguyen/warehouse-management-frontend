@@ -62,20 +62,23 @@ git clone https://github.com/your-repo/quanlykho.git
 
 2. **Chuẩn bị môi trường**:
 
-- Cài đặt **XAMPP** hoặc **WAMP** để chạy backend (nếu sử dụng PHP).
+- Đảm bảo máy tính có trình duyệt (Chrome, Firefox, Edge,...) để chạy file HTML.
 
-3. **Cài đặt giao diện**:
+3. **Chạy ứng dụng**:
 
-- Copy thư mục giao diện vào:
-    - `htdocs` (đối với **XAMPP**)
-    - `www` (đối với **WAMP**)
-
-4. **Chạy ứng dụng**:
-
-- Mở trình duyệt và truy cập:
+- Mở thư mục chứa dự án và tìm đến file `index.html`.
+- Nhấp đúp chuột vào file `index.html` để mở trên trình duyệt hoặc dùng lệnh sau để chạy bằng VSCode:
 
 ```bash
-http://localhost/quanlykho
+code .
+```
+
+4. **Truy cập ứng dụng**:
+
+- Ứng dụng sẽ mở tại địa chỉ:
+
+```bash
+http://localhost:5500
 ```
 
 ## 5. Ghi chú
@@ -84,6 +87,10 @@ http://localhost/quanlykho
 - Đảm bảo backend hỗ trợ các API phù hợp để frontend hoạt động mượt mà.
 - Có thể tích hợp thêm các thư viện như **DataTables**, **SweetAlert** để nâng cao trải nghiệm người dùng.
 
-## 6. Liên hệ
+## 6. Đường link dẫn tới GitHub Back-end
 
-Nếu có bất kỳ thắc mắc hoặc đóng góp nào, vui lòng liên hệ qua email: [support@yourdomain.com](mailto:support@yourdomain.com).
+Đường link GitHub Back-end: https://github.com/boypro5235/warehouse-management-backend.git
+
+## 7. Liên hệ
+
+Nếu có bất kỳ thắc mắc hoặc đóng góp nào, vui lòng liên hệ qua email: bit220123@st.cmcu.edu.vn
