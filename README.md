@@ -89,7 +89,7 @@ http://localhost:5500
 
 ## 6. Đường link dẫn tới GitHub Back-end
 
-[Đường link GitHub Back-end](https://github.com/boypro5235/warehouse-management-backend.git).
+Đường link GitHub Back-end: https://github.com/boypro5235/warehouse-management-backend.git
 
 ## 7. Liên hệ
 
