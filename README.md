@@ -87,6 +87,10 @@ http://localhost:5500
 - Đảm bảo backend hỗ trợ các API phù hợp để frontend hoạt động mượt mà.
 - Có thể tích hợp thêm các thư viện như **DataTables**, **SweetAlert** để nâng cao trải nghiệm người dùng.
 
-## 6. Liên hệ
+## 6. Đường link dẫn tới GitHub Back-end
+
+[Đường link GitHub Back-end](https://github.com/boypro5235/warehouse-management-backend.git).
+
+## 7. Liên hệ
 
 Nếu có bất kỳ thắc mắc hoặc đóng góp nào, vui lòng liên hệ qua email: [bit220123@st.cmcu.edu.vn](mailto:bit220123@st.cmcu.edu.vn).
