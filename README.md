@@ -93,4 +93,4 @@ http://localhost:5500
 
 ## 7. Liên hệ
 
-Nếu có bất kỳ thắc mắc hoặc đóng góp nào, vui lòng liên hệ qua email: [bit220123@st.cmcu.edu.vn](mailto:bit220123@st.cmcu.edu.vn).
+Nếu có bất kỳ thắc mắc hoặc đóng góp nào, vui lòng liên hệ qua email: bit220123@st.cmcu.edu.vn
