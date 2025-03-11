@@ -455,37 +455,60 @@
 </div>
 <!-- ./wrapper -->
 <script>
+  
   document.getElementById("createCategoryBtn").addEventListener("click", function (event) {
-      event.preventDefault();
-  
-      let name = document.getElementById("inputNameCatehouse").value.trim();
-      let description = document.getElementById("inputDescCatehouse").value.trim();
-  
-      if (!name) {
-          alert("Vui lòng nhập tên danh mục.");
-          return;
-      }
-  
-      // Lấy danh sách hiện tại từ LocalStorage
-      let categories = JSON.parse(localStorage.getItem("categories")) || [];
-  
-      // Thêm danh mục mới vào danh sách
-      categories.push({
-          id: categories.length + 1,
-          name: name,
-          description: description,
-          created_at: new Date().toLocaleDateString()
-      });
-  
-      // Lưu lại vào LocalStorage
-      localStorage.setItem("categories", JSON.stringify(categories));
-  
-      alert("Danh mục đã được tạo thành công!");
-  
-      // Xóa dữ liệu form
-      document.getElementById("inputNameCatehouse").value = "";
-      document.getElementById("inputDescCatehouse").value = "";
-  });
+    event.preventDefault();
+
+    let name = document.getElementById("inputNameCatehouse").value.trim();
+    let description = document.getElementById("inputDescCatehouse").value.trim();
+
+    if (!name) {
+        alert("Vui lòng nhập tên danh mục.");
+        return;
+    }
+
+    // Lấy token từ LocalStorage (nếu cần)
+    let token = localStorage.getItem("accessToken");
+    if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+    }
+
+    // Tạo headers
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    // Tạo dữ liệu gửi đi
+    const raw = JSON.stringify({
+        categoryName: name, // Đổi key từ 'name' thành 'categoryName' theo Postman
+        description: description || "" // Nếu description rỗng thì gửi chuỗi rỗng
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    // Gửi request đến API
+    fetch("http://172.17.161.232:8080/api/categories", requestOptions)
+        .then(response => response.text()) // Đọc phản hồi dưới dạng text
+        .then(result => {
+            console.log("Phản hồi API:", result);
+            alert("Danh mục đã được tạo thành công!");
+
+            // Xóa dữ liệu form
+            document.getElementById("inputNameCatehouse").value = "";
+            document.getElementById("inputDescCatehouse").value = "";
+        })
+        .catch(error => {
+            console.error("Lỗi:", error);
+            alert("Có lỗi xảy ra: " + error.message);
+        });
+});
+
   </script>
 
 <!-- jQuery -->

@@ -424,7 +424,7 @@
             <tbody id="categoryTableBody">
               <!-- Danh mục sẽ được hiển thị ở đây -->
           </tbody>
-          
+         
           </table>
         </div>
       </div>
@@ -543,104 +543,58 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    let tableBody = document.getElementById("categoryTableBody");
+  function getCategories() {
+      let token = localStorage.getItem("accessToken");
 
-    // Lấy danh sách từ LocalStorage
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+      if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+      }
 
-    if (categories.length === 0) {
-        tableBody.innerHTML = "<tr><td colspan='4' class='text-center'>Chưa có danh mục nào!</td></tr>";
-        return;
-    }
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
 
-    categories.forEach((category, index) => {
-        let row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>
-                <a>${category.name}</a><br>
-                <small>Created ${category.created_at}</small>
-            </td>
-            <td>${category.description}</td>
-            <td class="text-right">
-                <button class="btn btn-info btn-sm" onclick="viewCategory(${index})">
-                    <i class="fas fa-eye"></i> View
-                </button>
-                <button class="btn btn-warning btn-sm" onclick="editCategory(${index})">
-                    <i class="fas fa-pencil-alt"></i> Sửa
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${index})">
-                    <i class="fas fa-trash"></i> Xóa
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-});
+      fetch("http://172.17.161.232:8080/api/categories", {
+          method: "GET",
+          headers: myHeaders
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log("Danh sách danh mục:", data);
+          
+          if (data.data && data.data.listCategory) {
+              updateCategoryUI(data.data.listCategory);
+          } else {
+              console.error("Dữ liệu không hợp lệ:", data);
+          }
+      })
+      .catch(error => console.error("Lỗi khi lấy danh sách:", error));
+  }
 
-// Hiển thị modal 'Xem chi tiết'
-function viewCategory(index) {
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    let category = categories[index];
+  // Hàm cập nhật giao diện danh sách danh mục
+  function updateCategoryUI(categories) {
+      const categoryTableBody = document.getElementById("categoryTableBody");
+      categoryTableBody.innerHTML = ""; // Xóa nội dung cũ
 
-    document.getElementById("viewName").textContent = category.name;
-    document.getElementById("viewDescription").textContent = category.description;
-    openModal("viewModal");
-}
+      categories.forEach((category, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${category.categoryName}</td>
+              <td>${category.description || "Không có mô tả"}</td>
+              <td>
+                  <button class="btn btn-sm btn-primary">Sửa</button>
+                  <button class="btn btn-sm btn-danger">Xóa</button>
+              </td>
+          `;
+          categoryTableBody.appendChild(row);
+      });
+  }
 
-// Hiển thị modal 'Chỉnh sửa'
-function editCategory(index) {
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    let category = categories[index];
+  // Gọi API khi tải trang
+  window.onload = getCategories;
+</script>
 
-    document.getElementById("editIndex").value = index; // Lưu index để cập nhật sau
-    document.getElementById("editName").value = category.name;
-    document.getElementById("editDescription").value = category.description;
-
-    openModal("editModal");
-}
-
-// Lưu chỉnh sửa danh mục
-function saveChanges() {
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    let index = document.getElementById("editIndex").value;
-    
-    categories[index].name = document.getElementById("editName").value;
-    categories[index].description = document.getElementById("editDescription").value;
-
-    localStorage.setItem("categories", JSON.stringify(categories));
-    location.reload(); // Refresh trang để cập nhật danh sách
-}
-
-// Mở modal xác nhận xóa
-function openDeleteModal(index) {
-    document.getElementById("confirmDeleteBtn").setAttribute("onclick", `confirmDelete(${index})`);
-    openModal("deleteModal");
-}
-
-// Xác nhận xóa danh mục
-function confirmDelete(index) {
-    let categories = JSON.parse(localStorage.getItem("categories")) || [];
-    categories.splice(index, 1); // Xóa danh mục
-
-    localStorage.setItem("categories", JSON.stringify(categories));
-    location.reload(); // Refresh trang để cập nhật danh sách
-}
-
-// Mở modal theo id
-function openModal(id) {
-    let modal = new bootstrap.Modal(document.getElementById(id));
-    modal.show();
-}
-
-// Đóng modal theo id
-function closeModal(id) {
-    let modal = bootstrap.Modal.getInstance(document.getElementById(id));
-    if (modal) modal.hide();
-}
-
-  </script>
 <script src="../../../dist/js/main.js"></script>
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
