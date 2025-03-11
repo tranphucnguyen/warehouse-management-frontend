@@ -451,6 +451,65 @@
       </div>
     </section>
 
+    <script>
+      // Xử lý lưu dữ liệu vào localStorage
+      document.querySelector('.btn-success').addEventListener('click', (e) => {
+          e.preventDefault();
+
+          // Lấy thông tin từ form
+          const category = document.getElementById('inputCategory').value;
+          const name = document.getElementById('inputNameproduct').value;
+          const description = document.getElementById('inputDescProduct').value;
+          const price = parseFloat(document.getElementById('nputPriceProduct').value);
+          const quantity = parseInt(document.getElementById('inputQtyProduct').value);
+
+          if (!category) {
+            alert('Vui lòng chọn danh mục hàng hóa!');
+            return;
+          }
+          if (!name) {
+            alert('Vui lòng nhập tên hàng hóa!');
+            return;
+          }
+          if (!description) {
+            alert('Vui lòng nhập mô tả hàng hóa!');
+            return;
+          }
+          if (isNaN(price) || price <= 0) {
+            alert('Vui lòng nhập giá hợp lệ!');
+            return;
+          }
+          if (isNaN(quantity) || quantity <= 0) {
+            alert('Vui lòng nhập số lượng hợp lệ!');
+            return;
+          }
+
+          // Tạo đối tượng hàng hóa
+          const newProduct = {
+              id: Date.now(), // Tạo ID duy nhất
+              category,
+              name,
+              description,
+              price,
+              quantity
+          };
+
+          // Lấy danh sách hiện có từ localStorage
+          const products = JSON.parse(localStorage.getItem('products')) || [];
+
+          // Thêm sản phẩm mới vào danh sách
+          products.push(newProduct);
+
+          // Lưu lại vào localStorage
+          localStorage.setItem('products', JSON.stringify(products));
+
+          alert('Tạo hàng hóa thành công!');
+
+          // Chuyển hướng sang trang danh sách (nếu cần)
+          window.location.href = './list.html';
+      });
+    </script>
+
 
 
   </div>

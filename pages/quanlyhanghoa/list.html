@@ -511,70 +511,145 @@
       </div>
     
       <script>
-        function viewProduct(code, name, price, quantity) {
-          document.getElementById('viewCode').textContent = code;
-          document.getElementById('viewName').textContent = name;
-          document.getElementById('viewPrice').textContent = price;
-          document.getElementById('viewQuantity').textContent = quantity;
-          openModal('viewModal');
+        // Khởi tạo bảng khi trang load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
+
+        // Hiển thị danh sách sản phẩm từ localStorage
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const tbody = document.querySelector('.products tbody');
+
+            tbody.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${product.category}</td>
+                        <td>${product.name}</td>
+                        <td>${product.price} VND</td>
+                        <td>${product.quantity}</td>
+                        <td class="product-actions text-right">
+                            <button class="btn btn-primary btn-sm" onclick="viewProduct(${product.id})">
+                                <i class="fas fa-folder"></i> View
+                            </button>
+                            <button class="btn btn-info btn-sm" onclick="editProduct(${product.id})">
+                                <i class="fas fa-pencil-alt"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${product.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
         }
 
-        function editProduct(code, name, price, quantity) {
-          document.getElementById('editCode').value = code;
-          document.getElementById('editName').value = name;
-          document.getElementById('editPrice').value = price;
-          document.getElementById('editQuantity').value = quantity;
-          openModal('editModal');
+        // Xem chi tiết sản phẩm
+        function viewProduct(id) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products.find(p => p.id === id);
+
+            if (product) {
+                document.getElementById('viewCode').textContent = product.category;
+                document.getElementById('viewName').textContent = product.name;
+                document.getElementById('viewPrice').textContent = `${product.price} VND`;
+                document.getElementById('viewQuantity').textContent = product.quantity;
+                openModal('viewModal');
+            }
         }
 
-        function openModal(id) {
-          const modal = new bootstrap.Modal(document.getElementById(id));
-          modal.show();
+        // Mở modal chỉnh sửa sản phẩm
+        function editProduct(id) {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const product = products.find(p => p.id === id);
+
+            if (product) {
+              const categoryDropdown = document.getElementById('editCode');
+              categoryDropdown.innerHTML = '';
+
+              // Lấy danh sách category duy nhất từ localStorage
+              const categories = [...new Set(products.map(p => p.category))];
+
+              categories.forEach(category => {
+                  const option = document.createElement('option');
+                  option.value = category;
+                  option.textContent = category;
+                  categoryDropdown.appendChild(option);
+              });
+
+              categoryDropdown.value = product.category;
+
+              document.getElementById('editName').value = product.name;
+              document.getElementById('editPrice').value = product.price;
+              document.getElementById('editQuantity').value = product.quantity;
+              document.getElementById('editModal').dataset.id = id;
+
+              openModal('editModal');
+          }
         }
 
-        function closeModal(id) {
-          const modal = bootstrap.Modal.getInstance(document.getElementById(id));
-          if (modal) modal.hide();
-        }
-
+        // Lưu thay đổi sau khi chỉnh sửa
         function saveChanges() {
-          const newCode = document.getElementById('editCode').value;
-          const newName = document.getElementById('editName').value;
-          const newPrice = document.getElementById('editPrice').value;
-          const newQuantity = document.getElementById('editQuantity').value;
+            const id = parseInt(document.getElementById('editModal').dataset.id);
+            const products = JSON.parse(localStorage.getItem('products')) || [];
 
-          const row = document.querySelector('.products tbody tr');
-          row.cells[1].textContent = newCode;
-          row.cells[2].textContent = newName;
-          row.cells[3].textContent = newPrice;
-          row.cells[4].textContent = newQuantity;
+            const updatedProduct = {
+                id,
+                category: document.getElementById('editCode').value,
+                name: document.getElementById('editName').value,
+                price: parseFloat(document.getElementById('editPrice').value),
+                quantity: parseInt(document.getElementById('editQuantity').value)
+            };
 
-          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
-          toast.show();
-    
-          closeModal('editModal');
+            const index = products.findIndex(p => p.id === id);
+            if (index !== -1) {
+                products[index] = updatedProduct;
+                localStorage.setItem('products', JSON.stringify(products));
+                loadProducts();
+                closeModal('editModal');
+                showToast('saveToast');
+            }
         }
-    
-        let deleteButton;
 
         // Mở modal xác nhận xóa
-        function openDeleteModal(button) {
-          deleteButton = button;
-          openModal('deleteModal');
+        function openDeleteModal(id) {
+            document.getElementById('confirmDelete').dataset.id = id;
+            openModal('deleteModal');
         }
 
-        // Xác nhận xóa
+        // Xóa sản phẩm khỏi localStorage
         function confirmDelete() {
-          const row = deleteButton.closest('tr');
-          row.remove();
-          closeModal('deleteModal');
-          showToast('deleteToast');
+            const id = parseInt(document.getElementById('confirmDelete').dataset.id);
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('products', JSON.stringify(products));
+
+            loadProducts();
+            closeModal('deleteModal');
+            showToast('deleteToast');
         }
 
-        // Hiển thị Toast theo id
+        // Mở modal
+        function openModal(id) {
+            const modal = new bootstrap.Modal(document.getElementById(id));
+            modal.show();
+        }
+
+        // Đóng modal
+        function closeModal(id) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+            if (modal) modal.hide();
+        }
+
+        // Hiển thị thông báo (Toast)
         function showToast(id) {
-          const toast = new bootstrap.Toast(document.getElementById(id));
-          toast.show();
+            const toast = new bootstrap.Toast(document.getElementById(id));
+            toast.show();
         }
       </script>
     </section>

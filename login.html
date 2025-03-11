@@ -27,7 +27,6 @@
 
 
       <form id="loginForm">
-
         <div class="input-group mb-3">
             <input type="text" id="loginUsername" class="form-control" placeholder="Tên người dùng">
             <div class="input-group-append">
@@ -51,6 +50,15 @@
         </div>
     </form>
     
+    <!-- Modal thông báo -->
+    <div id="successModal" class="alert alert-success position-fixed" style="display: none; z-index: 1050; top: 20px; right: 20px;">
+      Đăng nhập thành công!
+    </div>
+    
+    <div id="errorModal" class="alert alert-danger position-fixed" style="display: none; z-index: 1050; top: 20px; right: 20px;">
+      Đăng nhập thất bại! Vui lòng kiểm tra lại.
+    </div>
+    
     </div>
     <!-- /.login-card-body -->
   </div>
@@ -61,26 +69,64 @@
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <script>
-  document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    let username = document.getElementById("loginUsername").value.trim();
-    let password = document.getElementById("loginPassword").value.trim();
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    
-    // Kiểm tra tài khoản
-    let user = users.find(user => user.username === username);
-    
-    if (user && user.password === password) {
-        alert("Đăng nhập thành công!");
-        window.location.href = "dashboard.html"; // Chuyển trang
-    } else {
-        alert("Email hoặc mật khẩu không đúng!");
-    }
-});
-
-</script>
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+  
+      let username = document.getElementById("loginUsername").value.trim();
+      let password = document.getElementById("loginPassword").value.trim();
+  
+      if (!username || !password) {
+          alert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.");
+          return;
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+  
+      const raw = JSON.stringify({
+          username: username,
+          password: password,
+      });
+  
+      const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+      };
+  
+      try {
+          const response = await fetch("http://172.17.161.232:8080/api/user/login", requestOptions);
+  
+          if (!response.ok) {
+              throw new Error("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin!");
+          }
+  
+          const result = await response.json();
+          console.log("Kết quả từ API:", result); // Kiểm tra dữ liệu API trả về
+  
+          // Lấy token từ result.data.token
+          let token = result.data?.token;
+          console.log("Token nhận được:", token); 
+  
+          if (!token) {
+              throw new Error("Không tìm thấy token trong phản hồi từ API!");
+          }
+  
+          // Lưu token vào localStorage
+          localStorage.setItem("accessToken", token);
+          console.log("Token sau khi đăng nhập:", localStorage.getItem("accessToken"));
+  
+          alert("Đăng nhập thành công!");
+          window.location.href = "dashboard.html";
+  
+      } catch (error) {
+          console.error("Lỗi khi đăng nhập:", error);
+          alert("Có lỗi xảy ra: " + error.message);
+      }
+  });
+  
+  </script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
