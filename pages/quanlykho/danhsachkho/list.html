@@ -488,96 +488,7 @@
           </div>
         </div>
       </div>
-      <script>
-        function loadWarehouses() {
-          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-          let tableBody = document.getElementById("warehouseList");
-      
-          tableBody.innerHTML = ""; // Xóa nội dung cũ trước khi cập nhật
-      
-          warehouses.forEach((warehouse, index) => {
-            let row = `
-              <tr>
-                <td>${index + 1}</td>
-                <td>${warehouse.name}</td>
-                <td>${warehouse.address}</td>
-                <td>${warehouse.contact}</td>
-                <td class="project-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewWarehouse('${warehouse.name}', '${warehouse.address}', '${warehouse.contact}')">
-                    <i class="fas fa-folder"></i> Xem
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editWarehouse(${warehouse.id})">
-                    <i class="fas fa-pencil-alt"></i> Sửa
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${warehouse.id})">
-                    <i class="fas fa-trash"></i> Xóa
-                  </button>
-                </td>
-              </tr>
-            `;
-            tableBody.innerHTML += row;
-          });
-        }
-      
-        function viewWarehouse(name, address, contact) {
-          document.getElementById('viewName').textContent = name;
-          document.getElementById('viewAddress').textContent = address;
-          document.getElementById('viewContact').textContent = contact;
-          openModal('viewModal');
-        }
-      
-        let editingId = null;
-        function editWarehouse(id) {
-          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-          let warehouse = warehouses.find(w => w.id === id);
-          if (warehouse) {
-            document.getElementById('editName').value = warehouse.name;
-            document.getElementById('editAddress').value = warehouse.address;
-            document.getElementById('editContact').value = warehouse.contact;
-            editingId = id;
-            openModal('editModal');
-          }
-        }
-      
-        function saveChanges() {
-          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-          let index = warehouses.findIndex(w => w.id === editingId);
-          if (index !== -1) {
-            warehouses[index].name = document.getElementById('editName').value;
-            warehouses[index].address = document.getElementById('editAddress').value;
-            warehouses[index].contact = document.getElementById('editContact').value;
-            localStorage.setItem("warehouses", JSON.stringify(warehouses));
-            loadWarehouses();
-            closeModal('editModal');
-          }
-        }
-      
-        let deleteId = null;
-        function openDeleteModal(id) {
-          deleteId = id;
-          openModal('deleteModal');
-        }
-      
-        function confirmDelete() {
-          let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-          warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
-          localStorage.setItem("warehouses", JSON.stringify(warehouses));
-          loadWarehouses();
-          closeModal('deleteModal');
-        }
-      
-        function openModal(id) {
-          const modal = new bootstrap.Modal(document.getElementById(id));
-          modal.show();
-        }
-      
-        function closeModal(id) {
-          const modal = bootstrap.Modal.getInstance(document.getElementById(id));
-          if (modal) modal.hide();
-        }
-      
-        document.addEventListener("DOMContentLoaded", loadWarehouses);
-      </script>
+     
     </section>
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -628,6 +539,105 @@
 
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
+<script>
+  function loadWarehouses() {
+    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+    let tableBody = document.getElementById("warehouseList");
+
+    tableBody.innerHTML = ""; // Xóa nội dung cũ trước khi cập nhật
+
+    warehouses.forEach((warehouse, index) => {
+      let row = `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${warehouse.name}</td>
+          <td>${warehouse.address}</td>
+          <td>${warehouse.contact}</td>
+          <td class="project-actions text-right">
+            <button class="btn btn-primary btn-sm" onclick="viewWarehouse('${warehouse.name}', '${warehouse.address}', '${warehouse.contact}')">
+              <i class="fas fa-folder"></i> Xem
+            </button>
+            <button class="btn btn-info btn-sm" onclick="editWarehouse(${warehouse.id})">
+              <i class="fas fa-pencil-alt"></i> Sửa
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${warehouse.id})">
+              <i class="fas fa-trash"></i> Xóa
+            </button>
+          </td>
+        </tr>
+      `;
+      tableBody.innerHTML += row;
+    });
+  }
+
+  function viewWarehouse(name, address, contact) {
+    document.getElementById('viewName').textContent = name;
+    document.getElementById('viewAddress').textContent = address;
+    document.getElementById('viewContact').textContent = contact;
+    openModal('viewModal');
+  }
+
+  let editingId = null;
+  function editWarehouse(id) {
+    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+    let warehouse = warehouses.find(w => w.id === id);
+    if (warehouse) {
+      document.getElementById('editName').value = warehouse.name;
+      document.getElementById('editAddress').value = warehouse.address;
+      document.getElementById('editContact').value = warehouse.contact;
+      editingId = id;
+      openModal('editModal');
+    }
+  }
+
+  function saveChanges() {
+    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+    let index = warehouses.findIndex(w => w.id === editingId);
+    if (index !== -1) {
+      warehouses[index].name = document.getElementById('editName').value;
+      warehouses[index].address = document.getElementById('editAddress').value;
+      warehouses[index].contact = document.getElementById('editContact').value;
+      localStorage.setItem("warehouses", JSON.stringify(warehouses));
+      loadWarehouses();
+      closeModal('editModal');
+        // Hiển thị toast thông báo lưu thành công
+    showToast('saveToast');
+    }
+  }
+
+  let deleteId = null;
+  function openDeleteModal(id) {
+    deleteId = id;
+    openModal('deleteModal');
+  }
+
+  function confirmDelete() {
+    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+    warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
+    localStorage.setItem("warehouses", JSON.stringify(warehouses));
+    loadWarehouses();
+    closeModal('deleteModal');
+      // Hiển thị toast thông báo xóa thành công
+  showToast('deleteToast');
+  }
+  function showToast(toastId) {
+    let toastElement = document.getElementById(toastId);
+    let toast = new bootstrap.Toast(toastElement);
+    toast.show();
+  }
+  
+  function openModal(id) {
+    const modal = new bootstrap.Modal(document.getElementById(id));
+    modal.show();
+  }
+
+  function closeModal(id) {
+    const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+    if (modal) modal.hide();
+  }
+
+  document.addEventListener("DOMContentLoaded", loadWarehouses);
+</script>
 <!-- jQuery UI 1.11.4 -->
 <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
