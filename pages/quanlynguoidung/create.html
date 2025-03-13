@@ -420,10 +420,6 @@
                 <label for="inputClientPassword">Mật khẩu</label>
                 <input type="password" id="inputClientPassword" class="form-control" required>
               </div>
-              <div class="form-group">
-                <label for="inputRole">Chức vụ</label>
-                <input type="text" id="inputRole" class="form-control" required>
-              </div>
             </div>
           </div>
         </div>
@@ -447,12 +443,11 @@
               <div class="form-group">
                 <label for="inputCccd">Mã căn cước công dân</label>
                 <input type="text" id="inputCccd" class="form-control" required>
-            </div>
-            <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label for="inputBanknumber">Tài khoản ngân hàng</label>
                 <input type="text" id="inputBanknumber" class="form-control">
-            </div>
-            
+              </div>
             </div>
           </div>
         </div>
@@ -494,63 +489,96 @@
     let username = document.getElementById("inputName").value.trim();
     let fullname = document.getElementById("inputFullname").value.trim();
     let password = document.getElementById("inputClientPassword").value.trim();
-    let role = document.getElementById("inputRole").value.trim();
     let email = document.getElementById("inputEmail").value.trim();
     let cccd = document.getElementById("inputCccd").value.trim();
     let banknumber = document.getElementById("inputBanknumber").value.trim();
-
+  
     // 🔍 Kiểm tra dữ liệu hợp lệ
-    let usernameRegex = /^[a-zA-Z0-9_]+$/; // Chỉ cho phép chữ, số, _
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Kiểm tra email hợp lệ
-    let cccdRegex = /^\d{12}$/; // CCCD phải đúng 12 số
-    let bankRegex = /^\d{8,16}$/; // Tài khoản ngân hàng từ 8-16 số
-
-    if (!username || !fullname || !password || !role || !email || !cccd) {
-        alert("Vui lòng nhập đầy đủ thông tin!");
-        return;
+    let usernameRegex = /^[a-zA-Z0-9_]+$/;
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let cccdRegex = /^\d{12}$/;
+    let bankRegex = /^\d{8,16}$/;
+  
+    if (!username || !fullname || !password || !email || !cccd) {
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
     }
     if (!usernameRegex.test(username)) {
-        alert("Tên người dùng không được chứa ký tự đặc biệt!");
-        return;
+      alert("Tên người dùng không được chứa ký tự đặc biệt!");
+      return;
     }
     if (password.length < 6 || password.trim().length === 0) {
-        alert("Mật khẩu phải có ít nhất 6 ký tự và không chỉ chứa khoảng trắng!");
-        return;
+      alert("Mật khẩu phải có ít nhất 6 ký tự và không chỉ chứa khoảng trắng!");
+      return;
     }
     if (!emailRegex.test(email)) {
-        alert("Email không hợp lệ!");
-        return;
+      alert("Email không hợp lệ!");
+      return;
     }
     if (!cccdRegex.test(cccd)) {
-        alert("CCCD phải có đúng 12 số!");
-        return;
+      alert("CCCD phải có đúng 12 số!");
+      return;
     }
     if (banknumber && !bankRegex.test(banknumber)) {
-        alert("Số tài khoản ngân hàng không hợp lệ!");
-        return;
+      alert("Số tài khoản ngân hàng không hợp lệ!");
+      return;
     }
-
-    // ✅ Nếu hợp lệ, lưu vào localStorage và chuyển trang
-    let userData = { username, fullname, role, email, password, cccd, banknumber };
-
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-users.push(userData);
-localStorage.setItem("users", JSON.stringify(users));
-
-    alert("Thêm tài khoản thành công!");
-
-    // Xóa dữ liệu form
-    document.getElementById("inputName").value = "";
-    document.getElementById("inputFullname").value = "";
-    document.getElementById("inputClientPassword").value = "";
-    document.getElementById("inputRole").value = "";
-    document.getElementById("inputEmail").value = "";
-    document.getElementById("inputCccd").value = "";
-    document.getElementById("inputBanknumber").value = "";
-});
-
+  
+    // Chuẩn bị dữ liệu gửi lên API
+    let userData = {
+      username,
+      password,
+      fullname,
+      email,
+      cccd,
+      bankNumber: banknumber || null
+    };
+  
+    // Lấy token từ localStorage
+    let token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("Bạn cần đăng nhập để thực hiện thao tác này!");
+      return;
+    }
+  
+    // Cấu hình request
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+  
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(userData),
+      redirect: "follow"
+    };
+  
+    // Gửi request lên API
+    fetch("http://172.17.160.119:8080/api/user/register", requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then((result) => {
+        alert("Thêm tài khoản thành công!");
+        console.log(result);
+  
+        // Xóa dữ liệu form
+        document.getElementById("inputName").value = "";
+        document.getElementById("inputFullname").value = "";
+        document.getElementById("inputClientPassword").value = "";
+        document.getElementById("inputEmail").value = "";
+        document.getElementById("inputCccd").value = "";
+        document.getElementById("inputBanknumber").value = "";
+      })
+      .catch((error) => {
+        alert("Có lỗi xảy ra khi tạo tài khoản!");
+        console.error(error);
+      });
+  });
 </script>
-
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
