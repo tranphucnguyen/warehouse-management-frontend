@@ -409,16 +409,12 @@
             </div>
             <div class="card-body">
               <div class="form-group">
-                <div class="form-group">
-                  <label for="inputCategory">Danh mục hàng hóa</label>
-                  <select id="inputCategory" class="form-control custom-select">
-                    <option selected="" disabled="">Select one</option>
-                    <option>Hàng xịn</option>
-                    <option>Hàng bình thường</option>
-                    <option>Hàng cao cấp</option>
-                  </select>
-                </div>
-              </div>
+                <label for="inputCategory">Danh mục kho</label>
+                <select id="inputCategory" class="form-control custom-select">
+                    <option selected disabled>Đang tải...</option> <!-- Hiển thị trong lúc tải API -->
+                </select>
+            </div>
+            
               <div class="form-group">
                 <label for="inputNameproduct">Tên hàng hóa</label>
                 <input type="text" id="inputNameproduct" class="form-control">
@@ -432,10 +428,6 @@
                 <label for="inputPriceProduct">Giá</label>
                 <input type="number" id="nputPriceProduct" class="form-control">
               </div>
-              <div class="form-group">
-                <label for="inputQtyProduct">Số lượng</label>
-                <input type="text" id="inputQtyProduct" class="form-control">
-              </div>
             </div>
             <!-- /.card-body -->
           </div>
@@ -446,68 +438,118 @@
       <div class="row">
         <div class="col-12">
           <a href="#" class="btn btn-secondary">Cancel</a>
-          <input type="submit" value="Tạo" class="btn btn-success float-right">
+          <button type="button" class="btn btn-success" onclick="createProduct()">Tạo hàng hóa</button>
+
         </div>
       </div>
     </section>
 
     <script>
-      // Xử lý lưu dữ liệu vào localStorage
-      document.querySelector('.btn-success').addEventListener('click', (e) => {
-          e.preventDefault();
-
-          // Lấy thông tin từ form
-          const category = document.getElementById('inputCategory').value;
-          const name = document.getElementById('inputNameproduct').value;
-          const description = document.getElementById('inputDescProduct').value;
-          const price = parseFloat(document.getElementById('nputPriceProduct').value);
-          const quantity = parseInt(document.getElementById('inputQtyProduct').value);
-
-          if (!category) {
-            alert('Vui lòng chọn danh mục hàng hóa!');
-            return;
+      function loadCategories() {
+          let token = localStorage.getItem("accessToken");
+      
+          if (!token) {
+              alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+              return;
           }
-          if (!name) {
-            alert('Vui lòng nhập tên hàng hóa!');
-            return;
-          }
-          if (!description) {
-            alert('Vui lòng nhập mô tả hàng hóa!');
-            return;
-          }
-          if (isNaN(price) || price <= 0) {
-            alert('Vui lòng nhập giá hợp lệ!');
-            return;
-          }
-          if (isNaN(quantity) || quantity <= 0) {
-            alert('Vui lòng nhập số lượng hợp lệ!');
-            return;
-          }
+      
+          const myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${token}`);
+      
+          fetch("http://172.17.155.151:8080/api/categories", {
+              method: "GET",
+              headers: myHeaders
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log("Danh sách danh mục:", data);
+              
+              if (data.data && data.data.listCategory) {
+                  updateCategoryUI(data.data.listCategory);
+              } else {
+                  console.error("Dữ liệu không hợp lệ:", data);
+              }
+          })
+          .catch(error => console.error("Lỗi khi lấy danh mục:", error));
+      }
+      
+      function updateCategoryUI(categories) {
+        let select = document.getElementById("inputCategory");
+        select.innerHTML = `<option selected disabled>Chọn danh mục</option>`; // Xóa danh mục cũ
+    
+        categories.forEach(category => {
+            console.log("Dữ liệu danh mục:", category); // Kiểm tra từng danh mục trong console
+    
+            let option = document.createElement("option");
+            option.value = category.id || category.categoryId || category.ID;  // Kiểm tra các key ID có thể có
+            option.textContent = category.name || category.categoryName || category.title; // Kiểm tra key tên danh mục
+            select.appendChild(option);
+        });
+    }
+    
+      
+      // Gọi API khi trang tải xong
+      document.addEventListener("DOMContentLoaded", loadCategories);
+      </script>
 
-          // Tạo đối tượng hàng hóa
-          const newProduct = {
-              id: Date.now(), // Tạo ID duy nhất
-              category,
-              name,
-              description,
-              price,
-              quantity
-          };
 
-          // Lấy danh sách hiện có từ localStorage
-          const products = JSON.parse(localStorage.getItem('products')) || [];
-
-          // Thêm sản phẩm mới vào danh sách
-          products.push(newProduct);
-
-          // Lưu lại vào localStorage
-          localStorage.setItem('products', JSON.stringify(products));
-
-          alert('Tạo hàng hóa thành công!');
-
-          // Chuyển hướng sang trang danh sách (nếu cần)
-          window.location.href = './list.html';
-      });
+    <script>
+      function createProduct() {
+        let token = localStorage.getItem("accessToken");
+      
+        if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+        }
+      
+        // Lấy thông tin từ form
+        const category = parseInt(document.getElementById('inputCategory').value); // Convert to integer
+        const name = document.getElementById('inputNameproduct').value.trim();
+        const description = document.getElementById('inputDescProduct').value.trim();
+        const price = parseFloat(document.getElementById('nputPriceProduct').value);
+      
+        // Kiểm tra dữ liệu đầu vào
+        if (isNaN(category)) return alert('Vui lòng chọn danh mục hàng hóa!');
+        if (!name || name.length < 3 || name.length > 50) return alert('Tên hàng hóa phải từ 3-50 ký tự!');
+        if (!description || description.length < 3 || description.length > 200) return alert('Mô tả phải từ 3-200 ký tự!');
+        if (isNaN(price) || price <= 0 || price > 10000000) return alert('Giá phải từ 1 đến 10,000,000!');
+      
+        // Tạo đối tượng hàng hóa
+        const newProduct = {
+          categoryId: category,
+          productName: name, // Đổi từ 'name' thành 'productName'
+          description: description,
+          price: price
+        };
+      
+        console.log("Dữ liệu gửi lên API:", newProduct);
+      
+        // Cấu hình headers
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${token}`);
+        myHeaders.append("Content-Type", "application/json");
+      
+        // Gửi request POST đến API
+        fetch("http://172.17.155.151:8080/api/products", {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify(newProduct)
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Kết quả từ API:", data);
+            if (data.status === 200) {
+              alert("Tạo hàng hóa thành công!");
+              window.location.href = './list.html';
+            } else {
+              alert("Có lỗi xảy ra: " + JSON.stringify(data)); // Show detailed error
+            }
+          })
+          .catch(error => {
+            console.error("Lỗi khi gửi yêu cầu:", error);
+            alert("Lỗi kết nối đến API!");
+          });
+      }
     </script>
 
 

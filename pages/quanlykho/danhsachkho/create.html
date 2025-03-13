@@ -468,25 +468,52 @@
         return;
     }
 
-    let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
+    // Lấy token từ LocalStorage
+    let token = localStorage.getItem("accessToken");
+    if (!token) {
+        alert("Bạn chưa đăng nhập hoặc token đã hết hạn!");
+        return;
+    }
 
-    let newWarehouse = {
-        id: Date.now(),
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    let raw = JSON.stringify({
         name: name,
         address: address,
-        contact: contact,
-        created_at: new Date().toLocaleString()
+        contact: contact
+    });
+
+    let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
     };
 
-    warehouses.push(newWarehouse);
-    localStorage.setItem("warehouses", JSON.stringify(warehouses));
+    fetch("http://172.17.155.151:8080/api/dskhohangs", requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(result => {
+            alert("Thêm kho thành công!");
+            console.log("Kết quả API:", result);
 
-    alert("Thêm kho thành công!");
-   // Xóa dữ liệu form
-   document.getElementById("inputNameWarehouse").value = "";
-   document.getElementById("inputDescWarehouse").value = "";
-   document.getElementById("inputContactWare").value = "";
+            // Xóa dữ liệu form
+            document.getElementById("inputNameWarehouse").value = "";
+            document.getElementById("inputDescWarehouse").value = "";
+            document.getElementById("inputContactWare").value = "";
+        })
+        .catch(error => {
+            console.error("Lỗi khi gửi API:", error);
+            alert("Có lỗi xảy ra khi thêm kho, vui lòng thử lại!");
+        });
 }
+
 
 </script>
 <!-- jQuery -->
