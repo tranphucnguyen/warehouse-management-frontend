@@ -423,7 +423,7 @@
             </thead>
             <tbody id="categoryTableBody">
               <!-- Danh mục sẽ được hiển thị ở đây -->
-          </tbody>
+            </tbody>
          
           </table>
         </div>
@@ -448,49 +448,49 @@
         </div>
 
         <!-- Modal Chỉnh sửa -->
-<div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Chỉnh sửa danh mục</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-              <input type="hidden" id="editIndex">
-              <div class="mb-3">
-                  <label for="editName" class="form-label">Tên danh mục</label>
-                  <input type="text" id="editName" class="form-control">
+        <div class="modal fade" id="editModal" tabindex="-1">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Chỉnh sửa danh mục</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                      <input type="hidden" id="editIndex">
+                      <div class="mb-3">
+                          <label for="editName" class="form-label">Tên danh mục</label>
+                          <input type="text" id="editName" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                          <label for="editDescription" class="form-label">Mô tả</label>
+                          <textarea id="editDescription" class="form-control"></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                      <button class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+                  </div>
               </div>
-              <div class="mb-3">
-                  <label for="editDescription" class="form-label">Mô tả</label>
-                  <textarea id="editDescription" class="form-control"></textarea>
+          </div>
+        </div>
+        <!-- Modal Xóa -->
+        <div class="modal fade" id="deleteModal" tabindex="-1">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Xác nhận xóa</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                      <p>Bạn có chắc chắn muốn xóa danh mục này không?</p>
+                  </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                      <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                  </div>
               </div>
           </div>
-          <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <button class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
-          </div>
-      </div>
-  </div>
-</div>
-       <!-- Modal Xóa -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Xác nhận xóa</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-              <p>Bạn có chắc chắn muốn xóa danh mục này không?</p>
-          </div>
-          <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
-          </div>
-      </div>
-  </div>
-</div>
+        </div>
 
      
     </section>
@@ -543,56 +543,100 @@
 </div>
 
 <script>
-  function getCategories() {
-      let token = localStorage.getItem("accessToken");
+  document.addEventListener("DOMContentLoaded", () => {
+    const categoryTableBody = document.getElementById("categoryTableBody");
 
-      if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-          return;
-      }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjY2NDM0OSwiaWF0IjoxNzQxNjY0MzQ0fQ.1fgo2jrm5KGewb3HUfXUzCcs0-asT2yPCObQHe-v-tH56AgfIYGR5faN5a6XBns93iCVlViRhuaV_hl25M-gaw");
 
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
+    // Hiển thị danh sách danh mục từ dữ liệu động
+    function displayCategories(categories) {
+        categoryTableBody.innerHTML = "";
+        categories.forEach((category, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${category.name}</td>
+                <td>${category.description || category.address || "N/A"}</td>
+                <td>
+                    <button class="btn btn-info btn-sm" onclick="showCategoryDetails(${index})">Xem</button>
+                    <button class="btn btn-warning btn-sm" onclick="openEditCategory(${index})">Sửa</button>
+                    <button class="btn btn-danger btn-sm" onclick="promptDeleteCategory(${index})">Xóa</button>
+                </td>
+            `;
+            categoryTableBody.appendChild(row);
+        });
+    }
 
-      fetch("http://172.17.161.232:8080/api/categories", {
-          method: "GET",
-          headers: myHeaders
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log("Danh sách danh mục:", data);
-          
-          if (data.data && data.data.listCategory) {
-              updateCategoryUI(data.data.listCategory);
-          } else {
-              console.error("Dữ liệu không hợp lệ:", data);
-          }
-      })
-      .catch(error => console.error("Lỗi khi lấy danh sách:", error));
-  }
+    // Mở modal xem chi tiết
+    window.showCategoryDetails = (index) => {
+        const category = categories[index];
+        document.getElementById("viewName").textContent = category.name;
+        document.getElementById("viewDescription").textContent = category.description || category.address || "N/A";
+        new bootstrap.Modal(document.getElementById("viewModal")).show();
+    };
 
-  // Hàm cập nhật giao diện danh sách danh mục
-  function updateCategoryUI(categories) {
-      const categoryTableBody = document.getElementById("categoryTableBody");
-      categoryTableBody.innerHTML = ""; // Xóa nội dung cũ
+    // Mở modal chỉnh sửa
+    window.openEditCategory = (index) => {
+        const category = categories[index];
+        document.getElementById("editIndex").value = index;
+        document.getElementById("editName").value = category.name;
+        document.getElementById("editDescription").value = category.description || category.address || "";
+        new bootstrap.Modal(document.getElementById("editModal")).show();
+    };
 
-      categories.forEach((category, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-              <td>${index + 1}</td>
-              <td>${category.categoryName}</td>
-              <td>${category.description || "Không có mô tả"}</td>
-              <td>
-                  <button class="btn btn-sm btn-primary">Sửa</button>
-                  <button class="btn btn-sm btn-danger">Xóa</button>
-              </td>
-          `;
-          categoryTableBody.appendChild(row);
-      });
-  }
+    // Lưu thay đổi khi chỉnh sửa
+    window.applyCategoryChanges = () => {
+        const index = document.getElementById("editIndex").value;
+        categories[index] = {
+            name: document.getElementById("editName").value,
+            description: document.getElementById("editDescription").value
+        };
+        displayCategories(categories);
+        bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
+    };
 
-  // Gọi API khi tải trang
-  window.onload = getCategories;
+    // Xác nhận xóa
+    window.promptDeleteCategory = (index) => {
+        document.getElementById("promptDeleteCategoryBtn").onclick = () => removeCategory(index);
+        new bootstrap.Modal(document.getElementById("deleteModal")).show();
+    };
+
+    // Xóa danh mục
+    function removeCategory(index) {
+        categories.splice(index, 1);
+        displayCategories(categories);
+        bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+    }
+
+    // Giả lập gọi API để lấy danh sách danh mục và danh sách kho hàng
+    async function loadCategoriesFromAPI() {
+        try {
+            const categoryResponse = await fetch("http://172.17.155.151:8080/api/categories", {
+                method: "GET",
+                headers: myHeaders
+            });
+            const categoriesData = await categoryResponse.json();
+
+            const warehouseResponse = await fetch("http://172.17.155.151:8080/api/dskhohangs", {
+                method: "GET",
+                headers: myHeaders
+            });
+            const warehousesData = await warehouseResponse.json();
+
+            categories = [...categoriesData, ...warehousesData];
+            displayCategories(categories);
+        } catch (error) {
+            console.error("Lỗi khi tải dữ liệu:", error);
+        }
+    }
+
+    let categories = [];
+    loadCategoriesFromAPI();
+});
+
+
 </script>
 
 <script src="../../../dist/js/main.js"></script>
