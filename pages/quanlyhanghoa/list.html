@@ -436,7 +436,7 @@
           </table>
         </div>
       </div>
-   
+    
      <!-- View Modal -->
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -456,7 +456,7 @@
     </div>
   </div>
 </div>
-   
+    
       <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -468,14 +468,11 @@
         <label for="editCode">Danh mục kho:</label>
         <select id="editCode" class="form-control"></select>
 
-
         <label for="editName" class="mt-2">Tên sản phẩm:</label>
         <input type="text" id="editName" class="form-control">
 
-
         <label for="editPrice" class="mt-2">Giá:</label>
         <input type="number" id="editPrice" class="form-control">
-
 
         <label for="editDescription" class="mt-2">Mô tả:</label> <!-- Thay Số lượng bằng Mô tả -->
         <input type="text" id="editDescription" class="form-control">
@@ -487,7 +484,6 @@
     </div>
   </div>
 </div>
-
 
       <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -506,8 +502,8 @@
     </div>
   </div>
 </div>
-   
-     
+    
+      
     </section>
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -560,44 +556,35 @@ window.addEventListener('DOMContentLoaded', () => {
   loadProducts();
 });
 
-
 // Hiển thị danh sách sản phẩm từ API
 async function loadProducts() {
   const token = localStorage.getItem('accessToken');
   const tbody = document.querySelector('.products tbody');
-
 
   if (!token) {
     alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
     return;
   }
 
-
   tbody.innerHTML = ''; // Xóa nội dung cũ
-
 
   try {
     const myHeaders = new Headers();
     myHeaders.append('Authorization', `Bearer ${token}`);
-
 
     const response = await fetch('http://172.17.155.151:8080/api/products', {
       method: 'GET',
       headers: myHeaders
     });
 
-
     if (!response.ok) {
       throw new Error('Lỗi khi gọi API: ' + response.status);
     }
 
-
     const data = await response.json();
     console.log('Dữ liệu từ API:', data);
 
-
     const products = data.data?.listProduct || [];
-
 
     products.forEach((product, index) => {
       const row = `
@@ -627,7 +614,6 @@ async function loadProducts() {
   }
 }
 
-
 // Xem chi tiết sản phẩm
 async function viewProduct(id) {
   const token = localStorage.getItem('accessToken');
@@ -636,17 +622,14 @@ async function viewProduct(id) {
     return;
   }
 
-
   try {
     const myHeaders = new Headers();
     myHeaders.append('Authorization', `Bearer ${token}`);
-
 
     const response = await fetch(`http://172.17.155.151:8080/api/products/${id}`, {
       method: 'GET',
       headers: myHeaders
     });
-
 
     const product = await response.json();
     if (product) {
@@ -661,8 +644,6 @@ async function viewProduct(id) {
     alert('Không thể tải thông tin sản phẩm.');
   }
 }
-
-
 
 
 </script>

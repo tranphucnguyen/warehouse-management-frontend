@@ -57,7 +57,7 @@ Dự án **Giao diện Frontend Quản lý Kho** được phát triển dựa tr
 1. **Clone dự án về máy**:
 
 ```bash
-git clone https://github.com/your-repo/quanlykho.git
+git clone https://github.com/tranphucnguyen/quanlykho-frontend.git
 ```
 
 2. **Chuẩn bị môi trường**:

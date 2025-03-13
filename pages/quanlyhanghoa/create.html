@@ -428,7 +428,7 @@
                     <option selected disabled>Đang tải...</option> <!-- Hiển thị trong lúc tải API -->
                 </select>
             </div>
-           
+            
               <div class="form-group">
                 <label for="inputNameproduct">Tên hàng hóa</label>
                 <input type="text" id="inputNameproduct" class="form-control">
@@ -454,7 +454,6 @@
           <a href="#" class="btn btn-secondary">Cancel</a>
           <button type="button" class="btn btn-success" onclick="createProduct()">Tạo hàng hóa</button>
 
-
         </div>
       </div>
     </section>
@@ -463,15 +462,15 @@
     <script>
       function loadCategories() {
           let token = localStorage.getItem("accessToken");
-     
+      
           if (!token) {
               alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
               return;
           }
-     
+      
           const myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${token}`);
-     
+      
           fetch("http://172.17.155.151:8080/api/categories", {
               method: "GET",
               headers: myHeaders
@@ -479,7 +478,7 @@
           .then(response => response.json())
           .then(data => {
               console.log("Danh sách danh mục:", data);
-             
+              
               if (data.data && data.data.listCategory) {
                   updateCategoryUI(data.data.listCategory);
               } else {
@@ -488,50 +487,48 @@
           })
           .catch(error => console.error("Lỗi khi lấy danh mục:", error));
       }
-     
+      
       function updateCategoryUI(categories) {
         let select = document.getElementById("inputCategory");
         select.innerHTML = `<option selected disabled>Chọn danh mục</option>`; // Xóa danh mục cũ
-   
+    
         categories.forEach(category => {
             console.log("Dữ liệu danh mục:", category); // Kiểm tra từng danh mục trong console
-   
+    
             let option = document.createElement("option");
             option.value = category.id || category.categoryId || category.ID;  // Kiểm tra các key ID có thể có
             option.textContent = category.name || category.categoryName || category.title; // Kiểm tra key tên danh mục
             select.appendChild(option);
         });
     }
-   
-     
+    
+      
       // Gọi API khi trang tải xong
       document.addEventListener("DOMContentLoaded", loadCategories);
       </script>
 
 
-
-
     <script>
       function createProduct() {
         let token = localStorage.getItem("accessToken");
-     
+      
         if (!token) {
           alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
           return;
         }
-     
+      
         // Lấy thông tin từ form
         const category = parseInt(document.getElementById('inputCategory').value); // Convert to integer
         const name = document.getElementById('inputNameproduct').value.trim();
         const description = document.getElementById('inputDescProduct').value.trim();
         const price = parseFloat(document.getElementById('nputPriceProduct').value);
-     
+      
         // Kiểm tra dữ liệu đầu vào
         if (isNaN(category)) return alert('Vui lòng chọn danh mục hàng hóa!');
         if (!name || name.length < 3 || name.length > 50) return alert('Tên hàng hóa phải từ 3-50 ký tự!');
         if (!description || description.length < 3 || description.length > 200) return alert('Mô tả phải từ 3-200 ký tự!');
         if (isNaN(price) || price <= 0 || price > 10000000) return alert('Giá phải từ 1 đến 10,000,000!');
-     
+      
         // Tạo đối tượng hàng hóa
         const newProduct = {
           categoryId: category,
@@ -539,14 +536,14 @@
           description: description,
           price: price
         };
-     
+      
         console.log("Dữ liệu gửi lên API:", newProduct);
-     
+      
         // Cấu hình headers
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
         myHeaders.append("Content-Type", "application/json");
-     
+      
         // Gửi request POST đến API
         fetch("http://172.17.155.151:8080/api/products", {
           method: "POST",

@@ -422,7 +422,7 @@
                   <th style="width: 20%">Tên người dùng</th>
                   <th style="width: 20%">Họ tên</th>
                   <th style="width: 25%">Email</th>
-                  <th style="width: 15%">Chức vụ</th>
+                  <!-- Bỏ cột Chức vụ -->
                   <th style="width: 19%"></th>
                 </tr>
               </thead>
@@ -431,302 +431,397 @@
               </tbody>
             </table>
           </div>
-        </div>
 
-        <!-- View Modal -->
-        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
-              </div>
-              <div class="modal-body">
-                <p><strong>Tên người dùng:</strong> <span id="viewUsername"></span></p>
-                <p><strong>Họ tên:</strong> <span id="viewFullname"></span></p>
-                <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-                <p><strong>Chức vụ:</strong> <span id="viewPosition"></span></p>
-                <p><strong>CCCD:</strong> <span id="viewCccd"></span></p>
-                <p><strong>Số tài khoản ngân hàng:</strong> <span id="viewBanknumber"></span></p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                  onclick="closeModal('viewModal')">Đóng</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
-              </div>
-              <div class="modal-body">
-                <label for="editUsername">Tên người dùng:</label>
-                <input type="text" id="editUsername" class="form-control" readonly>
-
-                <label for="editFullname" class="mt-2">Họ tên:</label>
-                <input type="text" id="editFullname" class="form-control">
-
-                <label for="editEmail" class="mt-2">Email:</label>
-                <input type="email" id="editEmail" class="form-control">
-
-                <label for="editPosition" class="mt-2">Chức vụ:</label>
-                <input type="text" id="editPosition" class="form-control">
-
-                <label for="editCccd" class="mt-2">CCCD:</label>
-                <input type="text" id="editCccd" class="form-control">
-
-                <label for="editBanknumber" class="mt-2">Số tài khoản ngân hàng:</label>
-                <input type="text" id="editBanknumber" class="form-control">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                  onclick="closeModal('editModal')">Đóng</button>
-                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+          <!-- View Modal -->
+          <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Tên người dùng:</strong> <span id="viewUsername"></span></p>
+                  <p><strong>Họ tên:</strong> <span id="viewFullname"></span></p>
+                  <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+                  <!-- Bỏ Chức vụ -->
+                  <p><strong>CCCD:</strong> <span id="viewCccd"></span></p>
+                  <p><strong>Số tài khoản ngân hàng:</strong> <span id="viewBanknumber"></span></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    onclick="closeModal('viewModal')">Đóng</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-              </div>
-              <div class="modal-body">
-                Bạn có chắc chắn muốn xóa danh mục này không?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-      </section>
-      <!-- Toast thông báo -->
-      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
-        <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
-          aria-atomic="true">
-          <div class="d-flex">
-            <div class="toast-body">
-              🟢 Đã lưu thay đổi thành công!
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
+          <!-- Edit Modal -->
+          <!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
       </div>
-
-      <!-- Toast thông báo xóa -->
-      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
-        <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert"
-          aria-live="assertive" aria-atomic="true">
-          <div class="d-flex">
-            <div class="toast-body">
-              🔴 Đã xóa danh mục thành công!
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
+      <div class="modal-body">
+        <label for="editUsername">Tên người dùng:</label>
+        <input type="text" id="editUsername" class="form-control" readonly>
+        <label for="editFullname" class="mt-2">Họ tên:</label>
+        <input type="text" id="editFullname" class="form-control">
+        <label for="editEmail" class="mt-2">Email:</label>
+        <input type="email" id="editEmail" class="form-control">
+        <label for="editCccd" class="mt-2">CCCD:</label>
+        <input type="text" id="editCccd" class="form-control">
+        <label for="editBanknumber" class="mt-2">Số tài khoản ngân hàng:</label>
+        <input type="text" id="editBanknumber" class="form-control">
       </div>
-
-
-
-
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
+        <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+      </div>
     </div>
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-      All rights reserved.
-      <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 1.1.0
-      </div>
-    </footer>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
   </div>
-  <!-- ./wrapper -->
+</div>
 
-  <!-- jQuery -->
-  <script src="../../plugins/jquery/jquery.min.js"></script>
-  <script>
+          <!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa người dùng này không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- Toast thông báo -->
+          <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+            <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert"
+              aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                <div class="toast-body">
+                  🟢 Đã lưu thay đổi thành công!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+            <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+              aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                <div class="toast-body">
+                  🔴 Đã xóa người dùng thành công!
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+          <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      let tableBody = document.getElementById("userTableBody");
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      tableBody.innerHTML = "";
-  
-      users.forEach((user, index) => {
-          let newRow = document.createElement("tr");
-          newRow.innerHTML = `
-              <td>${index + 1}</td>
-              <td><a>${user.username}</a></td>
-              <td>${user.fullname}</td>
-              <td>${user.email}</td>
-              <td>${user.role}</td>
-              <td class="user-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewUser('${user.username}', '${user.fullname}', '${user.email}', '${user.role}', '${user.cccd || ''}', '${user.banknumber || ''}')">
-                      <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editUser('${user.username}', '${user.fullname}', '${user.email}', '${user.role}', '${user.cccd || ''}', '${user.banknumber || ''}', ${index})">
-                      <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${index})">
-                      <i class="fas fa-trash"></i> Delete
-                  </button>
-              </td>
-          `;
-          tableBody.appendChild(newRow);
-      });
-      document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        loginUser();
+      getUsers();
     });
-  });
-  
-  function viewUser(username, fullname, email, role, cccd, banknumber) {
+    
+    function getUsers() {
+      let tableBody = document.getElementById("userTableBody");
+      let token = localStorage.getItem("accessToken");
+    
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        console.error("Token không được tìm thấy trong localStorage.");
+        return;
+      }
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+    
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
+    
+      fetch("http://172.17.160.119:8080/api/user/getAllUser", requestOptions)
+        .then(response => {
+          console.log("Response status:", response.status);
+          if (!response.ok) {
+            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Dữ liệu từ API:", data);
+          const users = Array.isArray(data.data) ? data.data : [];
+          displayUsers(users);
+        })
+        .catch(error => {
+          console.error("Lỗi khi lấy danh sách người dùng:", error);
+          alert("Không thể tải danh sách người dùng, vui lòng thử lại!");
+        });
+    }
+    
+    function displayUsers(users) {
+      let tableBody = document.getElementById("userTableBody");
+      tableBody.innerHTML = "";
+    
+      users.forEach((user, index) => {
+        let newRow = document.createElement("tr");
+        newRow.innerHTML = `
+          <td>${index + 1}</td>
+          <td><a>${user.username}</a></td>
+          <td>${user.fullname || ''}</td>
+          <td>${user.email || ''}</td>
+          <td class="user-actions text-right">
+            <button class="btn btn-primary btn-sm" onclick="viewUser('${user.username}', '${user.fullname || ''}', '${user.email || ''}', '${user.cccd || ''}', '${user.bankNumber || ''}')">
+              <i class="fas fa-folder"></i> View
+            </button>
+            <button class="btn btn-info btn-sm" onclick="editUser('${user.userId}', '${user.username}', '${user.fullname || ''}', '${user.email || ''}', '${user.cccd || ''}', '${user.bankNumber || ''}')">
+              <i class="fas fa-pencil-alt"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${user.userId}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(newRow);
+      });
+    }
+    
+    function viewUser(username, fullname, email, cccd, banknumber) {
       document.getElementById('viewUsername').textContent = username;
       document.getElementById('viewFullname').textContent = fullname;
       document.getElementById('viewEmail').textContent = email;
-      document.getElementById('viewPosition').textContent = role;
       document.getElementById('viewCccd').textContent = cccd;
       document.getElementById('viewBanknumber').textContent = banknumber;
       openModal('viewModal');
-  }
-  
-  let editIndex;
-  function editUser(username, fullname, email, role, cccd, banknumber, index) {
-      editIndex = index;
+    }
+    
+    let editUserId, editUsername;
+    function editUser(userId, username, fullname, email, cccd, banknumber) {
+      editUserId = userId;
+      editUsername = username;
+      console.log("UserId người dùng được chọn để chỉnh sửa:", editUserId);
       document.getElementById('editUsername').value = username;
       document.getElementById('editFullname').value = fullname;
       document.getElementById('editEmail').value = email;
-      document.getElementById('editPosition').value = role;
       document.getElementById('editCccd').value = cccd;
       document.getElementById('editBanknumber').value = banknumber;
       openModal('editModal');
-  }
-  
-  function saveChanges() {
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      if (editIndex !== undefined) {
-          let fullname = document.getElementById('editFullname').value.trim();
-          let email = document.getElementById('editEmail').value.trim();
-          let role = document.getElementById('editPosition').value.trim();
-          let cccd = document.getElementById('editCccd').value.trim();
-          let banknumber = document.getElementById('editBanknumber').value.trim();
-  
-          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          let cccdRegex = /^\d{12}$/;
-          let bankRegex = /^\d{8,16}$/;
-  
-          if (!fullname || !email || !role || !cccd) {
-              alert("Vui lòng nhập đầy đủ thông tin!");
-              return;
-          }
-          if (!emailRegex.test(email)) {
-              alert("Email không hợp lệ!");
-              return;
-          }
-          if (!cccdRegex.test(cccd)) {
-              alert("CCCD phải có đúng 12 số!");
-              return;
-          }
-          if (banknumber && !bankRegex.test(banknumber)) {
-              alert("Số tài khoản ngân hàng không hợp lệ!");
-              return;
-          }
-  
-          users[editIndex].fullname = fullname;
-          users[editIndex].email = email;
-          users[editIndex].role = role;
-          users[editIndex].cccd = cccd;
-          users[editIndex].banknumber = banknumber;
-          localStorage.setItem("users", JSON.stringify(users));
-          showToast('saveToast');
-          setTimeout(() => location.reload(), 1500);
+    }
+    
+    function saveChanges() {
+      let token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
       }
-  }
-  
-  function openModal(id) {
+    
+      const username = document.getElementById('editUsername').value;
+      const fullname = document.getElementById('editFullname').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      const cccd = document.getElementById('editCccd').value.trim();
+      const banknumber = document.getElementById('editBanknumber').value.trim();
+    
+      let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      let cccdRegex = /^\d{12}$/;
+      let bankRegex = /^\d{8,16}$/;
+    
+      if (!fullname || !email || !cccd) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+      }
+      if (!emailRegex.test(email)) {
+        alert("Email không hợp lệ!");
+        return;
+      }
+      if (!cccdRegex.test(cccd)) {
+        alert("CCCD phải có đúng 12 số!");
+        return;
+      }
+      if (banknumber && !bankRegex.test(banknumber)) {
+        alert("Số tài khoản ngân hàng không hợp lệ!");
+        return;
+      }
+    
+      if (!editUserId || isNaN(parseInt(editUserId))) {
+        alert("UserId người dùng không hợp lệ hoặc không tồn tại!");
+        console.error("editUserId không hợp lệ:", editUserId);
+        return;
+      }
+    
+      const userData = {
+        id: parseInt(editUserId),
+        fullname,
+        email,
+        phone: "0345678999", // Giá trị tạm
+        cccd,
+        bankNumber: banknumber || null
+      };
+    
+      console.log("Dữ liệu gửi đi:", userData);
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+    
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(userData),
+        redirect: "follow"
+      };
+    
+      fetch("http://172.17.160.119:8080/api/user/updateUser", requestOptions)
+        .then(response => {
+          console.log("Response status:", response.status);
+          if (!response.ok) {
+            return response.text().then(text => { throw new Error(`Lỗi: ${response.status} - ${text}`); });
+          }
+          return response.text();
+        })
+        .then(result => {
+          console.log("Kết quả cập nhật:", result);
+          alert("Cập nhật người dùng thành công!");
+          closeModal('editModal');
+          getUsers();
+        })
+        .catch(error => {
+          console.error("Lỗi khi cập nhật người dùng:", error.message);
+          alert("Không thể cập nhật người dùng: " + error.message);
+        });
+    }
+    
+    function openDeleteModal(userId) {
+      deleteUserId = userId; // Lưu userId
+      console.log("UserId người dùng được chọn để xóa:", deleteUserId); // Debug
+      openModal('deleteModal');
+    }
+    
+    let deleteUserId;
+    function confirmDelete() {
+      let token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+      }
+    
+      if (!deleteUserId || isNaN(parseInt(deleteUserId))) {
+        alert("UserId người dùng không hợp lệ hoặc không tồn tại!");
+        console.error("deleteUserId không hợp lệ:", deleteUserId);
+        return;
+      }
+    
+      const deleteData = {
+        id: parseInt(deleteUserId) // Chuyển thành số
+      };
+    
+      console.log("Dữ liệu xóa gửi đi:", deleteData);
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+      myHeaders.append("Content-Type", "application/json");
+    
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(deleteData),
+        redirect: "follow"
+      };
+    
+      fetch(`http://172.17.160.119:8080/api/user/deleteUser/${deleteUserId}`, requestOptions)
+        .then(response => {
+          console.log("Response status:", response.status);
+          if (!response.ok) {
+            return response.text().then(text => { throw new Error(`Lỗi: ${response.status} - ${text}`); });
+          }
+          return response.text();
+        })
+        .then(result => {
+          console.log("Kết quả xóa:", result);
+          alert("Xóa người dùng thành công!");
+          closeModal('deleteModal');
+          showToast('deleteToast');
+          getUsers();
+        })
+        .catch(error => {
+          console.error("Lỗi khi xóa người dùng:", error.message);
+          alert("Không thể xóa người dùng: " + error.message);
+        });
+    }
+    
+    function openModal(id) {
       const modal = new bootstrap.Modal(document.getElementById(id));
       modal.show();
-  }
-  
-  function closeModal(id) {
+    }
+    
+    function closeModal(id) {
       const modal = document.getElementById(id);
       const bootstrapModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
       bootstrapModal.hide();
-  }
-  
-  let deleteIndex;
-  function openDeleteModal(index) {
-      deleteIndex = index;
-      openModal('deleteModal');
-  }
-  
-  function confirmDelete() {
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      if (deleteIndex !== undefined) {
-          users.splice(deleteIndex, 1);
-          localStorage.setItem("users", JSON.stringify(users));
-          showToast('deleteToast');
-          setTimeout(() => location.reload(), 1500);
-      }
-  }
-  
-  function showToast(toastId) {
+    }
+    
+    function showToast(toastId) {
       let toastElement = document.getElementById(toastId);
       let toast = new bootstrap.Toast(toastElement);
       toast.show();
-  }
-  
-  </script>
-  <!-- jQuery UI 1.11.4 -->
-  <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
-  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-  <script>
-    $.widget.bridge('uibutton', $.ui.button)
-  </script>
-  <!-- Bootstrap 4 -->
-  <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- ChartJS -->
-  <script src="../../plugins/chart.js/Chart.min.js"></script>
-  <!-- Sparkline -->
-  <script src="../../plugins/sparklines/sparkline.js"></script>
-  <!-- JQVMap -->
-  <script src="../../plugins/jqvmap/jquery.vmap.min.js"></script>
-  <script src="../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-  <!-- jQuery Knob Chart -->
-  <script src="../../plugins/jquery-knob/jquery.knob.min.js"></script>
-  <!-- daterangepicker -->
-  <script src="../../plugins/moment/moment.min.js"></script>
-  <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
-  <!-- Tempusdominus Bootstrap 4 -->
-  <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-  <!-- Summernote -->
-  <script src="../../plugins/summernote/summernote-bs4.min.js"></script>
-  <!-- overlayScrollbars -->
-  <script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-  <!-- AdminLTE App -->
-  <script src="../../dist/js/adminlte.js"></script>
-  <!-- AdminLTE for demo purposes -->
-  <script src="../../dist/js/demo.js"></script>
-  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script src="../../dist/js/pages/dashboard.js"></script>
-  <!-- Bootstrap 5 JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    }
+   </script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+      $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="../../plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="../../plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="../../plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="../../plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../plugins/moment/moment.min.js"></script>
+    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="../../plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="../../dist/js/pages/dashboard.js"></script>
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
