@@ -81,6 +81,29 @@ code .
 http://localhost:5500
 ```
 
+5. **Cài đặt đường dẫn API**:
+
+- Mở file cấu hình (ví dụ: `config.js` hoặc `env.js` nếu có).
+- Thiết lập đường dẫn API như sau:
+
+```javascript
+const API_URL = 'http://localhost:8080/api';
+```
+
+- Đảm bảo backend đang chạy trên cổng `8080` hoặc thay đổi nếu cần thiết.
+
+- Kiểm tra kết nối bằng cách gọi thử API từ frontend:
+
+```javascript
+fetch(`${API_URL}/status`)
+  .then(response => response.json())
+  .then(data => console.log('API status:', data))
+  .catch(error => console.error('API connection error:', error));
+```
+
+- Nếu kết nối thành công, bạn sẽ thấy phản hồi từ API hiển thị trên console.
+
+
 ## 5. Ghi chú
 
 - Giao diện có thể được tùy chỉnh theo yêu cầu thực tế.
