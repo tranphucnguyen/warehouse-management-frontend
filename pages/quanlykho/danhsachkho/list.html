@@ -423,7 +423,8 @@
                   <th style="width: 20%">Tên kho</th>
                   <th style="width: 30%">Địa chỉ</th>
                   <th style="width: 20%">Liên hệ</th>
-                  <th style="width: 20%"></th>
+                  <th style="width: 10%">Trạng thái</th>
+                  <th style="width: 10%"></th>
                 </tr>
               </thead>
               <tbody id="warehouseList"></tbody>
@@ -548,149 +549,243 @@
 
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
-  <script>
-    function getWarehouses() {
-      let token = localStorage.getItem("accessToken");
-  
-      if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-          return;
+ <script>
+  // Lấy danh sách kho từ API
+function getWarehouses() {
+  let token = localStorage.getItem("accessToken");
+
+  if (!token) {
+      alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+      return;
+  }
+
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  fetch("http://172.17.152.149:8080/api/dskhohangs", {
+      method: "GET",
+      headers: myHeaders
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
       }
-  
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
-  
-      fetch("http://172.17.160.119:8080/api/dskhohangs", {
-          method: "GET",
-          headers: myHeaders
-      })
+      return response.json();
+  })
+  .then(data => {
+      console.log("Dữ liệu từ API sau khi tải lại:", data);
+      const warehouses = data.data?.listDskhohang || [];
+      displayWarehouses(warehouses);
+  })
+  .catch(error => {
+      console.error("Lỗi khi lấy danh sách kho:", error);
+      alert("Không thể tải danh sách kho, vui lòng thử lại!");
+  });
+}
+
+// Hiển thị danh sách kho (Lọc theo status: true)
+function displayWarehouses(warehouses) {
+  const warehouseList = document.getElementById("warehouseList");
+  warehouseList.innerHTML = "";
+
+  if (!Array.isArray(warehouses)) {
+      console.error("Dữ liệu không phải mảng:", warehouses);
+      warehouseList.innerHTML = "<tr><td colspan='5'>Dữ liệu không hợp lệ</td></tr>";
+      return;
+  }
+
+  // Lọc chỉ hiển thị kho có status: true
+  const activeWarehouses = warehouses.filter(warehouse => warehouse.status === true);
+
+  if (activeWarehouses.length === 0) {
+      warehouseList.innerHTML = "<tr><td colspan='5'>Không có kho hàng hoạt động nào</td></tr>";
+      return;
+  }
+
+  activeWarehouses.forEach((warehouse, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${warehouse.name || "N/A"}</td>
+          <td>${warehouse.address || "N/A"}</td>
+          <td>${warehouse.contact || "N/A"}</td>
+          <td>${warehouse.status ? "Hoạt động" : "Không hoạt động"}</td>
+          <td>
+              <button class="btn btn-primary btn-sm" onclick="editWarehouse(${warehouse.khohangId})">Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${warehouse.khohangId})">Xóa</button>
+          </td>
+      `;
+      warehouseList.appendChild(row);
+  });
+}
+
+// Mở modal chỉnh sửa và lấy dữ liệu kho
+let editingId = null;
+function editWarehouse(khohangId) {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+      alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+      return;
+  }
+
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  fetch(`http://172.17.152.149:8080/api/dskhohangs/${khohangId}`, {
+      method: "GET",
+      headers: myHeaders
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+      }
+      return response.json();
+  })
+  .then(data => {
+      const warehouse = data.data;
+      document.getElementById('editName').value = warehouse.name || '';
+      document.getElementById('editAddress').value = warehouse.address || '';
+      document.getElementById('editContact').value = warehouse.contact || '';
+      editingId = khohangId;
+      openModal('editModal');
+  })
+  .catch(error => {
+      console.error("Lỗi khi lấy thông tin kho:", error);
+      alert("Không thể tải thông tin kho, vui lòng thử lại!");
+  });
+}
+
+// Lưu thay đổi
+function saveChanges() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+      alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+      return;
+  }
+
+  const editedWarehouse = {
+      name: document.getElementById('editName').value,
+      address: document.getElementById('editAddress').value,
+      contact: document.getElementById('editContact').value
+  };
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: JSON.stringify(editedWarehouse),
+      redirect: "follow"
+  };
+
+  fetch(`http://172.17.152.149:8080/api/dskhohangs/${editingId}`, requestOptions)
       .then(response => {
           if (!response.ok) {
               throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
           }
-          return response.json();
+          return response.text();
       })
-      .then(data => {
-          console.log("Dữ liệu từ API:", data); // Debug dữ liệu
-          // Lấy mảng listDskhohang từ data.data
-          const warehouses = data.data?.listDskhohang || [];
-          displayWarehouses(warehouses);
+      .then(result => {
+          console.log("Kết quả từ server:", result);
+          closeModal('editModal');
+          showToast('saveToast');
+          getWarehouses();
       })
       .catch(error => {
-          console.error("Lỗi khi lấy danh sách kho:", error);
-          alert("Không thể tải danh sách kho, vui lòng thử lại!");
+          console.error("Lỗi khi cập nhật kho:", error);
+          alert("Không thể cập nhật kho, vui lòng thử lại!");
       });
+}
+
+// Mở modal xác nhận xóa
+let deleteId = null;
+function openDeleteModal(khohangId) {
+  deleteId = khohangId;
+  openModal('deleteModal');
+}
+
+// Xác nhận xóa
+function confirmDelete() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+      alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+      return;
   }
-  
-  function displayWarehouses(warehouses) {
-      const warehouseList = document.getElementById("warehouseList");
-      warehouseList.innerHTML = ""; // Xóa nội dung cũ
-  
-      // Kiểm tra xem warehouses có phải mảng không
-      if (!Array.isArray(warehouses)) {
-          console.error("Dữ liệu không phải mảng:", warehouses);
-          warehouseList.innerHTML = "<tr><td colspan='5'>Dữ liệu không hợp lệ</td></tr>";
-          return;
-      }
-  
-      // Nếu mảng rỗng
-      if (warehouses.length === 0) {
-          warehouseList.innerHTML = "<tr><td colspan='5'>Không có kho hàng nào</td></tr>";
-          return;
-      }
-  
-      // Duyệt qua mảng kho hàng và tạo các hàng trong bảng
-      warehouses.forEach((warehouse, index) => {
-          const row = document.createElement("tr");
-          
-          row.innerHTML = `
-              <td>${index + 1}</td>
-              <td>${warehouse.name || "N/A"}</td>
-              <td>${warehouse.address || "N/A"}</td>
-              <td>${warehouse.contact || "N/A"}</td>
-              <td>
-                  <button class="btn btn-primary btn-sm">Sửa</button>
-                  <button class="btn btn-danger btn-sm">Xóa</button>
-              </td>
-          `;
-          
-          warehouseList.appendChild(row);
-      });
-  }
-  
-  // Gọi hàm khi trang load
-  document.addEventListener("DOMContentLoaded", function() {
-      getWarehouses();
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const raw = JSON.stringify({
+      "ids": [deleteId]
   });
 
-    function viewWarehouse(name, address, contact) {
-      document.getElementById('viewName').textContent = name;
-      document.getElementById('viewAddress').textContent = address;
-      document.getElementById('viewContact').textContent = contact;
-      openModal('viewModal');
-    }
+  const requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+  };
 
-    let editingId = null;
-    function editWarehouse(id) {
-      let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-      let warehouse = warehouses.find(w => w.id === id);
-      if (warehouse) {
-        document.getElementById('editName').value = warehouse.name;
-        document.getElementById('editAddress').value = warehouse.address;
-        document.getElementById('editContact').value = warehouse.contact;
-        editingId = id;
-        openModal('editModal');
+  fetch("http://172.17.152.149:8080/api/dskhohangs", requestOptions)
+      .then(response => {
+          console.log("Mã trạng thái HTTP khi xóa:", response.status);
+          if (!response.ok) {
+              return response.text().then(text => {
+                  throw new Error(`Lỗi: ${response.status} - ${response.statusText} - ${text}`);
+              });
+          }
+          return response.json();
+      })
+      .then(result => {
+          console.log("Kết quả từ server sau khi xóa:", result);
+          if (result.status === 200 && result.message === "Khohangs deleted successfully") {
+              closeModal('deleteModal');
+              showToast('deleteToast');
+              getWarehouses(); // Tải lại danh sách để cập nhật trạng thái
+          } else {
+              throw new Error("Xóa không thành công, kiểm tra server!");
+          }
+      })
+      .catch(error => {
+          console.error("Lỗi khi xóa kho:", error);
+          alert("Không thể xóa kho: " + error.message);
+      });
+}
+
+// Hàm tiện ích
+function openModal(id) {
+  const modal = new bootstrap.Modal(document.getElementById(id));
+  modal.show();
+}
+
+function closeModal(id) {
+  const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+  if (modal) {
+      modal.hide();
+      if (id === 'deleteModal' && deleteId) {
+          const triggerButton = document.querySelector(`button[onclick="openDeleteModal(${deleteId})"]`);
+          if (triggerButton) triggerButton.focus();
+      } else if (id === 'editModal' && editingId) {
+          const triggerButton = document.querySelector(`button[onclick="editWarehouse(${editingId})"]`);
+          if (triggerButton) triggerButton.focus();
       }
-    }
+  }
+}
 
-    function saveChanges() {
-      let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-      let index = warehouses.findIndex(w => w.id === editingId);
-      if (index !== -1) {
-        warehouses[index].name = document.getElementById('editName').value;
-        warehouses[index].address = document.getElementById('editAddress').value;
-        warehouses[index].contact = document.getElementById('editContact').value;
-        localStorage.setItem("warehouses", JSON.stringify(warehouses));
-        loadWarehouses();
-        closeModal('editModal');
-        // Hiển thị toast thông báo lưu thành công
-        showToast('saveToast');
-      }
-    }
+function showToast(toastId) {
+  let toastElement = document.getElementById(toastId);
+  let toast = new bootstrap.Toast(toastElement);
+  toast.show();
+}
 
-    let deleteId = null;
-    function openDeleteModal(id) {
-      deleteId = id;
-      openModal('deleteModal');
-    }
-
-    function confirmDelete() {
-      let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
-      warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
-      localStorage.setItem("warehouses", JSON.stringify(warehouses));
-      loadWarehouses();
-      closeModal('deleteModal');
-      // Hiển thị toast thông báo xóa thành công
-      showToast('deleteToast');
-    }
-    function showToast(toastId) {
-      let toastElement = document.getElementById(toastId);
-      let toast = new bootstrap.Toast(toastElement);
-      toast.show();
-    }
-
-    function openModal(id) {
-      const modal = new bootstrap.Modal(document.getElementById(id));
-      modal.show();
-    }
-
-    function closeModal(id) {
-      const modal = bootstrap.Modal.getInstance(document.getElementById(id));
-      if (modal) modal.hide();
-    }
-
-    document.addEventListener("DOMContentLoaded", loadWarehouses);
-  </script>
+// Gọi khi trang load
+document.addEventListener("DOMContentLoaded", function() {
+  getWarehouses();
+});
+ </script>
   <!-- jQuery UI 1.11.4 -->
   <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
