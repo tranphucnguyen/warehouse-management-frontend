@@ -471,69 +471,80 @@
         </div>
       </div>
     
-     <!-- View Modal -->
+    <!-- View Modal -->
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viewModalLabel">Chi tiết sản phẩm</h5>
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="viewModalLabel">Chi tiết sản phẩm</h5>
+          </div>
+          <div class="modal-body">
+              <p><strong>Danh mục kho:</strong> <span id="viewCode"></span></p>
+              <p><strong>Tên sản phẩm:</strong> <span id="viewName"></span></p>
+              <p><strong>Giá:</strong> <span id="viewPrice"></span></p>
+              <p><strong>Mô tả:</strong> <span id="viewQuantity"></span></p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
+          </div>
       </div>
-      <div class="modal-body">
-        <p><strong>Danh mục kho:</strong> <span id="viewCode"></span></p>
-        <p><strong>Tên sản phẩm:</strong> <span id="viewName"></span></p>
-        <p><strong>Giá:</strong> <span id="viewPrice"></span></p>
-        <p><strong>Mô tả:</strong> <span id="viewQuantity"></span></p> <!-- Thay Số lượng bằng Mô tả -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
-      </div>
-    </div>
   </div>
 </div>
     
       <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa sản phẩm</h5>
-      </div>
-      <div class="modal-body">
-        <label for="editCode">Danh mục kho:</label>
-        <select id="editCode" class="form-control"></select>
-
-        <label for="editName" class="mt-2">Tên sản phẩm:</label>
-        <input type="text" id="editName" class="form-control">
-
-        <label for="editPrice" class="mt-2">Giá:</label>
-        <input type="number" id="editPrice" class="form-control">
-
-        <label for="editDescription" class="mt-2">Mô tả:</label> <!-- Thay Số lượng bằng Mô tả -->
-        <input type="text" id="editDescription" class="form-control">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
-      </div>
+      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Chỉnh sửa sản phẩm</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editCode">Danh mục kho</label>
+                        <select id="editCode" class="form-control custom-select">
+                            <option selected disabled>Đang tải...</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group mt-2">
+                        <label for="editName">Tên sản phẩm:</label>
+                        <input type="text" id="editName" class="form-control">
+                    </div>
+    
+                    <div class="form-group mt-2">
+                        <label for="editPrice">Giá:</label>
+                        <input type="number" id="editPrice" class="form-control" step="0.01">
+                    </div>
+    
+                    <div class="form-group mt-2">
+                        <label for="editDescription">Mô tả:</label>
+                        <input type="text" id="editDescription" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
       <!-- Delete Confirmation Modal -->
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa sản phẩm</h5>
+          </div>
+          <div class="modal-body">
+              <p>Bạn có chắc chắn muốn xóa sản phẩm <strong><span id="deleteProductName"></span></strong> không?</p>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('deleteModal')">Hủy</button>
+              <button type="button" class="btn btn-danger" onclick="deleteProduct()">Xóa</button>
+          </div>
       </div>
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa sản phẩm này không?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-      </div>
-    </div>
   </div>
 </div>
     
@@ -583,104 +594,315 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
 <script>
+  // Biến toàn cục để lưu danh sách sản phẩm
+  let productList = [];
+  
   // Khởi tạo bảng khi trang load
-window.addEventListener('DOMContentLoaded', () => {
-  loadProducts();
-});
-
-// Hiển thị danh sách sản phẩm từ API
-async function loadProducts() {
-  const token = localStorage.getItem('accessToken');
-  const tbody = document.querySelector('.products tbody');
-
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
+  window.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+  });
+  
+  // Hàm mở modal
+  function openModal(modalId) {
+      const modal = new bootstrap.Modal(document.getElementById(modalId));
+      modal.show();
   }
-
-  tbody.innerHTML = ''; // Xóa nội dung cũ
-
-  try {
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-
-    const response = await fetch('http://172.17.155.151:8080/api/products', {
-      method: 'GET',
-      headers: myHeaders
-    });
-
-    if (!response.ok) {
-      throw new Error('Lỗi khi gọi API: ' + response.status);
-    }
-
-    const data = await response.json();
-    console.log('Dữ liệu từ API:', data);
-
-    const products = data.data?.listProduct || [];
-
-    products.forEach((product, index) => {
-      const row = `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${product.category?.categoryName || 'N/A'}</td>
-          <td>${product.productName || 'N/A'}</td>
-          <td>${product.price || 0} VND</td>
-          <td class="product-actions text-right">
-            <button class="btn btn-primary btn-sm" onclick="viewProduct(${product.productId})">
-              <i class="fas fa-folder"></i> View
-            </button>
-            <button class="btn btn-info btn-sm" onclick="editProduct(${product.productId})">
-              <i class="fas fa-pencil-alt"></i> Edit
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${product.productId})">
-              <i class="fas fa-trash"></i> Delete
-            </button>
-          </td>
-        </tr>
-      `;
-      tbody.innerHTML += row;
-    });
-  } catch (error) {
-    console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-    tbody.innerHTML = '<tr><td colspan="5">Không thể tải danh sách sản phẩm.</td></tr>';
+  
+  // Hàm đóng modal
+  function closeModal(modalId) {
+      const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+      modal.hide();
   }
-}
-
-// Xem chi tiết sản phẩm
-async function viewProduct(id) {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
+  
+  // Tải danh mục cho select trong modal edit
+  async function loadCategoriesForEdit(selectElement) {
+      const token = localStorage.getItem("accessToken");
+      
+      if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+      }
+  
+      try {
+          const myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${token}`);
+  
+          const response = await fetch("http://172.17.152.149:8080/api/categories", {
+              method: "GET",
+              headers: myHeaders
+          });
+  
+          if (!response.ok) {
+              throw new Error(`API error: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          if (data.data && data.data.listCategory) {
+              selectElement.innerHTML = '<option selected disabled>Chọn danh mục</option>';
+              data.data.listCategory.forEach(category => {
+                  const option = document.createElement('option');
+                  option.value = category.categoryId;
+                  option.textContent = category.categoryName;
+                  selectElement.appendChild(option);
+              });
+          }
+      } catch (error) {
+          console.error("Lỗi khi lấy danh mục:", error);
+          selectElement.innerHTML = '<option selected disabled>Lỗi khi tải danh mục</option>';
+      }
   }
-
-  try {
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-
-    const response = await fetch(`http://172.17.155.151:8080/api/products/${id}`, {
-      method: 'GET',
-      headers: myHeaders
-    });
-
-    const product = await response.json();
-    if (product) {
-      document.getElementById('viewCode').textContent = product.category?.categoryName || 'N/A';
-      document.getElementById('viewName').textContent = product.productName || 'N/A';
-      document.getElementById('viewPrice').textContent = `${product.price || 0} VND`;
-      document.getElementById('viewQuantity').textContent = product.description || 'N/A'; // Hiển thị mô tả
-      openModal('viewModal');
-    }
-  } catch (error) {
-    console.error('Lỗi khi xem sản phẩm:', error);
-    alert('Không thể tải thông tin sản phẩm.');
+  
+  // Hàm chỉnh sửa sản phẩm
+  async function editProduct(id) {
+      console.log('Editing product with ID:', id);
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+      }
+  
+      try {
+          const myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${token}`);
+  
+          const response = await fetch(`http://172.17.152.149:8080/api/products/${id}`, {
+              method: "GET",
+              headers: myHeaders
+          });
+  
+          if (!response.ok) {
+              throw new Error(`API error: ${response.status}`);
+          }
+  
+          const product = await response.json();
+          console.log('Product data:', product);
+  
+          if (product) {
+              const editCode = document.getElementById('editCode');
+              const editName = document.getElementById('editName');
+              const editPrice = document.getElementById('editPrice');
+              const editDescription = document.getElementById('editDescription');
+  
+              await loadCategoriesForEdit(editCode);
+              
+              editName.value = product.productName || '';
+              editPrice.value = product.price || 0;
+              editDescription.value = product.description || '';
+              
+              if (product.category?.categoryId) {
+                  editCode.value = product.category.categoryId;
+              }
+  
+              document.getElementById('editModal').dataset.productId = id;
+              openModal('editModal');
+          } else {
+              throw new Error('Dữ liệu sản phẩm rỗng');
+          }
+      } catch (error) {
+          console.error('Lỗi khi tải thông tin sản phẩm:', error);
+          alert('Không thể tải thông tin sản phẩm.');
+      }
   }
-}
-
-
-</script>
+  
+  // Hàm lưu thay đổi
+  async function saveChanges() {
+      const token = localStorage.getItem("accessToken");
+      const productId = document.getElementById('editModal').dataset.productId;
+  
+      if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+      }
+  
+      if (!productId) {
+          alert("Không tìm thấy ID sản phẩm để cập nhật.");
+          return;
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+  
+      const raw = JSON.stringify({
+          "categoryId": parseInt(document.getElementById('editCode').value),
+          "productName": document.getElementById('editName').value,
+          "description": document.getElementById('editDescription').value,
+          "price": parseFloat(document.getElementById('editPrice').value)
+      });
+  
+      const requestOptions = {
+          method: "PUT",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+      };
+  
+      try {
+          const response = await fetch(`http://172.17.152.149:8080/api/products/${productId}`, requestOptions);
+          if (!response.ok) {
+              throw new Error(`API error: ${response.status}`);
+          }
+  
+          const result = await response.text();
+          console.log('Update result:', result);
+          alert('Cập nhật sản phẩm thành công!');
+          closeModal('editModal');
+          loadProducts();
+      } catch (error) {
+          console.error('Lỗi khi cập nhật sản phẩm:', error);
+          alert('Có lỗi xảy ra khi cập nhật sản phẩm.');
+      }
+  }
+  
+  // Hiển thị danh sách sản phẩm từ API (đã lọc theo status)
+  async function loadProducts() {
+      const token = localStorage.getItem('accessToken');
+      const tbody = document.querySelector('.products tbody');
+  
+      if (!token) {
+          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          return;
+      }
+  
+      tbody.innerHTML = ''; // Xóa nội dung cũ
+  
+      try {
+          const myHeaders = new Headers();
+          myHeaders.append('Authorization', `Bearer ${token}`);
+  
+          const response = await fetch('http://172.17.152.149:8080/api/products', {
+              method: 'GET',
+              headers: myHeaders
+          });
+  
+          if (!response.ok) {
+              throw new Error('Lỗi khi gọi API: ' + response.status);
+          }
+  
+          const data = await response.json();
+          console.log('Dữ liệu từ API:', data);
+  
+          // Lưu toàn bộ danh sách vào productList
+          productList = data.data?.listProduct || [];
+  
+          // Lọc chỉ hiển thị sản phẩm có status = true
+          const activeProducts = productList.filter(product => product.status === true);
+  
+          activeProducts.forEach((product, index) => {
+              const row = `
+                  <tr>
+                      <td>${index + 1}</td>
+                      <td>${product.category?.categoryName || 'N/A'}</td>
+                      <td>${product.productName || 'N/A'}</td>
+                      <td>${product.price || 0} VND</td>
+                      <td class="product-actions text-right">
+                          <button class="btn btn-primary btn-sm" onclick="viewProduct(${product.productId})">
+                              <i class="fas fa-folder"></i> View
+                          </button>
+                          <button class="btn btn-info btn-sm" onclick="editProduct(${product.productId})">
+                              <i class="fas fa-pencil-alt"></i> Edit
+                          </button>
+                          <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${product.productId})">
+                              <i class="fas fa-trash"></i> Delete
+                          </button>
+                      </td>
+                  </tr>
+              `;
+              tbody.innerHTML += row;
+          });
+  
+          if (activeProducts.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="5">Không có sản phẩm nào để hiển thị.</td></tr>';
+          }
+      } catch (error) {
+          console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+          tbody.innerHTML = '<tr><td colspan="5">Không thể tải danh sách sản phẩm.</td></tr>';
+      }
+  }
+  
+  // Hàm xem chi tiết sản phẩm
+  function viewProduct(id) {
+      console.log('Viewing product with ID:', id);
+      const product = productList.find(p => p.productId === id);
+  
+      if (product) {
+          document.getElementById('viewCode').textContent = product.category?.categoryName || 'N/A';
+          document.getElementById('viewName').textContent = product.productName || 'N/A';
+          document.getElementById('viewPrice').textContent = `${product.price || 0} VND`;
+          document.getElementById('viewQuantity').textContent = product.description || 'N/A';
+          openModal('viewModal');
+      } else {
+          alert('Không tìm thấy sản phẩm với ID: ' + id);
+      }
+  }
+  
+  // Hàm mở modal xác nhận xóa
+  function openDeleteModal(id) {
+      const product = productList.find(p => p.productId === id);
+      const productName = product ? product.productName : 'N/A';
+      
+      const deleteModal = document.getElementById('deleteModal');
+      const deleteProductNameElement = document.getElementById('deleteProductName');
+  
+      if (!deleteModal || !deleteProductNameElement) {
+          console.error('Không tìm thấy deleteModal hoặc deleteProductName trong DOM');
+          alert('Có lỗi trong giao diện, vui lòng kiểm tra lại.');
+          return;
+      }
+  
+      deleteModal.dataset.productId = id;
+      deleteProductNameElement.textContent = productName;
+      openModal('deleteModal');
+  }
+  
+  // Hàm xóa sản phẩm
+  async function deleteProduct() {
+      const token = localStorage.getItem('accessToken');
+      const productId = parseInt(document.getElementById('deleteModal').dataset.productId);
+  
+      if (!token) {
+          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          return;
+      }
+  
+      if (!productId) {
+          alert('Không tìm thấy ID sản phẩm để xóa.');
+          return;
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+  
+      const raw = JSON.stringify({
+          "ids": [productId]
+      });
+  
+      const requestOptions = {
+          method: "DELETE",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+      };
+  
+      try {
+          const response = await fetch("http://172.17.152.149:8080/api/products", requestOptions);
+          if (!response.ok) {
+              throw new Error(`API error: ${response.status}`);
+          }
+  
+          const result = await response.text();
+          console.log('Delete result:', result);
+          alert('Xóa sản phẩm thành công!');
+          closeModal('deleteModal');
+          loadProducts(); // Tải lại danh sách sản phẩm
+      } catch (error) {
+          console.error('Lỗi khi xóa sản phẩm:', error);
+          alert('Có lỗi xảy ra khi xóa sản phẩm.');
+      }
+  }
+  </script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->

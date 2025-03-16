@@ -727,7 +727,7 @@
         redirect: "follow"
       };
     
-      fetch("http://172.17.160.119:8080/api/user/updateUser", requestOptions)
+      fetch("http://172.17.152.149:8080/api/user/updateUser", requestOptions)
         .then(response => {
           console.log("Response status:", response.status);
           if (!response.ok) {
@@ -784,7 +784,7 @@
         redirect: "follow"
       };
     
-      fetch(`http://172.17.160.119:8080/api/user/deleteUser/${deleteUserId}`, requestOptions)
+      fetch(`http://172.17.152.149:8080/api/user/deleteUser/${deleteUserId}`, requestOptions)
         .then(response => {
           console.log("Response status:", response.status);
           if (!response.ok) {

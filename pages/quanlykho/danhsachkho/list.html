@@ -468,7 +468,8 @@
                   <th style="width: 20%">Tên kho</th>
                   <th style="width: 30%">Địa chỉ</th>
                   <th style="width: 20%">Liên hệ</th>
-                  <th style="width: 20%"></th>
+                  <th style="width: 10%">Trạng thái</th>
+                  <th style="width: 10%"></th>
                 </tr>
               </thead>
               <tbody id="warehouseList"></tbody>
@@ -610,81 +611,60 @@
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
   <script>
-    // Hàm lấy token từ localStorage
-    function getToken() {
-        return localStorage.getItem("accessToken");
-    }
-
-    // Hàm gọi API lấy danh sách kho
     function getWarehouses() {
       let token = localStorage.getItem("accessToken");
-
-        if (!token) {
-            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-            return;
-        }
-
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
+  
+      if (!token) {
+          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          return;
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+  
       fetch("http://172.17.160.119:8080/api/dskhohangs", {
           method: "GET",
-            headers: myHeaders
+          headers: myHeaders
       })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+      })
+      .then(data => {
           console.log("Dữ liệu từ API:", data); // Debug dữ liệu
-                // Lấy mảng listDskhohang từ data.data
-                const warehouses = data.data?.listDskhohang || [];
-                displayWarehouses(warehouses);
-            })
-            .catch(error => {
-                console.error("Lỗi khi lấy danh sách kho:", error);
-                alert("Không thể tải danh sách kho, vui lòng thử lại!");
-            });
-    }
-
-    // Hàm hiển thị danh sách kho (ví dụ đơn giản)
-    function displayWarehouses(warehouses) {
-        const container = document.getElementById("warehouseContainer");
-        container.innerHTML = ""; // Xóa nội dung cũ
-
-        warehouses.forEach(warehouse => {
-            const item = document.createElement("div");
-            item.textContent = `Kho: ${warehouse.name} - Địa chỉ: ${warehouse.address}`;
-            container.appendChild(item);
-        });
-    }
-
-    // Gọi hàm để lấy dữ liệu khi trang tải xong
-    document.addEventListener("DOMContentLoaded", getWarehouses);
-
+          // Lấy mảng listDskhohang từ data.data
+          const warehouses = data.data?.listDskhohang || [];
+          displayWarehouses(warehouses);
+      })
+      .catch(error => {
+          console.error("Lỗi khi lấy danh sách kho:", error);
+          alert("Không thể tải danh sách kho, vui lòng thử lại!");
+      });
+  }
+  
   function displayWarehouses(warehouses) {
       const warehouseList = document.getElementById("warehouseList");
       warehouseList.innerHTML = ""; // Xóa nội dung cũ
- 
+  
       // Kiểm tra xem warehouses có phải mảng không
       if (!Array.isArray(warehouses)) {
           console.error("Dữ liệu không phải mảng:", warehouses);
           warehouseList.innerHTML = "<tr><td colspan='5'>Dữ liệu không hợp lệ</td></tr>";
           return;
       }
- 
+  
       // Nếu mảng rỗng
       if (warehouses.length === 0) {
           warehouseList.innerHTML = "<tr><td colspan='5'>Không có kho hàng nào</td></tr>";
           return;
       }
- 
+  
       // Duyệt qua mảng kho hàng và tạo các hàng trong bảng
       warehouses.forEach((warehouse, index) => {
           const row = document.createElement("tr");
-         
+          
           row.innerHTML = `
               <td>${index + 1}</td>
               <td>${warehouse.name || "N/A"}</td>
@@ -695,34 +675,11 @@
                   <button class="btn btn-danger btn-sm">Xóa</button>
               </td>
           `;
-         
+          
           warehouseList.appendChild(row);
       });
   }
-
-
-    // Hàm Xem chi tiết kho
-  // function viewWarehouse(warehouse) {
-  //     document.getElementById("viewName").textContent = warehouse.name || "N/A";
-  //     document.getElementById("viewAddress").textContent = warehouse.address || "N/A";
-  //     document.getElementById("viewContact").textContent = warehouse.contact || "N/A";
-
-  //     const productList = document.getElementById("viewDanhSachSanPham");
-  //   if (productList) {
-  //       productList.innerHTML = warehouse.products ? warehouse.products.map(product => `
-  //           <tr>
-  //               <td>${product.name}</td>
-  //               <td>${product.quantity}</td>
-  //               <td>${product.price}</td>
-  //           </tr>
-  //       `).join("") : "<tr><td colspan='3'>Không có sản phẩm</td></tr>";
-
-  //       const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
-  //       viewModal.show();
-  //   }
-  // }
-
- 
+  
   // Gọi hàm khi trang load
   document.addEventListener("DOMContentLoaded", function() {
       getWarehouses();
@@ -745,7 +702,7 @@
         document.getElementById('editContact').value = warehouse.contact;
         editingId = id;
         openModal('editModal');
-    }
+      }
     }
 
     function saveChanges() {
@@ -763,13 +720,13 @@
       }
     }
 
-    let deleteId = null;
-    function openDeleteModal(id) {
-      deleteId = id;
-      openModal('deleteModal');
-    }
+// Mở modal xác nhận xóa
+let deleteId = null;
+function openDeleteModal(khohangId) {
+  deleteId = khohangId;
+  openModal('deleteModal');
+}
 
-    // Xác nhận xóa
     function confirmDelete() {
       let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
       warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
@@ -790,13 +747,31 @@
       modal.show();
     }
 
-    function closeModal(id) {
-      const modal = bootstrap.Modal.getInstance(document.getElementById(id));
-      if (modal) modal.hide();
-    }
+function closeModal(id) {
+  const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+  if (modal) {
+      modal.hide();
+      if (id === 'deleteModal' && deleteId) {
+          const triggerButton = document.querySelector(`button[onclick="openDeleteModal(${deleteId})"]`);
+          if (triggerButton) triggerButton.focus();
+      } else if (id === 'editModal' && editingId) {
+          const triggerButton = document.querySelector(`button[onclick="editWarehouse(${editingId})"]`);
+          if (triggerButton) triggerButton.focus();
+      }
+  }
+}
 
-    document.addEventListener("DOMContentLoaded", loadWarehouses);
-  </script>
+function showToast(toastId) {
+  let toastElement = document.getElementById(toastId);
+  let toast = new bootstrap.Toast(toastElement);
+  toast.show();
+}
+
+// Gọi khi trang load
+document.addEventListener("DOMContentLoaded", function() {
+  getWarehouses();
+});
+ </script>
   <!-- jQuery UI 1.11.4 -->
   <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

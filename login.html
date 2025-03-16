@@ -110,7 +110,6 @@
         // Gọi API đăng nhập
         const response = await fetch("http://172.16.144.147:8080/api/user/login", requestOptions);
 
-
         // Kiểm tra nếu phản hồi không thành công
         if (!response.ok) {
             throw new Error("Vui lòng kiểm tra lại thông tin đăng nhập!");
