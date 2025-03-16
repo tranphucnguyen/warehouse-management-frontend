@@ -226,9 +226,9 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-
+              
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-warehouse"></i>
                     <p>
                       Danh mục kho
@@ -236,7 +236,7 @@
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-
+                    
                     <li class="nav-item">
                       <a href="../quanlykho/danhmuckho/create.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -249,11 +249,11 @@
                         <p>Danh sách</p>
                       </a>
                     </li>
-
+                    
                   </ul>
                 </li>
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-warehouse"></i>
                     <p>
                       Danh sách kho
@@ -261,7 +261,7 @@
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-
+                    
                     <li class="nav-item">
                       <a href="../quanlykho/danhsachkho/create.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -274,7 +274,7 @@
                         <p>Danh sách</p>
                       </a>
                     </li>
-
+                    
                   </ul>
                 </li>
                 <li class="nav-item">
@@ -283,7 +283,7 @@
                     <p>Cập nhật số lượng tồn kho</p>
                   </a>
                 </li>
-
+                
               </ul>
             </li>
             <li class="nav-item menu-open">
@@ -336,22 +336,56 @@
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-ticket-alt"></i>
                 <p>
-                  Quản lý xuất/nhập phiếu
+                  Quản lý phiếu
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="../quanlyphieu/create.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tạo phiếu</p>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu nhập
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
                   </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="../quanlyphieu/phieunhap/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="../quanlyphieu/phieunhap/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
-                <li class="nav-item">
-                  <a href="../quanlyphieu/list.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Danh sách phiếu</p>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu xuất
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
                   </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="../quanlyphieu/phieuxuat/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="../quanlyphieu/phieuxuat/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -563,7 +597,7 @@
         redirect: "follow"
       };
     
-      fetch("http://172.17.160.119:8080/api/user/getAllUser", requestOptions)
+      fetch("http://172.16.144.147:8080/api/user/getAllUser", requestOptions)
         .then(response => {
           console.log("Response status:", response.status);
           if (!response.ok) {

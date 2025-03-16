@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
+
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
@@ -32,16 +34,20 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
 </head>
+
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
+
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
       <img class="animation__shake" src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTELogo"
         height="60" width="60">
     </div>
+
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -57,6 +63,7 @@
           <a href="#" class="nav-link">Contact</a>
         </li>
       </ul>
+
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
@@ -81,6 +88,7 @@
             </form>
           </div>
         </li>
+
 
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
@@ -181,15 +189,15 @@
     </nav>
     <!-- /.navbar -->
 
+
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
-        <img src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTE Logo"
-          class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">EZ Stock</span>
       </a>
-
+  
       <!-- Sidebar -->
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
@@ -201,7 +209,7 @@
             <a href="#" class="d-block">Alexander Pierce</a>
           </div>
         </div>
-
+  
         <!-- SidebarSearch Form -->
         <div class="form-inline">
           <div class="input-group" data-widget="sidebar-search">
@@ -213,7 +221,7 @@
             </div>
           </div>
         </div>
-
+  
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -226,9 +234,9 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-
+              
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-warehouse"></i>
                     <p>
                       Danh mục kho
@@ -236,7 +244,7 @@
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-
+                    
                     <li class="nav-item">
                       <a href="../../quanlykho/danhmuckho/create.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -249,11 +257,11 @@
                         <p>Danh sách</p>
                       </a>
                     </li>
-
+                    
                   </ul>
                 </li>
                 <li class="nav-item menu-open">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link active">
                     <i class="nav-icon fas fa-warehouse"></i>
                     <p>
                       Danh sách kho
@@ -261,7 +269,7 @@
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
-
+                    
                     <li class="nav-item">
                       <a href="../../quanlykho/danhsachkho/create.html" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -274,7 +282,7 @@
                         <p>Danh sách</p>
                       </a>
                     </li>
-
+                    
                   </ul>
                 </li>
                 <li class="nav-item">
@@ -283,7 +291,7 @@
                     <p>Cập nhật số lượng tồn kho</p>
                   </a>
                 </li>
-
+                
               </ul>
             </li>
             <li class="nav-item menu-open">
@@ -336,28 +344,62 @@
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-ticket-alt"></i>
                 <p>
-                  Quản lý xuất/nhập phiếu
+                  Quản lý phiếu
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="../../quanlyphieu/create.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tạo phiếu</p>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu nhập
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
                   </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="./pages/quanlyphieu/phieunhap/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./pages/quanlyphieu/phieunhap/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
-                <li class="nav-item">
-                  <a href="../../quanlyphieu/list.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Danh sách phiếu</p>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu xuất
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
                   </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="./pages/quanlyphieu/phieuxuat/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./pages/quanlyphieu/phieuxuat/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
-
+            
             <li class="nav-item menu-open">
-
+              
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="../../lichsugiaohang/lichsugiaohang.html" class="nav-link">
@@ -366,12 +408,12 @@
                   </a>
                 </li>
                 <!-- <li class="nav-item">
-                <a href="./thong_tin_don_hang.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thông tin đơn hàng</p>
-                </a>
-              </li> -->
-
+                  <a href="./thong_tin_don_hang.html" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Thông tin đơn hàng</p>
+                  </a>
+                </li> -->
+                
               </ul>
             </li>
           </ul>
@@ -380,6 +422,7 @@
       </div>
       <!-- /.sidebar -->
     </aside>
+
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -400,6 +443,8 @@
           </div><!-- /.row -->
         </div><!-- /.container-fluid -->
       </div>
+
+
 
 
       <section class="content">
@@ -428,9 +473,11 @@
               </thead>
               <tbody id="warehouseList"></tbody>
 
+
             </table>
           </div>
         </div>
+
 
         <!-- View Modal -->
         <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
@@ -452,6 +499,7 @@
           </div>
         </div>
 
+
         <!-- Edit Modal -->
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
@@ -463,8 +511,10 @@
                 <label for="editName">Tên kho:</label>
                 <input type="text" id="editName" class="form-control">
 
+
                 <label for="editAddress" class="mt-2">Địa chỉ:</label>
                 <input id="editAddress" class="form-control">
+
 
                 <label for="editContact" class="mt-2">Liên hệ:</label>
                 <input type="text" id="editContact" class="form-control">
@@ -477,6 +527,7 @@
             </div>
           </div>
         </div>
+
 
         <!-- Delete Confirmation Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -496,6 +547,7 @@
           </div>
         </div>
 
+
       </section>
       <!-- Toast thông báo -->
       <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -509,6 +561,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Toast thông báo xóa -->
       <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
@@ -528,6 +581,12 @@
 
 
 
+
+
+
+
+
+
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
@@ -538,6 +597,7 @@
       </div>
     </footer>
 
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
       <!-- Control sidebar content goes here -->
@@ -546,63 +606,85 @@
   </div>
   <!-- ./wrapper -->
 
+
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
   <script>
+    // Hàm lấy token từ localStorage
+    function getToken() {
+        return localStorage.getItem("accessToken");
+    }
+
+    // Hàm gọi API lấy danh sách kho
     function getWarehouses() {
       let token = localStorage.getItem("accessToken");
-  
-      if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-          return;
-      }
-  
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
-  
+
+        if (!token) {
+            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+            return;
+        }
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
       fetch("http://172.17.160.119:8080/api/dskhohangs", {
           method: "GET",
-          headers: myHeaders
+            headers: myHeaders
       })
-      .then(response => {
-          if (!response.ok) {
-              throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-          }
-          return response.json();
-      })
-      .then(data => {
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
           console.log("Dữ liệu từ API:", data); // Debug dữ liệu
-          // Lấy mảng listDskhohang từ data.data
-          const warehouses = data.data?.listDskhohang || [];
-          displayWarehouses(warehouses);
-      })
-      .catch(error => {
-          console.error("Lỗi khi lấy danh sách kho:", error);
-          alert("Không thể tải danh sách kho, vui lòng thử lại!");
-      });
-  }
-  
+                // Lấy mảng listDskhohang từ data.data
+                const warehouses = data.data?.listDskhohang || [];
+                displayWarehouses(warehouses);
+            })
+            .catch(error => {
+                console.error("Lỗi khi lấy danh sách kho:", error);
+                alert("Không thể tải danh sách kho, vui lòng thử lại!");
+            });
+    }
+
+    // Hàm hiển thị danh sách kho (ví dụ đơn giản)
+    function displayWarehouses(warehouses) {
+        const container = document.getElementById("warehouseContainer");
+        container.innerHTML = ""; // Xóa nội dung cũ
+
+        warehouses.forEach(warehouse => {
+            const item = document.createElement("div");
+            item.textContent = `Kho: ${warehouse.name} - Địa chỉ: ${warehouse.address}`;
+            container.appendChild(item);
+        });
+    }
+
+    // Gọi hàm để lấy dữ liệu khi trang tải xong
+    document.addEventListener("DOMContentLoaded", getWarehouses);
+
   function displayWarehouses(warehouses) {
       const warehouseList = document.getElementById("warehouseList");
       warehouseList.innerHTML = ""; // Xóa nội dung cũ
-  
+ 
       // Kiểm tra xem warehouses có phải mảng không
       if (!Array.isArray(warehouses)) {
           console.error("Dữ liệu không phải mảng:", warehouses);
           warehouseList.innerHTML = "<tr><td colspan='5'>Dữ liệu không hợp lệ</td></tr>";
           return;
       }
-  
+ 
       // Nếu mảng rỗng
       if (warehouses.length === 0) {
           warehouseList.innerHTML = "<tr><td colspan='5'>Không có kho hàng nào</td></tr>";
           return;
       }
-  
+ 
       // Duyệt qua mảng kho hàng và tạo các hàng trong bảng
       warehouses.forEach((warehouse, index) => {
           const row = document.createElement("tr");
-          
+         
           row.innerHTML = `
               <td>${index + 1}</td>
               <td>${warehouse.name || "N/A"}</td>
@@ -613,11 +695,34 @@
                   <button class="btn btn-danger btn-sm">Xóa</button>
               </td>
           `;
-          
+         
           warehouseList.appendChild(row);
       });
   }
-  
+
+
+    // Hàm Xem chi tiết kho
+  // function viewWarehouse(warehouse) {
+  //     document.getElementById("viewName").textContent = warehouse.name || "N/A";
+  //     document.getElementById("viewAddress").textContent = warehouse.address || "N/A";
+  //     document.getElementById("viewContact").textContent = warehouse.contact || "N/A";
+
+  //     const productList = document.getElementById("viewDanhSachSanPham");
+  //   if (productList) {
+  //       productList.innerHTML = warehouse.products ? warehouse.products.map(product => `
+  //           <tr>
+  //               <td>${product.name}</td>
+  //               <td>${product.quantity}</td>
+  //               <td>${product.price}</td>
+  //           </tr>
+  //       `).join("") : "<tr><td colspan='3'>Không có sản phẩm</td></tr>";
+
+  //       const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
+  //       viewModal.show();
+  //   }
+  // }
+
+ 
   // Gọi hàm khi trang load
   document.addEventListener("DOMContentLoaded", function() {
       getWarehouses();
@@ -640,7 +745,7 @@
         document.getElementById('editContact').value = warehouse.contact;
         editingId = id;
         openModal('editModal');
-      }
+    }
     }
 
     function saveChanges() {
@@ -664,6 +769,7 @@
       openModal('deleteModal');
     }
 
+    // Xác nhận xóa
     function confirmDelete() {
       let warehouses = JSON.parse(localStorage.getItem("warehouses")) || [];
       warehouses = warehouses.filter(warehouse => warehouse.id !== deleteId);
@@ -726,5 +832,6 @@
   <!-- Bootstrap 5 JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 
 </html>

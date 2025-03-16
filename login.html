@@ -77,38 +77,25 @@
   document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-<<<<<<< HEAD
 
     let username = document.getElementById("loginUsername").value.trim();
     let password = document.getElementById("loginPassword").value.trim();
 
 
-=======
-    let username = document.getElementById("loginUsername").value.trim();
-    let password = document.getElementById("loginPassword").value.trim();
-
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
     if (!username || !password) {
         showModal("errorModal", "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.");
         return;
     }
 
-<<<<<<< HEAD
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
 
-=======
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
     const raw = JSON.stringify({
         username: username,
         password: password,
     });
-<<<<<<< HEAD
 
 
     const requestOptions = {
@@ -121,7 +108,7 @@
 
     try {
         // Gọi API đăng nhập
-        const response = await fetch("http://172.17.155.151:8080/api/user/login", requestOptions);
+        const response = await fetch("http://172.16.144.147:8080/api/user/login", requestOptions);
 
 
         // Kiểm tra nếu phản hồi không thành công
@@ -146,38 +133,6 @@
             showModal("successModal", "Đăng nhập thành công!");
 
 
-=======
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-    };
-
-    try {
-        // Gọi API đăng nhập
-        const response = await fetch("http://172.17.160.119:8080/api/user/login", requestOptions);
-
-        // Kiểm tra nếu phản hồi không thành công
-        if (!response.ok) {
-            throw new Error("Vui lòng kiểm tra lại thông tin đăng nhập!");
-        }
-
-        // Lấy kết quả dưới dạng JSON
-        const result = await response.json();
-        console.log("Kết quả API trả về:", result);
-
-        // Kiểm tra nếu API trả về `data.token`
-        if (result.data && result.data.token) {
-            localStorage.setItem("accessToken", result.data.token);
-            localStorage.setItem("userId", result.data.userId);
-            localStorage.setItem("role", result.data.role);
-            console.log("Token đã lưu:", localStorage.getItem("accessToken"));
-
-            showModal("successModal", "Đăng nhập thành công!");
-
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
             // Chuyển hướng sau 2 giây
             setTimeout(() => {
                 window.location.href = "dashboard.html";
@@ -191,29 +146,17 @@
     }
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
 // Hàm hiển thị modal thông báo
 function showModal(modalId, message) {
     const modal = document.getElementById(modalId);
     modal.textContent = message;
     modal.style.display = "block";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
     setTimeout(() => {
         modal.style.display = "none";
     }, 3000); // Ẩn sau 3 giây
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1f49e38a5ef5345ddbe9774eeb18a8d48b386980
   </script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

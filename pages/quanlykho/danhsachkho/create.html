@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
 
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -31,10 +32,12 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
+
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTELogo" height="60" width="60">
   </div>
+
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -50,6 +53,7 @@
         <a href="#" class="nav-link">Contact</a>
       </li>
     </ul>
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -74,6 +78,7 @@
           </form>
         </div>
       </li>
+
 
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -174,6 +179,7 @@
   </nav>
   <!-- /.navbar -->
 
+
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -220,7 +226,7 @@
             <ul class="nav nav-treeview">
               
               <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link active">
                   <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh mục kho
@@ -245,7 +251,7 @@
                 </ul>
               </li>
               <li class="nav-item menu-open">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link active">
                   <i class="nav-icon fas fa-warehouse"></i>
                   <p>
                     Danh sách kho
@@ -328,22 +334,56 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
-                Quản lý xuất/nhập phiếu
+                Quản lý phiếu
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../quanlyphieu/create.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tạo phiếu</p>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-ticket-alt"></i>
+                  <p>
+                    Quản lý phiếu nhập
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./pages/quanlyphieu/phieunhap/create.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tạo phiếu</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./pages/quanlyphieu/phieunhap/list.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Danh sách phiếu</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item">
-                <a href="../../quanlyphieu/list.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách phiếu</p>
+              <li class="nav-item menu-open">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon fas fa-ticket-alt"></i>
+                  <p>
+                    Quản lý phiếu xuất
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="./pages/quanlyphieu/phieuxuat/create.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tạo phiếu</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="./pages/quanlyphieu/phieuxuat/list.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Danh sách phiếu</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -373,6 +413,7 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -395,12 +436,16 @@
 
 
 
+
+
+
     <section class="content">
       <div class="row">
         <div class="col-md-12">
           <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Tạo Kho</h3>
+
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -432,13 +477,17 @@
           <a href="#" class="btn btn-secondary">Cancel</a>
           <input type="submit" value="Tạo kho" class="btn btn-success float-right" onclick="addWarehouse()">
 
+
         </div>
       </div>
     </section>
 
 
 
-    
+
+
+
+   
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -449,6 +498,7 @@
       <b>Version</b> 1.1.0
     </div>
   </footer>
+
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -463,10 +513,12 @@
     let address = document.getElementById("inputDescWarehouse").value.trim();
     let contact = document.getElementById("inputContactWare").value.trim();
 
+
     if (!name || !address || !contact) {
         alert("Vui lòng nhập đầy đủ thông tin!");
         return;
     }
+
 
     // Lấy token từ LocalStorage
     let token = localStorage.getItem("accessToken");
@@ -475,9 +527,11 @@
         return;
     }
 
+
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
+
 
     let raw = JSON.stringify({
         name: name,
@@ -485,12 +539,14 @@
         contact: contact
     });
 
+
     let requestOptions = {
         method: "POST",
         headers: myHeaders,
         body: raw,
         redirect: "follow"
     };
+
 
     fetch("http://172.17.160.119:8080/api/dskhohangs", requestOptions)
         .then(response => {
@@ -503,6 +559,7 @@
             alert("Thêm kho thành công!");
             console.log("Kết quả API:", result);
 
+
             // Xóa dữ liệu form
             document.getElementById("inputNameWarehouse").value = "";
             document.getElementById("inputDescWarehouse").value = "";
@@ -513,6 +570,8 @@
             alert("Có lỗi xảy ra khi thêm kho, vui lòng thử lại!");
         });
 }
+
+
 
 
 </script>
