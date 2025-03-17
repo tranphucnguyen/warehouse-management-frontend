@@ -447,16 +447,36 @@
           </div>
         </div>
         <div class="card-body p-0">
+          <!-- Bộ lọc -->
+          <div class="row mb-3 p-3">
+            <div class="col-md-4">
+              <label for="filterDate">Ngày nhập:</label>
+              <input type="date" id="filterDate" class="form-control">
+            </div>
+            <div class="col-md-4">
+              <label for="filterNguoiNhap">Người nhập:</label>
+              <select id="filterNguoiNhap" class="form-control">
+                <option value="">Chọn người nhập</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="filterKho">Kho hàng:</label>
+              <select id="filterKho" class="form-control">
+                <option value="">Chọn kho</option>
+              </select>
+            </div>
+          </div>
+          <hr/>
           <table class="table table-striped phieu">
             <thead>
               <tr>
-                <th style="width: 5%">#</th>
-                <th style="width: 13%">Mã phiếu nhập</th>
-                <th style="width: 13%">Nhà cung cấp</th>
-                <th style="width: 13%">Kho nhập</th>
-                <th style="width: 13%">Người nhập</th>
-                <th style="width: 13%">Ngày nhập</th>
-                <th style="width: 13%">Tổng tiền</th>
+                <th class="text-center" style="width: 5%">#</th>
+                <!-- <th style="width: 13%">Mã sản phẩm</th> -->
+                <th class="text-center" style="width: 16%">Tên sản phẩm</th>
+                <th class="text-center" style="width: 16%">Số lượng</th>
+                <th class="text-center" style="width: 16%">VAT</th>
+                <th class="text-center" style="width: 16%">Chiết khấu</th>
+                <th class="text-center" style="width: 16%">Thành tiền</th>
                 <!-- <th class="text-center" style="width: 20%">Trạng thái</th> -->
               </tr>
             </thead>
@@ -495,7 +515,7 @@
             </div>
             <div class="modal-body">
               <p><strong>Mã phiếu nhập:</strong> <span id="viewMaPhieuNhap"></span></p>
-              <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p>
+              <!-- <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p> -->
               <p><strong>Kho nhập:</strong> <span id="viewKhoNhap"></span></p>
               <p><strong>Người nhập:</strong> <span id="viewNguoiNhap"></span></p>
               <p><strong>Ngày nhập:</strong> <span id="viewNgayNhap"></span></p>
@@ -543,8 +563,8 @@
               <label for="editMaPhieu" class="mt-2">Mã phiếu nhập:</label>
               <input type="text" id="editMaPhieu" class="form-control" readonly>
               
-              <label for="editNhaCungCap" class="mt-2">Nhà cung cấp:</label>
-              <input type="text" id="editNhaCungCap" class="form-control">
+              <!-- <label for="editNhaCungCap" class="mt-2">Nhà cung cấp:</label>
+              <input type="text" id="editNhaCungCap" class="form-control"> -->
 
               <label for="editKhoNhap" class="mt-2">Kho nhập:</label>
               <input type="text" id="editKhoNhap" class="form-control">
@@ -556,10 +576,10 @@
               <input type="date" id="editNgayNhap" class="form-control">
 
               <label for="editTongTien" class="mt-2">Tổng tiền:</label>
-              <input id="editTongTien" class="form-control"></input>
+              <input id="editTongTien" class="form-control" readonly>
 
               <label for="editTrangThai" class="mt-2">Trạng thái:</label>
-              <input type="text" id="editTrangThai" class="form-control">
+              <input type="text" id="editTrangThai" class="form-control" readonly>
 
               <h5 class="mt-3">Danh sách sản phẩm</h5>
               <table class="table table-bordered">
@@ -611,14 +631,13 @@
           invoices.forEach((invoice, index) => {
             const row = `
               <tr>
-                <td>${index + 1}</td>
-                <td>${invoice.id}</td>
-                <td>${invoice.supplier}</td>
-                <td>${invoice.warehouse}</td>
-                <td>${invoice.user}</td>
-                <td>${invoice.date}</td>
-                <td>${invoice.amount}</td>
-                <td class="phieu-actions text-right">
+                <td class="text-center">${index + 1}</td>
+                <td class="text-center">${invoice.productID}</td>
+                <td class="text-center">${invoice.quantity}</td>
+                <td class="text-center">${invoice.vat}</td>
+                <td class="text-center">${invoice.discount}</td>
+                <td class="text-center">${invoice.totalAmount}</td>
+                <td class="phieu-actions text-center">
                   <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
                     <i class="fas fa-folder"></i> View
                   </button>
@@ -681,25 +700,45 @@
 
         // Hiển thị modal chi tiết phiếu
         function viewInvoice(invoice) {
-          document.getElementById("viewNhaCungCap").textContent = invoice.supplier;
-          document.getElementById("viewKhoNhap").textContent = invoice.warehouse;
-          document.getElementById("viewNguoiNhap").textContent = invoice.user;
-          document.getElementById("viewNgayNhap").textContent = invoice.date;
-          document.getElementById("viewTongTien").textContent = invoice.amount;
-          document.getElementById("viewTrangThai").textContent = invoice.status;
+          if (!invoice || typeof invoice !== 'object') {
+            console.error('Dữ liệu phiếu nhập không hợp lệ:', invoice);
+            return;
+          }
 
+          // document.getElementById("viewNhaCungCap").textContent = invoice.supplier || "Không có";
+          document.getElementById("viewKhoNhap").textContent = invoice.warehouse || "Không có";
+          document.getElementById("viewNguoiNhap").textContent = invoice.user || "Không có";
+          document.getElementById("viewNgayNhap").textContent = invoice.date || "Không có";
+          document.getElementById("viewTongTien").textContent = invoice.amount || "0";
+          document.getElementById("viewTrangThai").textContent = invoice.status || "Không xác định";
+
+          // Kiểm tra danh sách sản phẩm
           const productList = document.getElementById("viewDanhSachSanPham");
-          productList.innerHTML = invoice.products.map(product => `
-            <tr>
-              <td>${product.name}</td>
-              <td>${product.quantity}</td>
-              <td>${product.price}</td>
-            </tr>
-          `).join("");
+          productList.innerHTML = "";
 
-          const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
-          viewModal.show();
+          if (Array.isArray(invoice.products) && invoice.products.length > 0) {
+            invoice.products.forEach(product => {
+              const row = `<tr>
+                <td>${product.name || "Không có"}</td>
+                <td>${product.quantity || 0}</td>
+                <td>${product.price || 0}</td>
+              </tr>`;
+              productList.insertAdjacentHTML("beforeend", row);
+            });
+          } else {
+            productList.innerHTML = `<tr><td colspan="3" class="text-center">Không có sản phẩm nào</td></tr>`;
+          }
+
+          // Hiển thị modal
+          const modalElement = document.getElementById("viewModal");
+          if (modalElement) {
+            const viewModal = new bootstrap.Modal(modalElement);
+            viewModal.show();
+          } else {
+            console.error("Không tìm thấy modal với ID 'viewModal'");
+          }
         }
+
 
         // Hàm mở modal và đổ dữ liệu vào form
         function editInvoice(invoice) {
@@ -713,7 +752,7 @@
           document.getElementById("editMaPhieu").value = invoice.id || "";
           document.getElementById("editNgayNhap").value = invoice.date || "";
           document.getElementById("editKhoNhap").value = invoice.warehouse || "";
-          document.getElementById("editNhaCungCap").value = invoice.supplier || "";
+          // document.getElementById("editNhaCungCap").value = invoice.supplier || "";
           document.getElementById("editTongTien").value = invoice.amount || "";
           document.getElementById("editTrangThai").value = invoice.status || "";
 
@@ -816,6 +855,37 @@
 
         // Khởi chạy: Tải danh sách phiếu khi trang load
         window.addEventListener('DOMContentLoaded', loadPhieuList);
+
+        document.addEventListener("DOMContentLoaded", function () {
+              // Set ngày hiện tại
+              document.getElementById("filterDate").valueAsDate = new Date();
+
+              // Fetch danh sách người nhập
+              fetch('/api/nguoi-nhap')
+                  .then(response => response.json())
+                  .then(data => {
+                      let nguoiNhapSelect = document.getElementById("filterNguoiNhap");
+                      data.forEach(item => {
+                          let option = document.createElement("option");
+                          option.value = item.id;
+                          option.textContent = item.ten;
+                          nguoiNhapSelect.appendChild(option);
+                      });
+                  });
+
+              // Fetch danh sách kho
+              fetch('/api/kho-hang')
+                  .then(response => response.json())
+                  .then(data => {
+                      let khoSelect = document.getElementById("filterKho");
+                      data.forEach(item => {
+                          let option = document.createElement("option");
+                          option.value = item.id;
+                          option.textContent = item.ten;
+                          khoSelect.appendChild(option);
+                      });
+                  });
+          });
 
       </script>
     </section>
