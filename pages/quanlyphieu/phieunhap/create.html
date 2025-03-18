@@ -583,9 +583,9 @@
           let table = document.getElementById("productList");
           let row = table.insertRow();
           row.innerHTML = `
-            <select class="form-control productId">
+            <td><select class="form-control productId">
               <option value="">Chọn sản phẩm...</option>
-            </select>
+            </select></td>
             <td><input type="number" class="form-control price" oninput="calculateTotal(this)"></td>
             <td><input type="number" class="form-control quantity" oninput="calculateTotal(this)"></td>
             <td><input type="number" class="form-control vat" oninput="calculateTotal(this)"></td>
