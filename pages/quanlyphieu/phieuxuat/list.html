@@ -624,224 +624,224 @@
           </div>
         </div>
       </div>
-      <script>
-        // Hàm hiển thị danh sách phiếu
-        function loadInvoices() {
-          const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-          const tbody = document.querySelector(".phieu tbody");
-          tbody.innerHTML = "";
+    </section>
+    <script>
+      // Hàm hiển thị danh sách phiếu
+      function loadInvoices() {
+        const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+        const tbody = document.querySelector(".phieu tbody");
+        tbody.innerHTML = "";
 
-          invoices.forEach((invoice, index) => {
+        invoices.forEach((invoice, index) => {
+          const row = `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${invoice.id}</td>
+              <td>${invoice.supplier}</td>
+              <td>${invoice.warehouse}</td>
+              <td>${invoice.user}</td>
+              <td>${invoice.date}</td>
+              <td>${invoice.amount}</td>
+              <td class="phieu-actions text-right">
+                <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
+                  <i class="fas fa-folder"></i> View
+                </button>
+                <button class="btn btn-info btn-sm" onclick='editInvoice(${JSON.stringify(invoice)})'>
+                  <i class="fas fa-pencil-alt"></i> Edit
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${invoice.code}')">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+      }
+
+      // Tải danh sách phiếu khi load trang
+      window.onload = loadInvoices;
+
+
+      let deleteCode = null; // Biến lưu trữ mã phiếu cần xóa
+
+      // Mở modal xác nhận xóa
+      function deleteInvoice(code) {
+        deleteCode = code; // Lưu mã phiếu cần xóa
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+      }
+
+      // Xác nhận xóa phiếu
+      function confirmDelete() {
+        if (!deleteCode) return;
+
+        let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+        invoices = invoices.filter(invoice => invoice.code !== deleteCode);
+        localStorage.setItem("invoices", JSON.stringify(invoices));
+        
+        deleteCode = null; // Reset lại biến
+        loadInvoices(); // Cập nhật lại danh sách phiếu
+
+        // Ẩn modal sau khi xóa
+        const deleteModalElement = document.getElementById('deleteModal');
+        const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalElement);
+        deleteModalInstance.hide();
+
+        // Hiển thị toast thông báo
+        showDeleteToast();
+      }
+
+      // Hiển thị toast thông báo xóa
+      function showDeleteToast() {
+        const toastElement = document.getElementById('deleteToast');
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      }
+
+
+
+
+
+      // Hiển thị modal chi tiết phiếu
+      function viewInvoice(invoice) {
+        document.getElementById("viewNhaCungCap").textContent = invoice.supplier;
+        document.getElementById("viewKhoXuat").textContent = invoice.warehouse;
+        document.getElementById("viewNguoiXuat").textContent = invoice.user;
+        document.getElementById("viewNgayXuat").textContent = invoice.date;
+        document.getElementById("viewTongTien").textContent = invoice.amount;
+        document.getElementById("viewTrangThai").textContent = invoice.status;
+
+        const productList = document.getElementById("viewDanhSachSanPham");
+        productList.innerHTML = invoice.products.map(product => `
+          <tr>
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${product.price}</td>
+          </tr>
+        `).join("");
+
+        const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
+        viewModal.show();
+      }
+
+      // Hàm mở modal và đổ dữ liệu vào form
+      function editInvoice(invoice) {
+        if (!invoice || typeof invoice !== 'object') {
+          console.error('Dữ liệu phiếu không hợp lệ:', invoice);
+          return;
+        }
+
+        // Gán thông tin vào form chỉnh sửa
+        document.getElementById("editNguoiXuat").value = invoice.user || "";
+        document.getElementById("editMaPhieu").value = invoice.id || "";
+        document.getElementById("editNgayXuat").value = invoice.date || "";
+        document.getElementById("editKhoXuat").value = invoice.warehouse || "";
+        document.getElementById("editNhaCungCap").value = invoice.supplier || "";
+        document.getElementById("editTongTien").value = invoice.amount || "";
+        document.getElementById("editTrangThai").value = invoice.status || "";
+
+        // Xử lý danh sách sản phẩm
+        const editProductList = document.getElementById("editDanhSachSanPham");
+        editProductList.innerHTML = "";
+
+        if (Array.isArray(invoice.products) && invoice.products.length > 0) {
+          invoice.products.forEach((product, index) => {
             const row = `
-              <tr>
-                <td>${index + 1}</td>
-                <td>${invoice.id}</td>
-                <td>${invoice.supplier}</td>
-                <td>${invoice.warehouse}</td>
-                <td>${invoice.user}</td>
-                <td>${invoice.date}</td>
-                <td>${invoice.amount}</td>
-                <td class="phieu-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick='editInvoice(${JSON.stringify(invoice)})'>
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${invoice.code}')">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
+              <tr id="productRow-${index}">
+                <td><input type="text" class="form-control" value="${product.name || ''}" id="editProductName-${index}"></td>
+                <td><input type="number" class="form-control" value="${product.quantity || 0}" id="editProductQuantity-${index}"></td>
+                <td><input type="number" class="form-control" value="${product.price || 0}" id="editProductPrice-${index}"></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">Xóa</button></td>
               </tr>
             `;
-            tbody.innerHTML += row;
+            editProductList.insertAdjacentHTML("beforeend", row);
           });
+        } else {
+          editProductList.innerHTML = `<tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>`;
         }
 
-        // Tải danh sách phiếu khi load trang
-        window.onload = loadInvoices;
+        // Hiển thị modal chỉnh sửa
+        const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+        editModal.show();
+      }
 
-
-        let deleteCode = null; // Biến lưu trữ mã phiếu cần xóa
-
-        // Mở modal xác nhận xóa
-        function deleteInvoice(code) {
-          deleteCode = code; // Lưu mã phiếu cần xóa
-          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-          deleteModal.show();
+      // Hàm xóa sản phẩm khỏi danh sách
+      function removeProduct(index) {
+        const productRow = document.getElementById(`productRow-${index}`);
+        if (productRow) {
+          productRow.remove();
         }
+      }
+      
+      // Hàm mở modal
+      function openModal(id) {
+        const modal = new bootstrap.Modal(document.getElementById(id));
+        modal.show();
+      }
 
-        // Xác nhận xóa phiếu
-        function confirmDelete() {
-          if (!deleteCode) return;
+      // Hàm đóng modal
+      function closeModal(modalId) {
+        const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+        if (modal) modal.hide();
+      }
 
-          let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-          invoices = invoices.filter(invoice => invoice.code !== deleteCode);
-          localStorage.setItem("invoices", JSON.stringify(invoices));
-          
-          deleteCode = null; // Reset lại biến
-          loadInvoices(); // Cập nhật lại danh sách phiếu
+      // Hiển thị Toast thông báo
+      function showSaveToast() {
+        const toast = new bootstrap.Toast(document.getElementById('saveToast'));
+        toast.show();
+      }
 
-          // Ẩn modal sau khi xóa
-          const deleteModalElement = document.getElementById('deleteModal');
-          const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalElement);
-          deleteModalInstance.hide();
+      // Cập nhật lại thông tin phiếu trên giao diện
+      // function updatePhieuOnUI(updatedPhieu) {
+      //   const phieuRow = document.querySelector(`[data-ma-phieu="${updatedPhieu.maPhieu}"]`);
+      //   if (phieuRow) {
+      //     phieuRow.querySelector('.phieu-loai').textContent = updatedPhieu.NguoiNhap;
+      //     phieuRow.querySelector('.phieu-ngay').textContent = updatedPhieu.ngayNhap;
+      //     phieuRow.querySelector('.phieu-kho').textContent = updatedPhieu.khoNhap;
+      //     phieuRow.querySelector('.phieu-ncc').textContent = updatedPhieu.NhaCungCap;
+      //     phieuRow.querySelector('.phieu-ghi-chu').textContent = updatedPhieu.TongTien;
+      //     phieuRow.querySelector('.phieu-trang-thai').textContent = updatedPhieu.trangThai;
+      //   }
+      // }
 
-          // Hiển thị toast thông báo
-          showDeleteToast();
-        }
+      /// Hàm lưu thay đổi và hiển thị Toast thông báo
+      function saveChanges() {
+        const updatedInvoice = {
+          user: document.getElementById("editNguoiNhap").value,
+          id: document.getElementById("editMaPhieu").value,
+          date: document.getElementById("editNgayNhap").value,
+          warehouse: document.getElementById("editKhoNhap").value,
+          supplier: document.getElementById("editNhaCungCap").value,
+          amount: document.getElementById("editTongTien").value,
+          status: document.getElementById("editTrangThai").value,
+          products: []
+        };
 
-        // Hiển thị toast thông báo xóa
-        function showDeleteToast() {
-          const toastElement = document.getElementById('deleteToast');
-          const toast = new bootstrap.Toast(toastElement);
-          toast.show();
-        }
+        const rows = document.querySelectorAll("#editDanhSachSanPham tr");
+        rows.forEach((row, index) => {
+          const name = document.getElementById(`editProductName-${index}`).value;
+          const quantity = parseInt(document.getElementById(`editProductQuantity-${index}`).value) || 0;
+          const price = parseFloat(document.getElementById(`editProductPrice-${index}`).value) || 0;
 
-
-
-
-
-        // Hiển thị modal chi tiết phiếu
-        function viewInvoice(invoice) {
-          document.getElementById("viewNhaCungCap").textContent = invoice.supplier;
-          document.getElementById("viewKhoXuat").textContent = invoice.warehouse;
-          document.getElementById("viewNguoiXuat").textContent = invoice.user;
-          document.getElementById("viewNgayXuat").textContent = invoice.date;
-          document.getElementById("viewTongTien").textContent = invoice.amount;
-          document.getElementById("viewTrangThai").textContent = invoice.status;
-
-          const productList = document.getElementById("viewDanhSachSanPham");
-          productList.innerHTML = invoice.products.map(product => `
-            <tr>
-              <td>${product.name}</td>
-              <td>${product.quantity}</td>
-              <td>${product.price}</td>
-            </tr>
-          `).join("");
-
-          const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
-          viewModal.show();
-        }
-
-        // Hàm mở modal và đổ dữ liệu vào form
-        function editInvoice(invoice) {
-          if (!invoice || typeof invoice !== 'object') {
-            console.error('Dữ liệu phiếu không hợp lệ:', invoice);
-            return;
+          if (name && quantity > 0 && price > 0) {
+            updatedInvoice.products.push({ name, quantity, price });
           }
+        });
 
-          // Gán thông tin vào form chỉnh sửa
-          document.getElementById("editNguoiXuat").value = invoice.user || "";
-          document.getElementById("editMaPhieu").value = invoice.id || "";
-          document.getElementById("editNgayXuat").value = invoice.date || "";
-          document.getElementById("editKhoXuat").value = invoice.warehouse || "";
-          document.getElementById("editNhaCungCap").value = invoice.supplier || "";
-          document.getElementById("editTongTien").value = invoice.amount || "";
-          document.getElementById("editTrangThai").value = invoice.status || "";
+        console.log("Dữ liệu cập nhật:", updatedInvoice);
 
-          // Xử lý danh sách sản phẩm
-          const editProductList = document.getElementById("editDanhSachSanPham");
-          editProductList.innerHTML = "";
+        // Hiển thị thông báo thành công
+        showSaveToast();
 
-          if (Array.isArray(invoice.products) && invoice.products.length > 0) {
-            invoice.products.forEach((product, index) => {
-              const row = `
-                <tr id="productRow-${index}">
-                  <td><input type="text" class="form-control" value="${product.name || ''}" id="editProductName-${index}"></td>
-                  <td><input type="number" class="form-control" value="${product.quantity || 0}" id="editProductQuantity-${index}"></td>
-                  <td><input type="number" class="form-control" value="${product.price || 0}" id="editProductPrice-${index}"></td>
-                  <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">Xóa</button></td>
-                </tr>
-              `;
-              editProductList.insertAdjacentHTML("beforeend", row);
-            });
-          } else {
-            editProductList.innerHTML = `<tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>`;
-          }
-
-          // Hiển thị modal chỉnh sửa
-          const editModal = new bootstrap.Modal(document.getElementById("editModal"));
-          editModal.show();
-        }
-
-        // Hàm xóa sản phẩm khỏi danh sách
-        function removeProduct(index) {
-          const productRow = document.getElementById(`productRow-${index}`);
-          if (productRow) {
-            productRow.remove();
-          }
-        }
-        
-        // Hàm mở modal
-        function openModal(id) {
-          const modal = new bootstrap.Modal(document.getElementById(id));
-          modal.show();
-        }
-
-        // Hàm đóng modal
-        function closeModal(modalId) {
-          const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-          if (modal) modal.hide();
-        }
-
-        // Hiển thị Toast thông báo
-        function showSaveToast() {
-          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
-          toast.show();
-        }
-
-        // Cập nhật lại thông tin phiếu trên giao diện
-        // function updatePhieuOnUI(updatedPhieu) {
-        //   const phieuRow = document.querySelector(`[data-ma-phieu="${updatedPhieu.maPhieu}"]`);
-        //   if (phieuRow) {
-        //     phieuRow.querySelector('.phieu-loai').textContent = updatedPhieu.NguoiNhap;
-        //     phieuRow.querySelector('.phieu-ngay').textContent = updatedPhieu.ngayNhap;
-        //     phieuRow.querySelector('.phieu-kho').textContent = updatedPhieu.khoNhap;
-        //     phieuRow.querySelector('.phieu-ncc').textContent = updatedPhieu.NhaCungCap;
-        //     phieuRow.querySelector('.phieu-ghi-chu').textContent = updatedPhieu.TongTien;
-        //     phieuRow.querySelector('.phieu-trang-thai').textContent = updatedPhieu.trangThai;
-        //   }
-        // }
-
-        /// Hàm lưu thay đổi và hiển thị Toast thông báo
-        function saveChanges() {
-          const updatedInvoice = {
-            user: document.getElementById("editNguoiNhap").value,
-            id: document.getElementById("editMaPhieu").value,
-            date: document.getElementById("editNgayNhap").value,
-            warehouse: document.getElementById("editKhoNhap").value,
-            supplier: document.getElementById("editNhaCungCap").value,
-            amount: document.getElementById("editTongTien").value,
-            status: document.getElementById("editTrangThai").value,
-            products: []
-          };
-
-          const rows = document.querySelectorAll("#editDanhSachSanPham tr");
-          rows.forEach((row, index) => {
-            const name = document.getElementById(`editProductName-${index}`).value;
-            const quantity = parseInt(document.getElementById(`editProductQuantity-${index}`).value) || 0;
-            const price = parseFloat(document.getElementById(`editProductPrice-${index}`).value) || 0;
-
-            if (name && quantity > 0 && price > 0) {
-              updatedInvoice.products.push({ name, quantity, price });
-            }
-          });
-
-          console.log("Dữ liệu cập nhật:", updatedInvoice);
-
-          // Hiển thị thông báo thành công
-          showSaveToast();
-
-          closeModal('editModal');
-        }
+        closeModal('editModal');
+      }
 
 
-        // Khởi chạy: Tải danh sách phiếu khi trang load
-        window.addEventListener('DOMContentLoaded', loadPhieuList);
+      // Khởi chạy: Tải danh sách phiếu khi trang load
+      window.addEventListener('DOMContentLoaded', loadPhieuList);
 
-      </script>
-    </section>
+    </script>
 
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">

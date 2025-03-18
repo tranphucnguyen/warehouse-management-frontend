@@ -607,6 +607,8 @@
 
 
 <script>
+import CONFIG from './config.js';
+
   // Thêm các biến toàn cục cho phân trang
 let currentPage = 1;
 const itemsPerPage = 10; // Số lượng item mỗi trang
@@ -615,7 +617,7 @@ let totalItems = 0;
 // Lấy danh sách nhà cung cấp từ API
 function getSuppliers(page = 1) {
     let token = localStorage.getItem("accessToken");
-
+    console.log("ip:", CONFIG.SERVER_IP);
     if (!token) {
         alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
@@ -626,7 +628,7 @@ function getSuppliers(page = 1) {
     myHeaders.append("Authorization", `Bearer ${token}`);
 
     // Thêm tham số phân trang vào URL
-    fetch(`http://localhost:8080/api/suppliers?page=${page}&size=${itemsPerPage}`, {
+    fetch(`http://${CONFIG.SERVER_IP}:8080/api/suppliers?page=${page}&size=${itemsPerPage}`, {
         method: "GET",
         headers: myHeaders
     })

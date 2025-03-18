@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ez Stock</title>
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/9089/9089758.png">
-
+  
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -613,6 +613,8 @@
   <!-- /.control-sidebar -->
 </div>
 <script>
+  import CONFIG from './config.js';
+
   let invoiceList = [];
   let invoiceIdToDelete = null;
   let invoiceIdToEdit = null;
@@ -637,7 +639,7 @@
     myHeaders.append('Authorization', `Bearer ${token}`);
 
     try {
-      const response = await fetch('http://localhost:8080/api/suppliers', {
+      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/suppliers`, {
         method: 'GET',
         headers: myHeaders
       });
@@ -670,7 +672,7 @@
     myHeaders.append('Authorization', `Bearer ${token}`);
 
     try {
-      const response = await fetch('http://localhost:8080/api/dskhohangs', {
+      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/dskhohangs`, {
         method: 'GET',
         headers: myHeaders
       });
@@ -727,7 +729,7 @@
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${token}`);
 
-    let url = 'http://localhost:8080/api/import-invoices';
+    let url = `http://${CONFIG.SERVER_IP}:8080/api/import-invoices`;
     const params = new URLSearchParams();
     if (supplierName) params.append('supplierName', supplierName);
     if (contactInfo) params.append('contactInfo', contactInfo);
@@ -920,7 +922,7 @@
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/import-invoices/${invoiceIdToEdit}`, requestOptions);
+      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/import-invoices/${invoiceIdToEdit}`, requestOptions);
       const result = await response.text();
 
       if (!response.ok) {
@@ -1001,7 +1003,7 @@
     });
 
     try {
-      const response = await fetch('http://localhost:8080/api/import-invoices', {
+      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/import-invoices`, {
         method: 'DELETE',
         headers: myHeaders,
         body: body,
