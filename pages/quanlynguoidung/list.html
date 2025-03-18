@@ -335,6 +335,29 @@
             </li>
             <li class="nav-item menu-open">
               <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Quản lý nhà cung cấp
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="./pages/quanlynhacungcap/create.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tạo nhà cung cấp</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="./pages/quanlynhacungcap/list.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Danh sách nhà cung cấp</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-ticket-alt"></i>
                 <p>
                   Quản lý phiếu
@@ -728,7 +751,7 @@
         redirect: "follow"
       };
     
-      fetch("http://172.17.152.149:8080/api/user/updateUser", requestOptions)
+      fetch("http://172.17.152.229:8080/api/user/updateUser", requestOptions)
         .then(response => {
           console.log("Response status:", response.status);
           if (!response.ok) {
@@ -785,7 +808,7 @@
         redirect: "follow"
       };
     
-      fetch(`http://172.17.152.149:8080/api/user/deleteUser/${deleteUserId}`, requestOptions)
+      fetch(`http://172.17.152.229:8080/api/user/deleteUser/${deleteUserId}`, requestOptions)
         .then(response => {
           console.log("Response status:", response.status);
           if (!response.ok) {

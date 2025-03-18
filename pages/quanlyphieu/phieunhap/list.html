@@ -330,6 +330,29 @@
           </li>
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Quản lý nhà cung cấp
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../../quanlynhacungcap/create.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tạo nhà cung cấp</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../../quanlynhacungcap/list.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh sách nhà cung cấp</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
                 Quản lý phiếu
@@ -454,15 +477,13 @@
               <input type="date" id="filterDate" class="form-control">
             </div>
             <div class="col-md-4">
-              <label for="filterNguoiNhap">Người nhập:</label>
-              <select id="filterNguoiNhap" class="form-control">
-                <option value="">Chọn người nhập</option>
-              </select>
+              <label for="filterDate">Ngày kết thúc:</label>
+              <input type="date" id="filterDate" class="form-control">
             </div>
             <div class="col-md-4">
-              <label for="filterKho">Kho hàng:</label>
-              <select id="filterKho" class="form-control">
-                <option value="">Chọn kho</option>
+              <label for="filterNCC">Nhà cung cấp:</label>
+              <select id="filterNCC" class="form-control">
+                <option value="">Chọn nhà cung cấp</option>
               </select>
             </div>
           </div>
@@ -877,7 +898,7 @@
               fetch('/api/kho-hang')
                   .then(response => response.json())
                   .then(data => {
-                      let khoSelect = document.getElementById("filterKho");
+                      let khoSelect = document.getElementById("filterNCC");
                       data.forEach(item => {
                           let option = document.createElement("option");
                           option.value = item.id;
