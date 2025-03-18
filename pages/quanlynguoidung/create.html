@@ -336,6 +336,29 @@
           </li>
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Quản lý nhà cung cấp
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./pages/quanlynhacungcap/create.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tạo nhà cung cấp</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./pages/quanlynhacungcap/list.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh sách nhà cung cấp</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-ticket-alt"></i>
               <p>
                 Quản lý phiếu
@@ -608,7 +631,7 @@
     };
  
     // Gửi request lên API
-    fetch("http://172.16.144.147:8080/api/user/register", requestOptions)
+    fetch("http://172.17.152.229:8080/api/user/register", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

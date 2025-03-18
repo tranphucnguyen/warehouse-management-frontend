@@ -629,7 +629,7 @@
           const myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${token}`);
   
-          const response = await fetch("http://172.17.152.149:8080/api/categories", {
+          const response = await fetch("http://172.17.152.229:8080/api/categories", {
               method: "GET",
               headers: myHeaders
           });
@@ -667,7 +667,7 @@
           const myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${token}`);
   
-          const response = await fetch(`http://172.17.152.149:8080/api/products/${id}`, {
+          const response = await fetch(`http://172.17.152.229:8080/api/products/${id}`, {
               method: "GET",
               headers: myHeaders
           });
@@ -740,7 +740,7 @@
       };
   
       try {
-          const response = await fetch(`http://172.17.152.149:8080/api/products/${productId}`, requestOptions);
+          const response = await fetch(`http://172.17.152.229:8080/api/products/${productId}`, requestOptions);
           if (!response.ok) {
               throw new Error(`API error: ${response.status}`);
           }
@@ -772,7 +772,7 @@
           const myHeaders = new Headers();
           myHeaders.append('Authorization', `Bearer ${token}`);
   
-          const response = await fetch('http://172.17.152.149:8080/api/products', {
+          const response = await fetch('http://172.17.152.229:8080/api/products', {
               method: 'GET',
               headers: myHeaders
           });
@@ -888,7 +888,7 @@
       };
   
       try {
-          const response = await fetch("http://172.17.152.149:8080/api/products", requestOptions);
+          const response = await fetch("http://172.17.152.229:8080/api/products", requestOptions);
           if (!response.ok) {
               throw new Error(`API error: ${response.status}`);
           }
