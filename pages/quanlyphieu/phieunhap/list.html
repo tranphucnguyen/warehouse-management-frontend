@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ez Stock</title>
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/9089/9089758.png">
-  
+
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -43,10 +44,12 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
+
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTELogo" height="60" width="60">
   </div>
+
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -62,6 +65,7 @@
         <a href="#" class="nav-link">Contact</a>
       </li>
     </ul>
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -86,6 +90,7 @@
           </form>
         </div>
       </li>
+
 
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -186,6 +191,7 @@
   </nav>
   <!-- /.navbar -->
 
+
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -193,6 +199,7 @@
       <img src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">EZ Stock</span>
     </a>
+
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -206,6 +213,7 @@
         </div>
       </div>
 
+
       <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
@@ -217,6 +225,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -427,6 +436,7 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -446,6 +456,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
 
     <!-- Main content -->
     <section class="content">
@@ -498,7 +509,7 @@
           </nav>
         </div>
       </div>
-  
+ 
       <!-- Modal Xóa -->
       <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog">
@@ -517,7 +528,7 @@
           </div>
         </div>
       </div>
-  
+ 
       <!-- Modal Chỉnh sửa -->
       <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog">
@@ -572,7 +583,7 @@
           </div>
         </div>
       </div>
-  
+ 
     </section>
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -606,6 +617,7 @@
     </div>
   </footer>
 
+
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -613,8 +625,6 @@
   <!-- /.control-sidebar -->
 </div>
 <script>
-  import CONFIG from './config.js';
-
   let invoiceList = [];
   let invoiceIdToDelete = null;
   let invoiceIdToEdit = null;
@@ -626,6 +636,7 @@
   let totalPages = 0; // Tổng số trang
   let filteredInvoices = []; // Danh sách đã lọc để phân trang
 
+
   // Lấy danh sách nhà cung cấp
   async function getSuppliers() {
     const token = localStorage.getItem('accessToken');
@@ -634,19 +645,23 @@
       return;
     }
 
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${token}`);
 
+
     try {
-      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/suppliers`, {
+      const response = await fetch('http://localhost:8080/api/suppliers', {
         method: 'GET',
         headers: myHeaders
       });
 
+
       if (!response.ok) {
         throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
       }
+
 
       const data = await response.json();
       supplierList = (data.data?.listSupplier || []).filter(supplier =>
@@ -660,6 +675,7 @@
     }
   }
 
+
   // Lấy danh sách kho
   async function getWarehouses() {
     const token = localStorage.getItem('accessToken');
@@ -668,18 +684,22 @@
       return;
     }
 
+
     const myHeaders = new Headers();
     myHeaders.append('Authorization', `Bearer ${token}`);
 
+
     try {
-      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/dskhohangs`, {
+      const response = await fetch('http://localhost:8080/api/dskhohangs', {
         method: 'GET',
         headers: myHeaders
       });
 
+
       if (!response.ok) {
         throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
       }
+
 
       const data = await response.json();
       warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
@@ -691,10 +711,12 @@
     }
   }
 
+
   // Điền dữ liệu vào dropdown nhà cung cấp
   function populateSupplierDropdown() {
     const supplierDropdown = document.getElementById('editSupplierId');
     supplierDropdown.innerHTML = '<option value="">Chọn nhà cung cấp</option>';
+
 
     supplierList.forEach(supplier => {
       const option = document.createElement('option');
@@ -704,10 +726,12 @@
     });
   }
 
+
   // Điền dữ liệu vào dropdown kho hàng
   function populateWarehouseDropdown() {
     const warehouseDropdown = document.getElementById('editKhohangId');
     warehouseDropdown.innerHTML = '<option value="">Chọn kho hàng</option>';
+
 
     warehouseList.forEach(warehouse => {
       const option = document.createElement('option');
@@ -717,6 +741,7 @@
     });
   }
 
+
   // Tải danh sách phiếu nhập
   async function loadInvoices(supplierName = '', contactInfo = '') {
     const token = localStorage.getItem('accessToken');
@@ -725,15 +750,18 @@
       return;
     }
 
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${token}`);
 
-    let url = `http://${CONFIG.SERVER_IP}:8080/api/import-invoices`;
+
+    let url = 'http://localhost:8080/api/import-invoices';
     const params = new URLSearchParams();
     if (supplierName) params.append('supplierName', supplierName);
     if (contactInfo) params.append('contactInfo', contactInfo);
     if (params.toString()) url += `?${params.toString()}`;
+
 
     try {
       console.log('Gửi yêu cầu tới:', url);
@@ -741,11 +769,14 @@
       console.log('Response status:', response.status);
       const rawResponse = await response.text();
 
+
       if (!response.ok) throw new Error(`Lỗi: ${response.status} - ${rawResponse}`);
+
 
       const data = JSON.parse(rawResponse);
       invoiceList = Array.isArray(data.data?.listImportInvoices) ? data.data.listImportInvoices : [];
       console.log('Danh sách phiếu nhập:', invoiceList);
+
 
       // Khởi tạo filteredInvoices và hiển thị trang đầu tiên
       filteredInvoices = invoiceList.filter(invoice => invoice.status === true);
@@ -760,6 +791,7 @@
     }
   }
 
+
   // Hiển thị phiếu nhập của trang hiện tại
   function displayPage(page) {
     currentPage = page;
@@ -769,19 +801,22 @@
     displayInvoices(pageInvoices);
   }
 
+
   // Hiển thị danh sách phiếu nhập
   function displayInvoices(invoices) {
     const invoiceListElement = document.getElementById('invoiceList');
     invoiceListElement.innerHTML = '';
+
 
     if (!Array.isArray(invoices) || invoices.length === 0) {
       invoiceListElement.innerHTML = '<tr><td colspan="7" class="text-center">Không có phiếu nhập nào</td></tr>';
       return;
     }
 
+
     invoices.forEach((invoice, index) => {
       const row = document.createElement('tr');
-      row.innerHTML = 
+      row.innerHTML =
         `<td class="text-center">${(currentPage - 1) * itemsPerPage + index + 1}</td>
         <td class="text-center">${invoice.invoicesId || 'N/A'}</td>
         <td class="text-center">${invoice.dskhohang?.name || 'N/A'}</td>
@@ -800,15 +835,18 @@
     });
   }
 
+
   // Cập nhật giao diện phân trang
   function updatePagination() {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
 
+
     const prevItem = document.createElement('li');
     prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
     prevItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
     pagination.appendChild(prevItem);
+
 
     for (let i = 1; i <= totalPages; i++) {
       const pageItem = document.createElement('li');
@@ -817,11 +855,13 @@
       pagination.appendChild(pageItem);
     }
 
+
     const nextItem = document.createElement('li');
     nextItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
     nextItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
     pagination.appendChild(nextItem);
   }
+
 
   // Chuyển trang
   function changePage(page) {
@@ -830,6 +870,7 @@
     updatePagination();
   }
 
+
   // Mở modal chỉnh sửa
   function openEditModal(invoicesId) {
     const invoice = invoiceList.find(inv => inv.invoicesId == invoicesId);
@@ -837,33 +878,36 @@
       invoiceIdToEdit = invoicesId;
       document.getElementById('editInvoicesId').value = invoice.invoicesId;
       document.getElementById('editImportDate').value = invoice.importDate.split('T')[0];
-      
+     
       const supplierDropdown = document.getElementById('editSupplierId');
       const warehouseDropdown = document.getElementById('editKhohangId');
       populateSupplierDropdown();
       populateWarehouseDropdown();
       supplierDropdown.value = invoice.supplierId || '';
       warehouseDropdown.value = invoice.khohangId || '';
-      
+     
       const totalBeforeInput = document.getElementById('editTotalAmount');
       const vatInput = document.getElementById('editVat');
       const discountInput = document.getElementById('editDiscount');
       const finalAmountInput = document.getElementById('editFinalAmount');
-      
+     
       totalBeforeInput.value = invoice.totalAmount || 0;
       totalBeforeInput.setAttribute('readonly', true);
       vatInput.value = invoice.vat || 0;
       discountInput.value = invoice.discount || 0;
       finalAmountInput.value = invoice.finalAmount || 0;
 
+
       vatInput.addEventListener('input', () => vatInput.value = vatInput.value);
       discountInput.addEventListener('input', () => discountInput.value = discountInput.value);
+
 
       $('#editModal').modal('show');
     } else {
       console.error('Không tìm thấy phiếu nhập với ID:', invoicesId);
     }
   }
+
 
   // Xử lý nút xác nhận chỉnh sửa
   document.getElementById('confirmEditBtn').addEventListener('click', async () => {
@@ -874,6 +918,7 @@
     }
   });
 
+
   // Cập nhật phiếu nhập
   async function updateInvoice() {
     const token = localStorage.getItem('accessToken');
@@ -882,14 +927,18 @@
       return;
     }
 
+
     const invoice = invoiceList.find(inv => inv.invoicesId == invoiceIdToEdit);
     const userId = invoice?.userId || 1;
+
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${token}`);
 
+
     const importDetails = [];
+
 
     const totalBefore = parseFloat(document.getElementById('editTotalAmount').value) || 0;
     const vat = parseFloat(document.getElementById('editVat').value) || 0;
@@ -898,9 +947,12 @@
     const supplierId = parseInt(document.getElementById('editSupplierId').value);
     const khohangId = parseInt(document.getElementById('editKhohangId').value);
 
+
     const finalAmount = totalBefore * (1 - discount / 100) * (1 + vat / 100);
 
+
     document.getElementById('editFinalAmount').value = finalAmount.toFixed(2);
+
 
     const raw = JSON.stringify({
       userId: userId,
@@ -914,6 +966,7 @@
       importDetails: importDetails
     });
 
+
     const requestOptions = {
       method: 'PUT',
       headers: myHeaders,
@@ -921,13 +974,16 @@
       redirect: 'follow'
     };
 
+
     try {
-      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/import-invoices/${invoiceIdToEdit}`, requestOptions);
+      const response = await fetch(`http://localhost:8080/api/import-invoices/${invoiceIdToEdit}`, requestOptions);
       const result = await response.text();
+
 
       if (!response.ok) {
         throw new Error(`Lỗi: ${response.status} - ${result}`);
       }
+
 
       console.log('Kết quả cập nhật:', result);
       alert('Cập nhật phiếu nhập thành công!');
@@ -938,11 +994,13 @@
     }
   }
 
+
   // Lọc phiếu nhập
   function filterInvoices() {
     const startDate = document.getElementById('filterStartDate').value;
     const endDate = document.getElementById('filterEndDate').value;
     const supplierName = document.getElementById('filterNCC').value.trim();
+
 
     if (supplierName) {
       loadInvoices(supplierName);
@@ -950,7 +1008,7 @@
       filteredInvoices = [...invoiceList].filter(invoice => invoice.status === true);
       if (startDate) filteredInvoices = filteredInvoices.filter(invoice => new Date(invoice.importDate) >= new Date(startDate));
       if (endDate) filteredInvoices = filteredInvoices.filter(invoice => new Date(invoice.importDate) <= new Date(endDate));
-      
+     
       totalItems = filteredInvoices.length;
       totalPages = Math.ceil(totalItems / itemsPerPage);
       currentPage = 1; // Reset về trang đầu khi lọc
@@ -959,17 +1017,20 @@
     }
   }
 
+
   // Xem chi tiết phiếu (chưa dùng trong bảng hiện tại)
   function viewPhieu(invoicesId, importDate, khohangName, supplierName, finalAmount, importDetails) {
     console.log('Xem phiếu:', { invoicesId, importDate, khohangName, supplierName, finalAmount, importDetails: JSON.parse(importDetails) });
     alert(`Xem chi tiết phiếu: ${invoicesId}\nNgày nhập: ${importDate}\nKho: ${khohangName}\nNhà cung cấp: ${supplierName}\nTổng tiền: ${finalAmount}`);
   }
 
+
   // Mở modal xác nhận xóa
   function openDeleteModal(invoicesId) {
     invoiceIdToDelete = invoicesId;
     $('#deleteModal').modal('show');
   }
+
 
   // Xử lý nút xác nhận xóa
   document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
@@ -980,6 +1041,7 @@
     }
   });
 
+
   // Xóa phiếu nhập
   async function deleteInvoice(invoicesId) {
     const token = localStorage.getItem('accessToken');
@@ -988,31 +1050,37 @@
       return;
     }
 
+
     const idToDelete = Number(invoicesId);
     if (!idToDelete) {
       alert('ID phiếu nhập không hợp lệ!');
       return;
     }
 
+
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${token}`);
+
 
     const body = JSON.stringify({
       ids: [idToDelete]
     });
 
+
     try {
-      const response = await fetch(`http://${CONFIG.SERVER_IP}:8080/api/import-invoices`, {
+      const response = await fetch('http://localhost:8080/api/import-invoices', {
         method: 'DELETE',
         headers: myHeaders,
         body: body,
         redirect: 'follow'
       });
 
+
       if (!response.ok) {
         throw new Error(`Lỗi: ${response.status} - ${await response.text()}`);
       }
+
 
       console.log(`Đã xóa phiếu ID: ${idToDelete}`);
       const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
@@ -1023,6 +1091,7 @@
       alert('Không thể xóa phiếu!');
     }
   }
+
 
   // Khởi tạo khi trang load
   document.addEventListener('DOMContentLoaded', () => {
