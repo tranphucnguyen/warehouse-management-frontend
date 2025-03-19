@@ -479,7 +479,13 @@
                 <!-- Danh mục sẽ được hiển thị ở đây -->
               </tbody>
             </table>
-          
+            <div class="pagination-container p-3">
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end" id="pagination">
+                  <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
 
@@ -599,9 +605,15 @@
     <!-- /.control-sidebar -->
   </div>
 
+
 <script>
-    // Lấy danh sách nhà cung cấp từ API
-function getSuppliers() {
+  // Thêm các biến toàn cục cho phân trang
+let currentPage = 1;
+const itemsPerPage = 10; // Số lượng item mỗi trang
+let totalItems = 0;
+
+// Lấy danh sách nhà cung cấp từ API
+function getSuppliers(page = 1) {
     let token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -613,7 +625,8 @@ function getSuppliers() {
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
 
-    fetch("http://localhost:8080/api/suppliers", {
+    // Thêm tham số phân trang vào URL
+    fetch(`http://localhost:8080/api/suppliers?page=${page}&size=${itemsPerPage}`, {
         method: "GET",
         headers: myHeaders
     })
@@ -626,7 +639,10 @@ function getSuppliers() {
     .then(data => {
         console.log("Danh sách nhà cung cấp:", data);
         if (data.data && data.data.listSupplier) {
+            totalItems = data.data.totalItems || data.data.listSupplier.length; // Giả sử API trả về totalItems
+            currentPage = page;
             updateSupplierUI(data.data.listSupplier);
+            updatePagination();
         } else {
             console.error("Dữ liệu không hợp lệ:", data);
         }
@@ -637,12 +653,11 @@ function getSuppliers() {
     });
 }
 
-// Cập nhật giao diện danh sách nhà cung cấp (Chỉ hiển thị status: true)
+// Cập nhật giao diện danh sách nhà cung cấp
 function updateSupplierUI(suppliers) {
     const supplierTableBody = document.getElementById("supplierTableBody");
-    supplierTableBody.innerHTML = ""; // Xóa nội dung cũ
+    supplierTableBody.innerHTML = "";
 
-    // Lọc chỉ hiển thị nhà cung cấp có status: true
     const activeSuppliers = suppliers.filter(supplier => supplier.status === true);
 
     if (activeSuppliers.length === 0) {
@@ -651,9 +666,10 @@ function updateSupplierUI(suppliers) {
     }
 
     activeSuppliers.forEach((supplier, index) => {
+        const displayIndex = (currentPage - 1) * itemsPerPage + index + 1;
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${index + 1}</td>
+            <td>${displayIndex}</td>
             <td>${supplier.supplierName || "N/A"}</td>
             <td>${supplier.contactInfo || "Không có thông tin liên hệ"}</td>
             <td>
@@ -663,6 +679,39 @@ function updateSupplierUI(suppliers) {
         `;
         supplierTableBody.appendChild(row);
     });
+}
+
+// Hàm tạo phân trang
+function updatePagination() {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    // Nút Previous
+    const prevLi = document.createElement("li");
+    prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+    prevLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Trước</a>`;
+    pagination.appendChild(prevLi);
+
+    // Các số trang
+    for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement("li");
+        li.className = `page-item ${i === currentPage ? "active" : ""}`;
+        li.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+        pagination.appendChild(li);
+    }
+
+    // Nút Next
+    const nextLi = document.createElement("li");
+    nextLi.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
+    nextLi.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Sau</a>`;
+    pagination.appendChild(nextLi);
+}
+
+// Hàm chuyển trang
+function changePage(page) {
+    if (page < 1 || page > Math.ceil(totalItems / itemsPerPage)) return;
+    getSuppliers(page);
 }
 
 // Mở modal chỉnh sửa và điền dữ liệu
@@ -745,7 +794,7 @@ function saveChanges() {
         const modal = bootstrap.Modal.getInstance(document.getElementById("editModal"));
         modal.hide();
         showToast("saveToast");
-        getSuppliers();
+        getSuppliers(currentPage); // Giữ nguyên trang hiện tại
     })
     .catch(error => {
         console.error("Lỗi khi cập nhật nhà cung cấp:", error);
@@ -753,7 +802,7 @@ function saveChanges() {
     });
 }
 
-// Mở modal xác nhận xóa (thực chất là thay đổi status)
+// Mở modal xác nhận xóa
 let deleteId = null;
 function openDeleteModal(supplierId) {
     deleteId = supplierId;
@@ -761,7 +810,7 @@ function openDeleteModal(supplierId) {
     modal.show();
 }
 
-// Xác nhận "xóa" (gửi request DELETE với mảng ids như trong Postman)
+// Xác nhận "xóa"
 function confirmDelete() {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -798,7 +847,7 @@ function confirmDelete() {
         const modal = bootstrap.Modal.getInstance(document.getElementById("deleteModal"));
         modal.hide();
         showToast("deleteToast");
-        getSuppliers(); // Tải lại danh sách để cập nhật giao diện
+        getSuppliers(currentPage); // Giữ nguyên trang hiện tại
     })
     .catch(error => {
         console.error("Lỗi khi cập nhật status nhà cung cấp:", error);
@@ -817,9 +866,10 @@ function showToast(toastId) {
 document.getElementById("confirmDeleteBtn").addEventListener("click", confirmDelete);
 
 // Gọi API khi tải trang
-window.onload = getSuppliers;
+window.onload = function() {
+    getSuppliers();
+};
 </script>
-
   <script src="../../../dist/js/main.js"></script>
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
