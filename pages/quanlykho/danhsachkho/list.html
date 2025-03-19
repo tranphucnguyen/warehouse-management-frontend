@@ -500,6 +500,12 @@
 
 
             </table>
+            <!-- Phân trang -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-3" id="pagination">
+      <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+    </ul>
+  </nav>
           </div>
         </div>
 
@@ -634,212 +640,261 @@
 
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
-<script>
+  <script>
+    // Biến toàn cục
     let warehouseList = []; // Danh sách kho toàn cục
-
-  // Load danh sách kho từ API
-  async function getWarehouses() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-      return;
-    }
-
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-
-    try {
-      const response = await fetch('http://172.17.152.229:8080/api/dskhohangs', {
-        method: 'GET',
-        headers: myHeaders
-      });
-
-      if (!response.ok) {
-        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+    let currentPage = 1; // Trang hiện tại
+    const itemsPerPage = 5; // Số mục trên mỗi trang
+    let totalItems = 0; // Tổng số kho
+    let totalPages = 0; // Tổng số trang
+  
+    // Load danh sách kho từ API
+    async function getWarehouses() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
       }
-
-      const data = await response.json();
-      // Lọc chỉ lấy kho có status = true
-      warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
-      console.log('Danh sách kho (status = true):', warehouseList);
-      displayWarehouses(warehouseList);
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách kho:', error);
-      alert('Không thể tải danh sách kho, vui lòng thử lại!');
+  
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${token}`);
+  
+      try {
+        const response = await fetch('http://localhost:8080/api/dskhohangs', {
+          method: 'GET',
+          headers: myHeaders
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+  
+        const data = await response.json();
+        // Lọc chỉ lấy kho có status = true
+        warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
+        console.log('Danh sách kho (status = true):', warehouseList);
+        
+        // Cập nhật phân trang
+        totalItems = warehouseList.length;
+        totalPages = Math.ceil(totalItems / itemsPerPage);
+        displayPage(currentPage); // Hiển thị trang đầu tiên
+        updatePagination(); // Cập nhật giao diện phân trang
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách kho:', error);
+        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+      }
     }
-  }
-
-  // Hiển thị danh sách kho
-  function displayWarehouses(warehouses) {
-    const warehouseListElement = document.getElementById('warehouseList');
-    if (!warehouseListElement) {
-      console.error('Không tìm thấy phần tử #warehouseList');
-      return;
+  
+    // Hiển thị kho của trang hiện tại
+    function displayPage(page) {
+      currentPage = page;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageWarehouses = warehouseList.slice(start, end); // Cắt danh sách theo trang
+      displayWarehouses(pageWarehouses);
     }
-
-    warehouseListElement.innerHTML = ''; // Xóa nội dung cũ
-
-    if (!Array.isArray(warehouses)) {
-      console.error('Dữ liệu không phải mảng:', warehouses);
-      warehouseListElement.innerHTML = '<tr><td colspan="5">Dữ liệu không hợp lệ</td></tr>';
-      return;
+  
+    // Hiển thị danh sách kho
+    function displayWarehouses(warehouses) {
+      const warehouseListElement = document.getElementById('warehouseList');
+      if (!warehouseListElement) {
+        console.error('Không tìm thấy phần tử #warehouseList');
+        return;
+      }
+  
+      warehouseListElement.innerHTML = ''; // Xóa nội dung cũ
+  
+      if (!Array.isArray(warehouses)) {
+        console.error('Dữ liệu không phải mảng:', warehouses);
+        warehouseListElement.innerHTML = '<tr><td colspan="5">Dữ liệu không hợp lệ</td></tr>';
+        return;
+      }
+  
+      if (warehouses.length === 0) {
+        warehouseListElement.innerHTML = '<tr><td colspan="5">Không có kho hàng nào</td></tr>';
+        return;
+      }
+  
+      warehouses.forEach((warehouse, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
+          <td>${warehouse.name || 'N/A'}</td>
+          <td>${warehouse.address || 'N/A'}</td>
+          <td>${warehouse.contact || 'N/A'}</td>
+          <td>${warehouse.status ? 'Hoạt động' : 'Không hoạt động'}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" onclick="editWarehouse('${warehouse.id}')">Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${warehouse.id}')">Xóa</button>
+          </td>
+        `;
+        warehouseListElement.appendChild(row);
+      });
     }
-
-    if (warehouses.length === 0) {
-      warehouseListElement.innerHTML = '<tr><td colspan="5">Không có kho hàng nào</td></tr>';
-      return;
+  
+    // Cập nhật giao diện phân trang
+    function updatePagination() {
+      const pagination = document.getElementById('pagination');
+      if (!pagination) {
+        console.error('Không tìm thấy phần tử #pagination');
+        return;
+      }
+      pagination.innerHTML = '';
+  
+      // Nút Previous
+      const prevItem = document.createElement('li');
+      prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+      prevItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
+      pagination.appendChild(prevItem);
+  
+      // Các nút số trang
+      for (let i = 1; i <= totalPages; i++) {
+        const pageItem = document.createElement('li');
+        pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+        pageItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+        pagination.appendChild(pageItem);
+      }
+  
+      // Nút Next
+      const nextItem = document.createElement('li');
+      nextItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+      nextItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
+      pagination.appendChild(nextItem);
     }
-
-    warehouses.forEach((warehouse, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${warehouse.name || 'N/A'}</td>
-        <td>${warehouse.address || 'N/A'}</td>
-        <td>${warehouse.contact || 'N/A'}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="editWarehouse('${warehouse.id}')">Sửa</button>
-          <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${warehouse.id}')">Xóa</button>
-        </td>
-      `;
-      warehouseListElement.appendChild(row);
+  
+    // Chuyển trang
+    function changePage(page) {
+      if (page < 1 || page > totalPages || page === currentPage) return;
+      displayPage(page);
+      updatePagination();
+    }
+  
+    // Chỉnh sửa kho
+    let editingId = null;
+    function editWarehouse(id) {
+      const warehouse = warehouseList.find(w => w.id === id);
+      if (warehouse) {
+        document.getElementById('editName').value = warehouse.name;
+        document.getElementById('editAddress').value = warehouse.address;
+        document.getElementById('editContact').value = warehouse.contact;
+        editingId = id;
+        openModal('editModal');
+      }
+    }
+  
+    // Lưu thay đổi kho
+    async function saveChanges() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+  
+      const updatedWarehouse = {
+        name: document.getElementById('editName').value,
+        address: document.getElementById('editAddress').value,
+        contact: document.getElementById('editContact').value,
+        status: true // Giữ status = true
+      };
+  
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${token}`);
+      myHeaders.append('Content-Type', 'application/json');
+  
+      try {
+        const response = await fetch(`http://localhost:8080/api/dskhohangs/${editingId}`, {
+          method: 'PUT',
+          headers: myHeaders,
+          body: JSON.stringify(updatedWarehouse)
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+  
+        await getWarehouses(); // Tải lại danh sách
+        closeModal('editModal');
+        showToast('saveToast');
+      } catch (error) {
+        console.error('Lỗi khi lưu thay đổi:', error);
+        alert('Không thể lưu thay đổi!');
+      }
+    }
+  
+    // Mở modal xác nhận xóa
+    let deleteId = null;
+    function openDeleteModal(khohangId) {
+      deleteId = khohangId;
+      openModal('deleteModal');
+    }
+  
+    // Xác nhận "xóa" (chuyển status thành false)
+    async function confirmDelete() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+  
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${token}`);
+      myHeaders.append('Content-Type', 'application/json');
+  
+      try {
+        const response = await fetch(`http://localhost:8080/api/dskhohangs/${deleteId}`, {
+          method: 'PUT',
+          headers: myHeaders,
+          body: JSON.stringify({ status: false }) // Chỉ cập nhật status
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+  
+        await getWarehouses(); // Tải lại danh sách
+        closeModal('deleteModal');
+        showToast('deleteToast');
+      } catch (error) {
+        console.error('Lỗi khi "xóa" kho:', error);
+        alert('Không thể xóa kho!');
+      }
+    }
+  
+    // Mở modal
+    function openModal(id) {
+      const modal = new bootstrap.Modal(document.getElementById(id));
+      modal.show();
+    }
+  
+    // Đóng modal
+    function closeModal(id) {
+      const modal = bootstrap.Modal.getInstance(document.getElementById(id));
+      if (modal) {
+        modal.hide();
+        if (id === 'deleteModal' && deleteId) {
+          const triggerButton = document.querySelector(`button[onclick="openDeleteModal('${deleteId}')"]`);
+          if (triggerButton) triggerButton.focus();
+        } else if (id === 'editModal' && editingId) {
+          const triggerButton = document.querySelector(`button[onclick="editWarehouse('${editingId}')"]`);
+          if (triggerButton) triggerButton.focus();
+        }
+      }
+    }
+  
+    // Hiển thị toast
+    function showToast(toastId) {
+      const toastElement = document.getElementById(toastId);
+      if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      }
+    }
+  
+    // Gọi khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+      getWarehouses();
     });
-  }
-
-  // Xem chi tiết kho
-  function viewWarehouse(name, address, contact) {
-    document.getElementById('viewName').textContent = name;
-    document.getElementById('viewAddress').textContent = address;
-    document.getElementById('viewContact').textContent = contact;
-    openModal('viewModal');
-  }
-
-  // Chỉnh sửa kho
-  let editingId = null;
-  function editWarehouse(id) {
-    const warehouse = warehouseList.find(w => w.id === id);
-    if (warehouse) {
-      document.getElementById('editName').value = warehouse.name;
-      document.getElementById('editAddress').value = warehouse.address;
-      document.getElementById('editContact').value = warehouse.contact;
-      editingId = id;
-      openModal('editModal');
-    }
-  }
-
-  // Lưu thay đổi kho
-  async function saveChanges() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-      return;
-    }
-
-    const updatedWarehouse = {
-      name: document.getElementById('editName').value,
-      address: document.getElementById('editAddress').value,
-      contact: document.getElementById('editContact').value,
-      status: true // Giữ status = true
-    };
-
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-    myHeaders.append('Content-Type', 'application/json');
-
-    try {
-      const response = await fetch(`http://172.17.152.229:8080/api/dskhohangs/${editingId}`, {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify(updatedWarehouse)
-      });
-
-      if (!response.ok) {
-        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-      }
-
-      await getWarehouses(); // Tải lại danh sách
-      closeModal('editModal');
-      showToast('saveToast');
-    } catch (error) {
-      console.error('Lỗi khi lưu thay đổi:', error);
-      alert('Không thể lưu thay đổi!');
-    }
-  }
-
-  // Mở modal xác nhận xóa
-  let deleteId = null;
-  function openDeleteModal(khohangId) {
-    deleteId = khohangId;
-    openModal('deleteModal');
-  }
-
-  // Xác nhận "xóa" (chuyển status thành false)
-  async function confirmDelete() {
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-      return;
-    }
-
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-    myHeaders.append('Content-Type', 'application/json');
-
-    try {
-      const response = await fetch(`http://172.17.152.229:8080/api/dskhohangs/${deleteId}`, {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify({ status: false }) // Chỉ cập nhật status
-      });
-
-      if (!response.ok) {
-        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-      }
-
-      await getWarehouses(); // Tải lại danh sách
-      closeModal('deleteModal');
-      showToast('deleteToast');
-    } catch (error) {
-      console.error('Lỗi khi "xóa" kho:', error);
-      alert('Không thể xóa kho!');
-    }
-  }
-
-  // Mở modal
-  function openModal(id) {
-    const modal = new bootstrap.Modal(document.getElementById(id));
-    modal.show();
-  }
-
-  // Đóng modal
-  function closeModal(id) {
-    const modal = bootstrap.Modal.getInstance(document.getElementById(id));
-    if (modal) {
-      modal.hide();
-      if (id === 'deleteModal' && deleteId) {
-        const triggerButton = document.querySelector(`button[onclick="openDeleteModal('${deleteId}')"]`);
-        if (triggerButton) triggerButton.focus();
-      } else if (id === 'editModal' && editingId) {
-        const triggerButton = document.querySelector(`button[onclick="editWarehouse('${editingId}')"]`);
-        if (triggerButton) triggerButton.focus();
-      }
-    }
-  }
-
-  // Hiển thị toast
-  function showToast(toastId) {
-    const toastElement = document.getElementById(toastId);
-    if (toastElement) {
-      const toast = new bootstrap.Toast(toastElement);
-      toast.show();
-    }
-  }
-
-  // Gọi khi trang load
-  document.addEventListener('DOMContentLoaded', function() {
-    getWarehouses();
-  });
-</script>
+  </script>
   <!-- jQuery UI 1.11.4 -->
   <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

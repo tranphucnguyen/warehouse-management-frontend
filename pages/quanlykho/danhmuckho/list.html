@@ -487,8 +487,14 @@
               <tbody id="categoryTableBody">
                 <!-- Danh mục sẽ được hiển thị ở đây -->
               </tbody>
-
+              <!-- Phân trang -->
+             
             </table>
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-3" id="pagination">
+                <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+              </ul>
+            </nav>
           </div>
         </div>
 
@@ -609,225 +615,274 @@
   </div>
 
   <script>
-    // Lấy danh sách danh mục từ API
+    // Biến toàn cục
+    let currentPage = 1;
+    const itemsPerPage = 5; // Số mục trên mỗi trang
+    let totalItems = 0; // Tổng số danh mục
+    let totalPages = 0; // Tổng số trang
+    let allCategories = []; // Lưu toàn bộ danh mục
+    
+    // Lấy danh sách danh mục từ API (toàn bộ)
     function getCategories() {
-        let token = localStorage.getItem("accessToken");
-
-        if (!token) {
-            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-            return;
-        }
-
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        fetch("http://172.17.152.229:8080/api/categories", {
-            method: "GET",
-            headers: myHeaders
-        })
+      let token = localStorage.getItem("accessToken");
+    
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+      }
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+    
+      fetch(`http://localhost:8080/api/categories`, { // Bỏ tham số page và size
+        method: "GET",
+        headers: myHeaders
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
         })
         .then(data => {
-            console.log("Danh sách danh mục:", data);
-            if (data.data && data.data.listCategory) {
-                updateCategoryUI(data.data.listCategory);
-            } else {
-                console.error("Dữ liệu không hợp lệ:", data);
-            }
+          console.log("Danh sách danh mục:", data);
+          if (data.data && data.data.listCategory) {
+            allCategories = data.data.listCategory.filter(category => category.status === true); // Lọc status: true
+            totalItems = allCategories.length;
+            totalPages = Math.ceil(totalItems / itemsPerPage);
+            displayPage(currentPage); // Hiển thị trang hiện tại
+            updatePagination(); // Cập nhật phân trang
+          } else {
+            console.error("Dữ liệu không hợp lệ:", data);
+          }
         })
         .catch(error => {
-            console.error("Lỗi khi lấy danh sách:", error);
-            alert("Không thể tải danh sách danh mục!");
+          console.error("Lỗi khi lấy danh sách:", error);
+          alert("Không thể tải danh sách danh mục!");
         });
     }
-
-    // Cập nhật giao diện danh sách danh mục (Lọc status: true)
+    
+    // Hiển thị danh mục của trang hiện tại
+    function displayPage(page) {
+      currentPage = page;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageCategories = allCategories.slice(start, end); // Cắt danh sách theo trang
+      updateCategoryUI(pageCategories);
+    }
+    
+    // Cập nhật giao diện danh sách danh mục
     function updateCategoryUI(categories) {
-        const categoryTableBody = document.getElementById("categoryTableBody");
-        categoryTableBody.innerHTML = ""; // Xóa nội dung cũ
-
-        // Lọc chỉ hiển thị danh mục có status: true
-        const activeCategories = categories.filter(category => category.status === true);
-
-        if (activeCategories.length === 0) {
-            categoryTableBody.innerHTML = "<tr><td colspan='5'>Không có danh mục hoạt động nào</td></tr>";
-            return;
-        }
-
-        activeCategories.forEach((category, index) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${category.categoryName || "N/A"}</td>
-                <td>${category.description || "Không có mô tả"}</td>
-                <td>${category.status ? "Hoạt động" : "Không hoạt động"}</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" onclick="editCategory(${category.categoryId})">Sửa</button>
-                    <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${category.categoryId})">Xóa</button>
-                </td>
-            `;
-            categoryTableBody.appendChild(row);
-        });
+      const categoryTableBody = document.getElementById("categoryTableBody");
+      categoryTableBody.innerHTML = ""; // Xóa nội dung cũ
+    
+      if (categories.length === 0) {
+        categoryTableBody.innerHTML = "<tr><td colspan='4'>Không có danh mục hoạt động nào</td></tr>";
+        return;
+      }
+    
+      categories.forEach((category, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${(currentPage - 1) * itemsPerPage + index + 1}</td>
+          <td>${category.categoryName || "N/A"}</td>
+          <td>${category.description || "Không có mô tả"}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="editCategory(${category.categoryId})">Sửa</button>
+            <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${category.categoryId})">Xóa</button>
+          </td>
+        `;
+        categoryTableBody.appendChild(row);
+      });
     }
-
+    
+    // Cập nhật giao diện phân trang
+    function updatePagination() {
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+    
+      // Nút Previous
+      const prevItem = document.createElement("li");
+      prevItem.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+      prevItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
+      pagination.appendChild(prevItem);
+    
+      // Các nút số trang
+      for (let i = 1; i <= totalPages; i++) {
+        const pageItem = document.createElement("li");
+        pageItem.className = `page-item ${i === currentPage ? "active" : ""}`;
+        pageItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+        pagination.appendChild(pageItem);
+      }
+    
+      // Nút Next
+      const nextItem = document.createElement("li");
+      nextItem.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
+      nextItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
+      pagination.appendChild(nextItem);
+    }
+    
+    // Chuyển trang
+    function changePage(page) {
+      if (page < 1 || page > totalPages || page === currentPage) return;
+      displayPage(page);
+      updatePagination();
+    }
+    
     // Mở modal chỉnh sửa và điền dữ liệu
     let editingId = null;
     function editCategory(categoryId) {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-            return;
-        }
-
-        const myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        fetch(`http://172.17.152.229:8080/api/categories/${categoryId}`, {
-            method: "GET",
-            headers: myHeaders
-        })
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+      }
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${token}`);
+    
+      fetch(`http://localhost:8080/api/categories/${categoryId}`, {
+        method: "GET",
+        headers: myHeaders
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
         })
         .then(data => {
-            const category = data.data;
-            if (category) {
-                document.getElementById("editId").value = category.categoryId || categoryId;
-                document.getElementById("editName").value = category.categoryName || "";
-                document.getElementById("editDescription").value = category.description || "";
-                editingId = categoryId;
-                const modal = new bootstrap.Modal(document.getElementById("editModal"));
-                modal.show();
-            } else {
-                throw new Error("Không tìm thấy dữ liệu danh mục!");
-            }
+          const category = data.data;
+          if (category) {
+            document.getElementById("editId").value = category.categoryId || categoryId;
+            document.getElementById("editName").value = category.categoryName || "";
+            document.getElementById("editDescription").value = category.description || "";
+            editingId = categoryId;
+            const modal = new bootstrap.Modal(document.getElementById("editModal"));
+            modal.show();
+          } else {
+            throw new Error("Không tìm thấy dữ liệu danh mục!");
+          }
         })
         .catch(error => {
-            console.error("Lỗi khi lấy thông tin danh mục:", error);
-            alert("Không thể tải thông tin danh mục: " + error.message);
+          console.error("Lỗi khi lấy thông tin danh mục:", error);
+          alert("Không thể tải thông tin danh mục: " + error.message);
         });
     }
-
+    
     // Lưu thay đổi
     function saveChanges() {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-            return;
-        }
-
-        const categoryId = document.getElementById("editId").value;
-        const updatedCategory = {
-            categoryName: document.getElementById("editName").value,
-            description: document.getElementById("editDescription").value
-        };
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        const requestOptions = {
-            method: "PUT",
-            headers: myHeaders,
-            body: JSON.stringify(updatedCategory),
-            redirect: "follow"
-        };
-
-        fetch(`http://172.17.152.229:8080/api/categories/${categoryId}`, requestOptions)
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+      }
+    
+      const categoryId = document.getElementById("editId").value;
+      const updatedCategory = {
+        categoryName: document.getElementById("editName").value,
+        description: document.getElementById("editDescription").value
+      };
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+    
+      const requestOptions = {
+        method: "PUT",
+        headers: myHeaders,
+        body: JSON.stringify(updatedCategory),
+        redirect: "follow"
+      };
+    
+      fetch(`http://localhost:8080/api/categories/${categoryId}`, requestOptions)
         .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(`Lỗi: ${response.status} - ${response.statusText} - ${text}`);
-                });
-            }
-            return response.text();
+          if (!response.ok) {
+            return response.text().then(text => {
+              throw new Error(`Lỗi: ${response.status} - ${response.statusText} - ${text}`);
+            });
+          }
+          return response.text();
         })
         .then(result => {
-            console.log("Kết quả từ server sau khi sửa:", result);
-            const modal = bootstrap.Modal.getInstance(document.getElementById("editModal"));
-            modal.hide();
-            showToast("saveToast");
-            getCategories();
+          console.log("Kết quả từ server sau khi sửa:", result);
+          const modal = bootstrap.Modal.getInstance(document.getElementById("editModal"));
+          modal.hide();
+          showToast("saveToast");
+          getCategories(); // Tải lại toàn bộ danh sách và hiển thị trang hiện tại
         })
         .catch(error => {
-            console.error("Lỗi khi cập nhật danh mục:", error);
-            alert("Không thể cập nhật danh mục: " + error.message);
+          console.error("Lỗi khi cập nhật danh mục:", error);
+          alert("Không thể cập nhật danh mục: " + error.message);
         });
     }
-
+    
     // Mở modal xác nhận xóa
     let deleteId = null;
     function openDeleteModal(categoryId) {
-        deleteId = categoryId;
-        const modal = new bootstrap.Modal(document.getElementById("deleteModal"));
-        modal.show();
+      deleteId = categoryId;
+      const modal = new bootstrap.Modal(document.getElementById("deleteModal"));
+      modal.show();
     }
-
+    
     // Xác nhận xóa
     function confirmDelete() {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-            return;
-        }
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", `Bearer ${token}`);
-
-        const raw = JSON.stringify({
-            "ids": [deleteId]
-        });
-
-        const requestOptions = {
-            method: "DELETE",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-
-        fetch("http://172.17.152.149:8080/api/categories", requestOptions)
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        return;
+      }
+    
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+    
+      const raw = JSON.stringify({
+        "ids": [deleteId]
+      });
+    
+      const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+    
+      fetch("http://localhost:8080/api/categories", requestOptions)
         .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(`Lỗi: ${response.status} - ${response.statusText} - ${text}`);
-                });
-            }
-            return response.text();
+          if (!response.ok) {
+            return response.text().then(text => {
+              throw new Error(`Lỗi: ${response.status} - ${response.statusText} - ${text}`);
+            });
+          }
+          return response.text();
         })
         .then(result => {
-            console.log("Kết quả từ server sau khi xóa:", result);
-            const modal = bootstrap.Modal.getInstance(document.getElementById("deleteModal"));
-            modal.hide();
-            showToast("deleteToast");
-            getCategories(); // Tải lại danh sách để cập nhật trạng thái
+          console.log("Kết quả từ server sau khi xóa:", result);
+          const modal = bootstrap.Modal.getInstance(document.getElementById("deleteModal"));
+          modal.hide();
+          showToast("deleteToast");
+          getCategories(); // Tải lại toàn bộ danh sách và hiển thị trang hiện tại
         })
         .catch(error => {
-            console.error("Lỗi khi xóa danh mục:", error);
-            alert("Không thể xóa danh mục: " + error.message);
+          console.error("Lỗi khi xóa danh mục:", error);
+          alert("Không thể xóa danh mục: " + error.message);
         });
     }
-
+    
     // Hàm hiển thị toast
     function showToast(toastId) {
-        const toastElement = document.getElementById(toastId);
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
+      const toastElement = document.getElementById(toastId);
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
     }
-
+    
     // Gắn sự kiện cho nút "Xóa" trong modal
     document.getElementById("confirmDeleteBtn").addEventListener("click", confirmDelete);
-
+    
     // Gọi API khi tải trang
-    window.onload = getCategories;
-</script>
+    window.onload = () => getCategories();
+    </script>
 
   <script src="../../../dist/js/main.js"></script>
   <!-- jQuery -->

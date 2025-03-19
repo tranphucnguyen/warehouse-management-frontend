@@ -553,7 +553,7 @@ async function createSupplier() {
 
     try {
         // Gửi request
-        const response = await fetch("http://172.17.152.229:8080/api/suppliers", requestOptions);
+        const response = await fetch("http://localhost:8080/api/suppliers", requestOptions);
         const result = await response.text();
 
         // Xử lý phản hồi

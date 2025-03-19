@@ -506,7 +506,7 @@
           const myHeaders = new Headers();
           myHeaders.append("Authorization", `Bearer ${token}`);
       
-          fetch("http://172.17.152.229:8080/api/categories", {
+          fetch("http://localhost:8080/api/categories", {
               method: "GET",
               headers: myHeaders
           })
@@ -580,7 +580,7 @@
         myHeaders.append("Content-Type", "application/json");
       
         // Gửi request POST đến API
-        fetch("http://172.17.155.151:8080/api/products", {
+        fetch("http://localhost:8080/api/products", {
           method: "POST",
           headers: myHeaders,
           body: JSON.stringify(newProduct)

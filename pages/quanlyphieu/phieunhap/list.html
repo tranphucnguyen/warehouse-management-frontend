@@ -27,11 +27,19 @@
   <!-- summernote -->
   <link rel="stylesheet" href="../../../plugins/summernote/summernote-bs4.min.css">
   <!-- bonus css-->
-   <link rel="stylesheet" href="../../../dist/css/bonus_css.css">
-         <!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="../../../dist/css/bonus_css.css">
 </head>
+<style>
+  .row.mb-3.p-3 {
+    margin: 0;
+  }
+  .phieu-actions button {
+    margin-right: 5px;
+  }
+  .text-center {
+    text-align: center;
+  }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -222,7 +230,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              
               <li class="nav-item menu-open">
                 <a href="#" class="nav-link active">
                   <i class="nav-icon fas fa-warehouse"></i>
@@ -232,7 +239,6 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  
                   <li class="nav-item">
                     <a href="../../quanlykho/danhmuckho/create.html" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
@@ -245,7 +251,6 @@
                       <p>Danh sách</p>
                     </a>
                   </li>
-                  
                 </ul>
               </li>
               <li class="nav-item menu-open">
@@ -257,7 +262,6 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  
                   <li class="nav-item">
                     <a href="../../quanlykho/danhsachkho/create.html" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
@@ -270,7 +274,6 @@
                       <p>Danh sách</p>
                     </a>
                   </li>
-                  
                 </ul>
               </li>
               <li class="nav-item">
@@ -279,7 +282,6 @@
                   <p>Cập nhật số lượng tồn kho</p>
                 </a>
               </li>
-              
             </ul>
           </li>
           <li class="nav-item menu-open">
@@ -408,9 +410,7 @@
               </li>
             </ul>
           </li>
-          
           <li class="nav-item menu-open">
-            
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="../../lichsugiaohang/lichsugiaohang.html" class="nav-link">
@@ -418,13 +418,6 @@
                   <p>Lịch sử giao hàng</p>
                 </a>
               </li>
-              <!-- <li class="nav-item">
-                <a href="./thong_tin_don_hang.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thông tin đơn hàng</p>
-                </a>
-              </li> -->
-              
             </ul>
           </li>
         </ul>
@@ -455,7 +448,6 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-
     <section class="content">
       <div class="card">
         <div class="card-header">
@@ -470,21 +462,18 @@
           </div>
         </div>
         <div class="card-body p-0">
-          <!-- Bộ lọc -->
           <div class="row mb-3 p-3">
             <div class="col-md-4">
-              <label for="filterDate">Ngày nhập:</label>
-              <input type="date" id="filterDate" class="form-control">
+              <label for="filterStartDate">Ngày bắt đầu:</label>
+              <input type="date" id="filterStartDate" class="form-control" onchange="filterInvoices()">
             </div>
             <div class="col-md-4">
-              <label for="filterDate">Ngày kết thúc:</label>
-              <input type="date" id="filterDate" class="form-control">
+              <label for="filterEndDate">Ngày kết thúc:</label>
+              <input type="date" id="filterEndDate" class="form-control" onchange="filterInvoices()">
             </div>
             <div class="col-md-4">
               <label for="filterNCC">Nhà cung cấp:</label>
-              <select id="filterNCC" class="form-control">
-                <option value="">Chọn nhà cung cấp</option>
-              </select>
+              <input type="text" id="filterNCC" class="form-control" placeholder="Tên nhà cung cấp" oninput="filterInvoices()">
             </div>
           </div>
           <hr/>
@@ -492,428 +481,103 @@
             <thead>
               <tr>
                 <th class="text-center" style="width: 5%">#</th>
-                <!-- <th style="width: 13%">Mã sản phẩm</th> -->
-                <th class="text-center" style="width: 16%">Tên sản phẩm</th>
-                <th class="text-center" style="width: 16%">Số lượng</th>
-                <th class="text-center" style="width: 16%">VAT</th>
-                <th class="text-center" style="width: 16%">Chiết khấu</th>
-                <th class="text-center" style="width: 16%">Thành tiền</th>
-                <!-- <th class="text-center" style="width: 20%">Trạng thái</th> -->
+                <th class="text-center" style="width: 15%">Mã phiếu</th>
+                <th class="text-center" style="width: 15%">Kho nhập</th>
+                <th class="text-center" style="width: 15%">Nhà cung cấp</th>
+                <th class="text-center" style="width: 15%">Ngày nhập</th>
+                <th class="text-center" style="width: 15%">Tổng tiền</th>
+                <th class="text-center" style="width: 20%">Hành động</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>NK-01</td>
-                <td>Công ty ABC</td>
-                <td>Kho A</td>
-                <td>Supplier A</td>
-                <td>2025-03-15</td>
-                <td>Ghi chú mẫu</td>
-                <td>Hoàn thành</td>
-                <td class="phieu-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewPhieu('Nhập kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editPhieu('Nhập kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="invoiceList"></tbody>
           </table>
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-3" id="pagination">
+              <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+            </ul>
+          </nav>
         </div>
       </div>
-
-      <!-- View Modal -->
-      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+  
+      <!-- Modal Xóa -->
+      <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="viewModalLabel">Chi tiết phiếu</h5>
+              <h5 class="modal-title">Xác nhận xóa</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <p><strong>Mã phiếu nhập:</strong> <span id="viewMaPhieuNhap"></span></p>
-              <!-- <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p> -->
-              <p><strong>Kho nhập:</strong> <span id="viewKhoNhap"></span></p>
-              <p><strong>Người nhập:</strong> <span id="viewNguoiNhap"></span></p>
-              <p><strong>Ngày nhập:</strong> <span id="viewNgayNhap"></span></p>
-              <p><strong>Tổng tiền:</strong> <span id="viewTongTien"></span></p>
-              <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
-
-              <h5>Danh sách sản phẩm</h5>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                  </tr>
-                </thead>
-                <tbody id="viewDanhSachSanPham">
-                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
-                </tbody>
-              </table>
+              <p>Bạn có chắc chắn muốn xóa phiếu nhập này không?</p>
             </div>
-            <!-- <div class="modal-body">
-                  <p><strong>Mã phiếu nhập:</strong> <span id="viewMaPhieuNhap"></span></p>
-                  <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p>
-                  <p><strong>Kho nhập:</strong> <span id="viewKhoNhap"></span></p>
-                  <p><strong>Người nhập:</strong> <span id="viewNguoiNhap"></span></p>
-                  <p><strong>Ngày nhập:</strong> <span id="viewNgayNhap"></span></p>
-                  <p><strong>Tổng tiền:</strong> <span id="viewTongTien"></span></p>
-                  <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
-            -->
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Edit Modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+  
+      <!-- Modal Chỉnh sửa -->
+      <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Chỉnh sửa phiếu</h5>
+              <h5 class="modal-title">Chỉnh sửa phiếu nhập</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <label for="editMaPhieu" class="mt-2">Mã phiếu nhập:</label>
-              <input type="text" id="editMaPhieu" class="form-control" readonly>
-              
-              <!-- <label for="editNhaCungCap" class="mt-2">Nhà cung cấp:</label>
-              <input type="text" id="editNhaCungCap" class="form-control"> -->
-
-              <label for="editKhoNhap" class="mt-2">Kho nhập:</label>
-              <input type="text" id="editKhoNhap" class="form-control">
-              
-              <label for="editNguoiNhap">Người nhập:</label>
-              <input type="text" id="editNguoiNhap" class="form-control">
-              
-              <label for="editNgayNhap" class="mt-2">Ngày nhập:</label>
-              <input type="date" id="editNgayNhap" class="form-control">
-
-              <label for="editTongTien" class="mt-2">Tổng tiền:</label>
-              <input id="editTongTien" class="form-control" readonly>
-
-              <label for="editTrangThai" class="mt-2">Trạng thái:</label>
-              <input type="text" id="editTrangThai" class="form-control" readonly>
-
-              <h5 class="mt-3">Danh sách sản phẩm</h5>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody id="editDanhSachSanPham">
-                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
-                </tbody>
-              </table>
+              <form id="editForm">
+                <input type="hidden" id="editInvoicesId">
+                <div class="mb-3">
+                  <label for="editImportDate" class="form-label">Ngày nhập:</label>
+                  <input type="date" class="form-control" id="editImportDate" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editSupplierId" class="form-label">Nhà cung cấp:</label>
+                  <select class="form-control" id="editSupplierId" required >
+                    <option value="">Chọn nhà cung cấp</option>
+                    <!-- Các tùy chọn sẽ được điền bằng JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="editKhohangId" class="form-label">Kho hàng:</label>
+                  <select class="form-control" id="editKhohangId" required>
+                    <option value="">Chọn kho hàng</option>
+                    <!-- Các tùy chọn sẽ được điền bằng JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="editTotalAmount" class="form-label">Tổng tiền trước thuế:</label>
+                  <input type="number" class="form-control" id="editTotalAmount" readonly required>
+                </div>
+                <div class="mb-3">
+                  <label for="editVat" class="form-label">VAT (%):</label>
+                  <input type="number" class="form-control" id="editVat" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editDiscount" class="form-label">Giảm giá (%):</label>
+                  <input type="number" class="form-control" id="editDiscount" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editFinalAmount" class="form-label">Tổng tiền cuối cùng:</label>
+                  <input type="number" class="form-control" id="editFinalAmount" readonly required>
+                </div>
+              </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
-              <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button class="btn btn-primary" id="confirmEditBtn">Lưu</button>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Delete Modal -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xóa phiếu</h5>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa phiếu này không?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <script>
-        // Hàm hiển thị danh sách phiếu
-        function loadInvoices() {
-          const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-          const tbody = document.querySelector(".phieu tbody");
-          tbody.innerHTML = "";
-
-          invoices.forEach((invoice, index) => {
-            const row = `
-              <tr>
-                <td class="text-center">${index + 1}</td>
-                <td class="text-center">${invoice.productID}</td>
-                <td class="text-center">${invoice.quantity}</td>
-                <td class="text-center">${invoice.vat}</td>
-                <td class="text-center">${invoice.discount}</td>
-                <td class="text-center">${invoice.totalAmount}</td>
-                <td class="phieu-actions text-center">
-                  <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick='editInvoice(${JSON.stringify(invoice)})'>
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${invoice.code}')">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
-            `;
-            tbody.innerHTML += row;
-          });
-        }
-
-        // Tải danh sách phiếu khi load trang
-        window.onload = loadInvoices;
-
-
-        let deleteCode = null; // Biến lưu trữ mã phiếu cần xóa
-
-        // Mở modal xác nhận xóa
-        function deleteInvoice(code) {
-          deleteCode = code; // Lưu mã phiếu cần xóa
-          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-          deleteModal.show();
-        }
-
-        // Xác nhận xóa phiếu
-        function confirmDelete() {
-          if (!deleteCode) return;
-
-          let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-          invoices = invoices.filter(invoice => invoice.code !== deleteCode);
-          localStorage.setItem("invoices", JSON.stringify(invoices));
-          
-          deleteCode = null; // Reset lại biến
-          loadInvoices(); // Cập nhật lại danh sách phiếu
-
-          // Ẩn modal sau khi xóa
-          const deleteModalElement = document.getElementById('deleteModal');
-          const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalElement);
-          deleteModalInstance.hide();
-
-          // Hiển thị toast thông báo
-          showDeleteToast();
-        }
-
-        // Hiển thị toast thông báo xóa
-        function showDeleteToast() {
-          const toastElement = document.getElementById('deleteToast');
-          const toast = new bootstrap.Toast(toastElement);
-          toast.show();
-        }
-
-
-
-
-
-        // Hiển thị modal chi tiết phiếu
-        function viewInvoice(invoice) {
-          if (!invoice || typeof invoice !== 'object') {
-            console.error('Dữ liệu phiếu nhập không hợp lệ:', invoice);
-            return;
-          }
-
-          // document.getElementById("viewNhaCungCap").textContent = invoice.supplier || "Không có";
-          document.getElementById("viewKhoNhap").textContent = invoice.warehouse || "Không có";
-          document.getElementById("viewNguoiNhap").textContent = invoice.user || "Không có";
-          document.getElementById("viewNgayNhap").textContent = invoice.date || "Không có";
-          document.getElementById("viewTongTien").textContent = invoice.amount || "0";
-          document.getElementById("viewTrangThai").textContent = invoice.status || "Không xác định";
-
-          // Kiểm tra danh sách sản phẩm
-          const productList = document.getElementById("viewDanhSachSanPham");
-          productList.innerHTML = "";
-
-          if (Array.isArray(invoice.products) && invoice.products.length > 0) {
-            invoice.products.forEach(product => {
-              const row = `<tr>
-                <td>${product.name || "Không có"}</td>
-                <td>${product.quantity || 0}</td>
-                <td>${product.price || 0}</td>
-              </tr>`;
-              productList.insertAdjacentHTML("beforeend", row);
-            });
-          } else {
-            productList.innerHTML = `<tr><td colspan="3" class="text-center">Không có sản phẩm nào</td></tr>`;
-          }
-
-          // Hiển thị modal
-          const modalElement = document.getElementById("viewModal");
-          if (modalElement) {
-            const viewModal = new bootstrap.Modal(modalElement);
-            viewModal.show();
-          } else {
-            console.error("Không tìm thấy modal với ID 'viewModal'");
-          }
-        }
-
-
-        // Hàm mở modal và đổ dữ liệu vào form
-        function editInvoice(invoice) {
-          if (!invoice || typeof invoice !== 'object') {
-            console.error('Dữ liệu phiếu không hợp lệ:', invoice);
-            return;
-          }
-
-          // Gán thông tin vào form chỉnh sửa
-          document.getElementById("editNguoiNhap").value = invoice.user || "";
-          document.getElementById("editMaPhieu").value = invoice.id || "";
-          document.getElementById("editNgayNhap").value = invoice.date || "";
-          document.getElementById("editKhoNhap").value = invoice.warehouse || "";
-          // document.getElementById("editNhaCungCap").value = invoice.supplier || "";
-          document.getElementById("editTongTien").value = invoice.amount || "";
-          document.getElementById("editTrangThai").value = invoice.status || "";
-
-          // Xử lý danh sách sản phẩm
-          const editProductList = document.getElementById("editDanhSachSanPham");
-          editProductList.innerHTML = "";
-
-          if (Array.isArray(invoice.products) && invoice.products.length > 0) {
-            invoice.products.forEach((product, index) => {
-              const row = `
-                <tr id="productRow-${index}">
-                  <td><input type="text" class="form-control" value="${product.name || ''}" id="editProductName-${index}"></td>
-                  <td><input type="number" class="form-control" value="${product.quantity || 0}" id="editProductQuantity-${index}"></td>
-                  <td><input type="number" class="form-control" value="${product.price || 0}" id="editProductPrice-${index}"></td>
-                  <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">Xóa</button></td>
-                </tr>
-              `;
-              editProductList.insertAdjacentHTML("beforeend", row);
-            });
-          } else {
-            editProductList.innerHTML = `<tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>`;
-          }
-
-          // Hiển thị modal chỉnh sửa
-          const editModal = new bootstrap.Modal(document.getElementById("editModal"));
-          editModal.show();
-        }
-
-        // Hàm xóa sản phẩm khỏi danh sách
-        function removeProduct(index) {
-          const productRow = document.getElementById(`productRow-${index}`);
-          if (productRow) {
-            productRow.remove();
-          }
-        }
-        
-        // Hàm mở modal
-        function openModal(id) {
-          const modal = new bootstrap.Modal(document.getElementById(id));
-          modal.show();
-        }
-
-        // Hàm đóng modal
-        function closeModal(modalId) {
-          const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-          if (modal) modal.hide();
-        }
-
-        // Hiển thị Toast thông báo
-        function showSaveToast() {
-          const toast = new bootstrap.Toast(document.getElementById('saveToast'));
-          toast.show();
-        }
-
-        // Cập nhật lại thông tin phiếu trên giao diện
-        // function updatePhieuOnUI(updatedPhieu) {
-        //   const phieuRow = document.querySelector(`[data-ma-phieu="${updatedPhieu.maPhieu}"]`);
-        //   if (phieuRow) {
-        //     phieuRow.querySelector('.phieu-loai').textContent = updatedPhieu.NguoiNhap;
-        //     phieuRow.querySelector('.phieu-ngay').textContent = updatedPhieu.ngayNhap;
-        //     phieuRow.querySelector('.phieu-kho').textContent = updatedPhieu.khoNhap;
-        //     phieuRow.querySelector('.phieu-ncc').textContent = updatedPhieu.NhaCungCap;
-        //     phieuRow.querySelector('.phieu-ghi-chu').textContent = updatedPhieu.TongTien;
-        //     phieuRow.querySelector('.phieu-trang-thai').textContent = updatedPhieu.trangThai;
-        //   }
-        // }
-
-        /// Hàm lưu thay đổi và hiển thị Toast thông báo
-        function saveChanges() {
-          const updatedInvoice = {
-            user: document.getElementById("editNguoiNhap").value,
-            id: document.getElementById("editMaPhieu").value,
-            date: document.getElementById("editNgayNhap").value,
-            warehouse: document.getElementById("editKhoNhap").value,
-            supplier: document.getElementById("editNhaCungCap").value,
-            amount: document.getElementById("editTongTien").value,
-            status: document.getElementById("editTrangThai").value,
-            products: []
-          };
-
-          const rows = document.querySelectorAll("#editDanhSachSanPham tr");
-          rows.forEach((row, index) => {
-            const name = document.getElementById(`editProductName-${index}`).value;
-            const quantity = parseInt(document.getElementById(`editProductQuantity-${index}`).value) || 0;
-            const price = parseFloat(document.getElementById(`editProductPrice-${index}`).value) || 0;
-
-            if (name && quantity > 0 && price > 0) {
-              updatedInvoice.products.push({ name, quantity, price });
-            }
-          });
-
-          console.log("Dữ liệu cập nhật:", updatedInvoice);
-
-          // Hiển thị thông báo thành công
-          showSaveToast();
-
-          closeModal('editModal');
-        }
-
-
-        // Khởi chạy: Tải danh sách phiếu khi trang load
-        window.addEventListener('DOMContentLoaded', loadPhieuList);
-
-        document.addEventListener("DOMContentLoaded", function () {
-              // Set ngày hiện tại
-              document.getElementById("filterDate").valueAsDate = new Date();
-
-              // Fetch danh sách người nhập
-              fetch('/api/nguoi-nhap')
-                  .then(response => response.json())
-                  .then(data => {
-                      let nguoiNhapSelect = document.getElementById("filterNguoiNhap");
-                      data.forEach(item => {
-                          let option = document.createElement("option");
-                          option.value = item.id;
-                          option.textContent = item.ten;
-                          nguoiNhapSelect.appendChild(option);
-                      });
-                  });
-
-              // Fetch danh sách kho
-              fetch('/api/kho-hang')
-                  .then(response => response.json())
-                  .then(data => {
-                      let khoSelect = document.getElementById("filterNCC");
-                      data.forEach(item => {
-                          let option = document.createElement("option");
-                          option.value = item.id;
-                          option.textContent = item.ten;
-                          khoSelect.appendChild(option);
-                      });
-                  });
-          });
-
-      </script>
+  
     </section>
-
     <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
-      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
             🟢 Đã lưu thay đổi thành công!
@@ -922,25 +586,20 @@
         </div>
       </div>
     </div>
-
-    <!-- Toast thông báo xóa -->
+    <!-- Toast thông báo -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
       <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
-          <div class="toast-body">
-            🔴 Đã xóa danh mục thành công!
-          </div>
+          <div class="toast-body">🔴 Đã xử lý thành công!</div>
           <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>
     </div>
-    
-    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Copyright © 2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 1.1.0
@@ -953,8 +612,423 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
+<script>
+  let invoiceList = [];
+  let invoiceIdToDelete = null;
+  let invoiceIdToEdit = null;
+  let supplierList = [];
+  let warehouseList = [];
+  let currentPage = 1; // Trang hiện tại
+  const itemsPerPage = 5; // Số mục trên mỗi trang
+  let totalItems = 0; // Tổng số phiếu nhập
+  let totalPages = 0; // Tổng số trang
+  let filteredInvoices = []; // Danh sách đã lọc để phân trang
 
+  // Lấy danh sách nhà cung cấp
+  async function getSuppliers() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/suppliers', {
+        method: 'GET',
+        headers: myHeaders
+      });
+
+      if (!response.ok) {
+        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      supplierList = (data.data?.listSupplier || []).filter(supplier =>
+        supplier.status === undefined || supplier.status === true
+      );
+      console.log('Danh sách nhà cung cấp (status = true):', supplierList);
+      populateSupplierDropdown();
+    } catch (error) {
+      console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
+      alert('Không thể tải danh sách nhà cung cấp!');
+    }
+  }
+
+  // Lấy danh sách kho
+  async function getWarehouses() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/dskhohangs', {
+        method: 'GET',
+        headers: myHeaders
+      });
+
+      if (!response.ok) {
+        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
+      console.log('Danh sách kho (status = true):', warehouseList);
+      populateWarehouseDropdown();
+    } catch (error) {
+      console.error('Lỗi khi lấy danh sách kho:', error);
+      alert('Không thể tải danh sách kho, vui lòng thử lại!');
+    }
+  }
+
+  // Điền dữ liệu vào dropdown nhà cung cấp
+  function populateSupplierDropdown() {
+    const supplierDropdown = document.getElementById('editSupplierId');
+    supplierDropdown.innerHTML = '<option value="">Chọn nhà cung cấp</option>';
+
+    supplierList.forEach(supplier => {
+      const option = document.createElement('option');
+      option.value = supplier.supplierId;
+      option.textContent = supplier.supplierName;
+      supplierDropdown.appendChild(option);
+    });
+  }
+
+  // Điền dữ liệu vào dropdown kho hàng
+  function populateWarehouseDropdown() {
+    const warehouseDropdown = document.getElementById('editKhohangId');
+    warehouseDropdown.innerHTML = '<option value="">Chọn kho hàng</option>';
+
+    warehouseList.forEach(warehouse => {
+      const option = document.createElement('option');
+      option.value = warehouse.khohangId;
+      option.textContent = warehouse.name;
+      warehouseDropdown.appendChild(option);
+    });
+  }
+
+  // Tải danh sách phiếu nhập
+  async function loadInvoices(supplierName = '', contactInfo = '') {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    let url = 'http://localhost:8080/api/import-invoices';
+    const params = new URLSearchParams();
+    if (supplierName) params.append('supplierName', supplierName);
+    if (contactInfo) params.append('contactInfo', contactInfo);
+    if (params.toString()) url += `?${params.toString()}`;
+
+    try {
+      console.log('Gửi yêu cầu tới:', url);
+      const response = await fetch(url, { method: 'GET', headers: myHeaders });
+      console.log('Response status:', response.status);
+      const rawResponse = await response.text();
+
+      if (!response.ok) throw new Error(`Lỗi: ${response.status} - ${rawResponse}`);
+
+      const data = JSON.parse(rawResponse);
+      invoiceList = Array.isArray(data.data?.listImportInvoices) ? data.data.listImportInvoices : [];
+      console.log('Danh sách phiếu nhập:', invoiceList);
+
+      // Khởi tạo filteredInvoices và hiển thị trang đầu tiên
+      filteredInvoices = invoiceList.filter(invoice => invoice.status === true);
+      totalItems = filteredInvoices.length;
+      totalPages = Math.ceil(totalItems / itemsPerPage);
+      displayPage(currentPage);
+      updatePagination();
+    } catch (error) {
+      console.error('Lỗi khi lấy danh sách phiếu nhập:', error);
+      alert(`Không thể tải danh sách phiếu nhập: ${error.message}`);
+      document.getElementById('invoiceList').innerHTML = `<tr><td colspan="7" class="text-center">Lỗi: ${error.message}</td></tr>`;
+    }
+  }
+
+  // Hiển thị phiếu nhập của trang hiện tại
+  function displayPage(page) {
+    currentPage = page;
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageInvoices = filteredInvoices.slice(start, end);
+    displayInvoices(pageInvoices);
+  }
+
+  // Hiển thị danh sách phiếu nhập
+  function displayInvoices(invoices) {
+    const invoiceListElement = document.getElementById('invoiceList');
+    invoiceListElement.innerHTML = '';
+
+    if (!Array.isArray(invoices) || invoices.length === 0) {
+      invoiceListElement.innerHTML = '<tr><td colspan="7" class="text-center">Không có phiếu nhập nào</td></tr>';
+      return;
+    }
+
+    invoices.forEach((invoice, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = 
+        `<td class="text-center">${(currentPage - 1) * itemsPerPage + index + 1}</td>
+        <td class="text-center">${invoice.invoicesId || 'N/A'}</td>
+        <td class="text-center">${invoice.dskhohang?.name || 'N/A'}</td>
+        <td class="text-center">${invoice.supplier?.supplierName || 'N/A'}</td>
+        <td class="text-center">${invoice.importDate || 'N/A'}</td>
+        <td class="text-center">${invoice.finalAmount ? invoice.finalAmount.toLocaleString('vi-VN') : 'N/A'}</td>
+        <td class="text-center phieu-actions">
+          <button class="btn btn-primary btn-sm" onclick="openEditModal('${invoice.invoicesId}')">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${invoice.invoicesId}')">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </td>`;
+      invoiceListElement.appendChild(row);
+    });
+  }
+
+  // Cập nhật giao diện phân trang
+  function updatePagination() {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    const prevItem = document.createElement('li');
+    prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+    prevItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>`;
+    pagination.appendChild(prevItem);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = document.createElement('li');
+      pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+      pageItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+      pagination.appendChild(pageItem);
+    }
+
+    const nextItem = document.createElement('li');
+    nextItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+    nextItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>`;
+    pagination.appendChild(nextItem);
+  }
+
+  // Chuyển trang
+  function changePage(page) {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    displayPage(page);
+    updatePagination();
+  }
+
+  // Mở modal chỉnh sửa
+  function openEditModal(invoicesId) {
+    const invoice = invoiceList.find(inv => inv.invoicesId == invoicesId);
+    if (invoice) {
+      invoiceIdToEdit = invoicesId;
+      document.getElementById('editInvoicesId').value = invoice.invoicesId;
+      document.getElementById('editImportDate').value = invoice.importDate.split('T')[0];
+      
+      const supplierDropdown = document.getElementById('editSupplierId');
+      const warehouseDropdown = document.getElementById('editKhohangId');
+      populateSupplierDropdown();
+      populateWarehouseDropdown();
+      supplierDropdown.value = invoice.supplierId || '';
+      warehouseDropdown.value = invoice.khohangId || '';
+      
+      const totalBeforeInput = document.getElementById('editTotalAmount');
+      const vatInput = document.getElementById('editVat');
+      const discountInput = document.getElementById('editDiscount');
+      const finalAmountInput = document.getElementById('editFinalAmount');
+      
+      totalBeforeInput.value = invoice.totalAmount || 0;
+      totalBeforeInput.setAttribute('readonly', true);
+      vatInput.value = invoice.vat || 0;
+      discountInput.value = invoice.discount || 0;
+      finalAmountInput.value = invoice.finalAmount || 0;
+
+      vatInput.addEventListener('input', () => vatInput.value = vatInput.value);
+      discountInput.addEventListener('input', () => discountInput.value = discountInput.value);
+
+      $('#editModal').modal('show');
+    } else {
+      console.error('Không tìm thấy phiếu nhập với ID:', invoicesId);
+    }
+  }
+
+  // Xử lý nút xác nhận chỉnh sửa
+  document.getElementById('confirmEditBtn').addEventListener('click', async () => {
+    if (invoiceIdToEdit) {
+      await updateInvoice();
+      $('#editModal').modal('hide');
+      invoiceIdToEdit = null;
+    }
+  });
+
+  // Cập nhật phiếu nhập
+  async function updateInvoice() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    const invoice = invoiceList.find(inv => inv.invoicesId == invoiceIdToEdit);
+    const userId = invoice?.userId || 1;
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    const importDetails = [];
+
+    const totalBefore = parseFloat(document.getElementById('editTotalAmount').value) || 0;
+    const vat = parseFloat(document.getElementById('editVat').value) || 0;
+    const discount = parseFloat(document.getElementById('editDiscount').value) || 0;
+    const importDate = document.getElementById('editImportDate').value;
+    const supplierId = parseInt(document.getElementById('editSupplierId').value);
+    const khohangId = parseInt(document.getElementById('editKhohangId').value);
+
+    const finalAmount = totalBefore * (1 - discount / 100) * (1 + vat / 100);
+
+    document.getElementById('editFinalAmount').value = finalAmount.toFixed(2);
+
+    const raw = JSON.stringify({
+      userId: userId,
+      khohangId: khohangId,
+      supplierId: supplierId,
+      importDate: importDate,
+      totalAmount: totalBefore,
+      vat: vat,
+      discount: discount,
+      finalAmount: finalAmount,
+      importDetails: importDetails
+    });
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/import-invoices/${invoiceIdToEdit}`, requestOptions);
+      const result = await response.text();
+
+      if (!response.ok) {
+        throw new Error(`Lỗi: ${response.status} - ${result}`);
+      }
+
+      console.log('Kết quả cập nhật:', result);
+      alert('Cập nhật phiếu nhập thành công!');
+      await loadInvoices();
+    } catch (error) {
+      console.error('Lỗi khi cập nhật phiếu:', error);
+      alert(`Không thể cập nhật phiếu: ${error.message}`);
+    }
+  }
+
+  // Lọc phiếu nhập
+  function filterInvoices() {
+    const startDate = document.getElementById('filterStartDate').value;
+    const endDate = document.getElementById('filterEndDate').value;
+    const supplierName = document.getElementById('filterNCC').value.trim();
+
+    if (supplierName) {
+      loadInvoices(supplierName);
+    } else {
+      filteredInvoices = [...invoiceList].filter(invoice => invoice.status === true);
+      if (startDate) filteredInvoices = filteredInvoices.filter(invoice => new Date(invoice.importDate) >= new Date(startDate));
+      if (endDate) filteredInvoices = filteredInvoices.filter(invoice => new Date(invoice.importDate) <= new Date(endDate));
+      
+      totalItems = filteredInvoices.length;
+      totalPages = Math.ceil(totalItems / itemsPerPage);
+      currentPage = 1; // Reset về trang đầu khi lọc
+      displayPage(currentPage);
+      updatePagination();
+    }
+  }
+
+  // Xem chi tiết phiếu (chưa dùng trong bảng hiện tại)
+  function viewPhieu(invoicesId, importDate, khohangName, supplierName, finalAmount, importDetails) {
+    console.log('Xem phiếu:', { invoicesId, importDate, khohangName, supplierName, finalAmount, importDetails: JSON.parse(importDetails) });
+    alert(`Xem chi tiết phiếu: ${invoicesId}\nNgày nhập: ${importDate}\nKho: ${khohangName}\nNhà cung cấp: ${supplierName}\nTổng tiền: ${finalAmount}`);
+  }
+
+  // Mở modal xác nhận xóa
+  function openDeleteModal(invoicesId) {
+    invoiceIdToDelete = invoicesId;
+    $('#deleteModal').modal('show');
+  }
+
+  // Xử lý nút xác nhận xóa
+  document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+    if (invoiceIdToDelete) {
+      await deleteInvoice(invoiceIdToDelete);
+      $('#deleteModal').modal('hide');
+      invoiceIdToDelete = null;
+    }
+  });
+
+  // Xóa phiếu nhập
+  async function deleteInvoice(invoicesId) {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+
+    const idToDelete = Number(invoicesId);
+    if (!idToDelete) {
+      alert('ID phiếu nhập không hợp lệ!');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    const body = JSON.stringify({
+      ids: [idToDelete]
+    });
+
+    try {
+      const response = await fetch('http://localhost:8080/api/import-invoices', {
+        method: 'DELETE',
+        headers: myHeaders,
+        body: body,
+        redirect: 'follow'
+      });
+
+      if (!response.ok) {
+        throw new Error(`Lỗi: ${response.status} - ${await response.text()}`);
+      }
+
+      console.log(`Đã xóa phiếu ID: ${idToDelete}`);
+      const toast = new bootstrap.Toast(document.getElementById('deleteToast'));
+      toast.show();
+      await loadInvoices();
+    } catch (error) {
+      console.error('Lỗi khi xóa phiếu:', error);
+      alert('Không thể xóa phiếu!');
+    }
+  }
+
+  // Khởi tạo khi trang load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadInvoices();
+    getSuppliers();
+    getWarehouses();
+  });
+</script>
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -989,7 +1063,5 @@
 <script src="../../../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../../../dist/js/pages/dashboard.js"></script>
-<!-- Bootstrap 5 JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

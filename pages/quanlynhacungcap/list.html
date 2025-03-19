@@ -414,7 +414,6 @@
             </li>
             
             <li class="nav-item menu-open">
-              
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="../lichsugiaohang/lichsugiaohang.html" class="nav-link">
@@ -422,13 +421,6 @@
                     <p>Lịch sử giao hàng</p>
                   </a>
                 </li>
-                <!-- <li class="nav-item">
-                  <a href="./thong_tin_don_hang.html" class="nav-link active">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Thông tin đơn hàng</p>
-                  </a>
-                </li> -->
-                
               </ul>
             </li>
           </ul>
@@ -486,8 +478,8 @@
               <tbody id="supplierTableBody">
                 <!-- Danh mục sẽ được hiển thị ở đây -->
               </tbody>
-
             </table>
+          
           </div>
         </div>
 
@@ -621,7 +613,7 @@ function getSuppliers() {
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
 
-    fetch("http://172.17.152.229:8080/api/suppliers", {
+    fetch("http://localhost:8080/api/suppliers", {
         method: "GET",
         headers: myHeaders
     })
@@ -685,7 +677,7 @@ function editSupplier(supplierId) {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${token}`);
 
-    fetch(`http://172.17.152.229:8080/api/suppliers/${supplierId}`, {
+    fetch(`http://localhost:8080/api/suppliers/${supplierId}`, {
         method: "GET",
         headers: myHeaders
     })
@@ -739,7 +731,7 @@ function saveChanges() {
         redirect: "follow"
     };
 
-    fetch(`http://172.17.152.229:8080/api/suppliers/${supplierId}`, requestOptions)
+    fetch(`http://localhost:8080/api/suppliers/${supplierId}`, requestOptions)
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => {
@@ -792,7 +784,7 @@ function confirmDelete() {
         redirect: "follow"
     };
 
-    fetch("http://172.17.152.229:8080/api/suppliers", requestOptions)
+    fetch("http://localhost:8080/api/suppliers", requestOptions)
     .then(response => {
         if (!response.ok) {
             return response.text().then(text => {

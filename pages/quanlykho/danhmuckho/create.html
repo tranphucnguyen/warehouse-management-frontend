@@ -551,7 +551,7 @@
     };
 
     // Gửi request đến API
-    fetch("http://172.17.152.229:8080/api/categories", requestOptions)
+    fetch("http://localhost:8080/api/categories", requestOptions)
         .then(response => response.text()) // Đọc phản hồi dưới dạng text
         .then(result => {
             console.log("Phản hồi API:", result);
