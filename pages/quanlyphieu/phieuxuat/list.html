@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +8,8 @@
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/9089/9089758.png">
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../../plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -27,901 +29,1285 @@
   <!-- summernote -->
   <link rel="stylesheet" href="../../../plugins/summernote/summernote-bs4.min.css">
   <!-- bonus css-->
-   <link rel="stylesheet" href="../../../dist/css/bonus_css.css">
-         <!-- Bootstrap 5 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../../dist/css/bonus_css.css">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTELogo"
+        height="60" width="60">
+    </div>
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="../../../dashboard.html" class="nav-link">Dashboard</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
-    </ul>
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="../../../dashboard.html" class="nav-link">Dashboard</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Contact</a>
+        </li>
+      </ul>
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <li class="nav-item">
+          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+          </a>
+          <div class="navbar-search-block">
+            <form class="form-inline">
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </li>
+            </form>
+          </div>
+        </li>
 
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+        <!-- Messages Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-comments"></i>
+            <span class="badge badge-danger navbar-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="../../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Brad Diesel
+                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">Call me whenever you can...</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="../../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    John Pierce
+                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">I got your message bro</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Message Start -->
+              <div class="media">
+                <img src="../../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                <div class="media-body">
+                  <h3 class="dropdown-item-title">
+                    Nora Silvester
+                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                  </h3>
+                  <p class="text-sm">The subject goes here</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                </div>
               </div>
-            </div>
-            <!-- Message End -->
+              <!-- Message End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+          </div>
+        </li>
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">15 Notifications</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-envelope mr-2"></i> 4 new messages
+              <span class="float-right text-muted text-sm">3 mins</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-users mr-2"></i> 8 friend requests
+              <span class="float-right text-muted text-sm">12 hours</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-file mr-2"></i> 3 new reports
+              <span class="float-right text-muted text-sm">2 days</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+            <i class="fas fa-th-large"></i>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">EZ Stock</span>
-    </a>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index3.html" class="brand-link">
+        <img src="https://cdn-icons-png.flaticon.com/128/9089/9089758.png" alt="AdminLTE Logo"
+          class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">EZ Stock</span>
+      </a>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
-        </div>
-      </div>
-
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="../../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="#" class="d-block">Alexander Pierce</a>
           </div>
         </div>
-      </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-warehouse"></i>
-              <p>
-                Kho
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-warehouse"></i>
-                  <p>
-                    Danh mục kho
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  
-                  <li class="nav-item">
-                    <a href="../../quanlykho/danhmuckho/create.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Thêm</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="../../quanlykho/danhmuckho/list.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Danh sách</p>
-                    </a>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-warehouse"></i>
-                  <p>
-                    Danh sách kho
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  
-                  <li class="nav-item">
-                    <a href="../../quanlykho/danhsachkho/create.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Thêm</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="../../quanlykho/danhsachkho/list.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Danh sách</p>
-                    </a>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="../../quanlykho/capnhattonkho.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cập nhật số lượng tồn kho</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-box"></i>
-              <p>
-                Quản lý danh sách hàng hoá
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../quanlyhanghoa/create.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm hàng hoá</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../quanlyhanghoa/list.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách hàng hoá</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Quản lý người dùng
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../quanlynguoidung/create.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tạo tài khoản</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../quanlynguoidung/list.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách tài khoản</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Quản lý nhà cung cấp
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../quanlynhacungcap/create.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tạo nhà cung cấp</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="../../quanlynhacungcap/list.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh sách nhà cung cấp</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-ticket-alt"></i>
-              <p>
-                Quản lý phiếu
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-ticket-alt"></i>
-                  <p>
-                    Quản lý phiếu nhập
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="../phieunhap/create.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Tạo phiếu</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="../phieunhap/list.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Danh sách phiếu</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-ticket-alt"></i>
-                  <p>
-                    Quản lý phiếu xuất
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./create.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Tạo phiếu</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./list.html" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Danh sách phiếu</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          
-          <li class="nav-item menu-open">
-            
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../lichsugiaohang/lichsugiaohang.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Lịch sử giao hàng</p>
-                </a>
-              </li>
-              <!-- <li class="nav-item">
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+              <button class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-warehouse"></i>
+                <p>
+                  Kho
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-warehouse"></i>
+                    <p>
+                      Danh mục kho
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a href="../../quanlykho/danhmuckho/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="../../quanlykho/danhmuckho/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                      </a>
+                    </li>
+
+                  </ul>
+                </li>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-warehouse"></i>
+                    <p>
+                      Danh sách kho
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a href="../../quanlykho/danhsachkho/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="../../quanlykho/danhsachkho/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                      </a>
+                    </li>
+
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a href="../../quanlykho/capnhattonkho.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cập nhật số lượng tồn kho</p>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-box"></i>
+                <p>
+                  Quản lý danh sách hàng hoá
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="../../quanlyhanghoa/create.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Thêm hàng hoá</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../quanlyhanghoa/list.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Danh sách hàng hoá</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Quản lý người dùng
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="../../quanlynguoidung/create.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tạo tài khoản</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../quanlynguoidung/list.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Danh sách tài khoản</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Quản lý nhà cung cấp
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="../../quanlynhacungcap/create.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tạo nhà cung cấp</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="../../quanlynhacungcap/list.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Danh sách nhà cung cấp</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-ticket-alt"></i>
+                <p>
+                  Quản lý phiếu
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu nhập
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="../phieunhap/create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="../phieunhap/list.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item menu-open">
+                  <a href="#" class="nav-link active">
+                    <i class="nav-icon fas fa-ticket-alt"></i>
+                    <p>
+                      Quản lý phiếu xuất
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="./create.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tạo phiếu</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="./list.html" class="nav-link active">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách phiếu</p>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item menu-open">
+
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="../../lichsugiaohang/lichsugiaohang.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Lịch sử giao hàng</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
                 <a href="./thong_tin_don_hang.html" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thông tin đơn hàng</p>
                 </a>
               </li> -->
-              
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">Quản lý phiếu</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Quản lý phiếu</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+
+      <section class="content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Phiếu xuất</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-striped phieu">
+              <thead>
+                <tr>
+                  <th style="width: 5%">#</th>
+                  <th style="width: 13%">Loại phiếu xuất</th> <!-- Đổi từ "Mã phiếu xuất" thành "Loại phiếu xuất" -->
+                  <th style="width: 13%">Nhà cung cấp</th>
+                  <th style="width: 13%">Kho xuất</th>
+                  <th style="width: 13%">Người xuất</th>
+                  <th style="width: 13%">Ngày xuất</th>
+                  <th style="width: 13%">Tổng tiền</th>
+                  <th></th>
+                  <!-- <th class="text-center" style="width: 20%">Trạng thái</th> -->
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- View Modal -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel">Chi tiết phiếu</h5>
+              </div>
+              <div class="modal-body">
+                <p><strong>Mã phiếu xuất:</strong> <span id="viewMaPhieuXuat"></span></p>
+                <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p>
+                <p><strong>Kho xuất:</strong> <span id="viewKhoXuat"></span></p>
+                <p><strong>Người xuất:</strong> <span id="viewNguoiXuat"></span></p>
+                <p><strong>Ngày xuất:</strong> <span id="viewNgayXuat"></span></p>
+                <p><strong>Tổng tiền:</strong> <span id="viewTongTien"></span></p>
+                <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
+
+                <h5>Danh sách sản phẩm</h5>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Tên sản phẩm</th>
+                      <th>Số lượng</th>
+                      <th>Đơn giá</th>
+                    </tr>
+                  </thead>
+                  <tbody id="viewDanhSachSanPham">
+                    <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  onclick="closeModal('viewModal')">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa phiếu xuất</h5>
+              </div>
+              <div class="modal-body">
+                <!-- Loại phiếu xuất -->
+                <label for="editOrderType" class="mt-2">Loại phiếu xuất:</label>
+                <select id="editOrderType" class="form-control" onchange="handleEditExportTypeChange()">
+                  <option value="1">Xuất nội bộ</option>
+                  <option value="2">Xuất ngoài</option>
+                </select>
+
+                <!-- Kho xuất -->
+                <div id="editWarehouseGroup" class="mt-2">
+                  <label for="editKhoXuat">Kho xuất:</label>
+                  <input type="text" id="editKhoXuat" class="form-control" placeholder="Chọn kho"
+                    oninput="showEditWarehouseDropdown(this)" onfocus="showEditWarehouseDropdown(this, true)">
+                  <div class="dropdown-menu" id="editWarehouseDropdown"></div>
+                </div>
+
+                <!-- Khách hàng (hiển thị cho xuất ngoài) -->
+                <div id="editCustomerGroup" class="mt-2" style="display: none;">
+                  <label for="editNhaCungCap">Khách hàng:</label>
+                  <input type="text" id="editNhaCungCap" class="form-control">
+                </div>
+
+                <!-- Địa chỉ (hiển thị cho xuất ngoài) -->
+                <div id="editAddressGroup" class="mt-2" style="display: none;">
+                  <label for="editAddress">Địa chỉ:</label>
+                  <input type="text" id="editAddress" class="form-control">
+                </div>
+
+                <!-- Người xuất -->
+                <label for="editNguoiXuat" class="mt-2">Người xuất:</label>
+                <input type="text" id="editNguoiXuat" class="form-control" readonly>
+
+                <!-- Ngày xuất -->
+                <label for="editNgayXuat" class="mt-2">Ngày xuất:</label>
+                <input type="date" id="editNgayXuat" class="form-control">
+
+                <!-- Tổng tiền -->
+                <label for="editTongTien" class="mt-2">Tổng tiền:</label>
+                <input id="editTongTien" class="form-control" readonly>
+
+                <!-- Trạng thái -->
+                <label for="editTrangThai" class="mt-2">Trạng thái:</label>
+                <input type="text" id="editTrangThai" class="form-control">
+
+                <!-- Danh sách sản phẩm -->
+                <h5 class="mt-3">Danh sách sản phẩm</h5>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Tên sản phẩm</th>
+                      <th>Số lượng</th>
+                      <th>Đơn giá</th>
+                      <th>VAT (%)</th>
+                      <th>Chiết khấu (%)</th>
+                      <th>Tổng</th>
+                      <th>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody id="editDanhSachSanPham">
+                    <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
+                  </tbody>
+                </table>
+                <button type="button" class="btn btn-success btn-sm" onclick="addEditProductRow()">Thêm sản
+                  phẩm</button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  onclick="closeModal('editModal')">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xóa phiếu</h5>
+              </div>
+              <div class="modal-body">
+                Bạn có chắc chắn muốn xóa phiếu này không?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toast thông báo -->
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+        <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+          aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              🟢 Đã lưu thay đổi thành công!
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast thông báo xóa -->
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+          aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              🔴 Đã xóa danh mục thành công!
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- /.content -->
     </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Quản lý phiếu</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý phiếu</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-
-    <section class="content">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Phiếu xuất</h3>
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body p-0">
-          <table class="table table-striped phieu">
-            <thead>
-              <tr>
-                <th style="width: 5%">#</th>
-                <th style="width: 13%">Mã phiếu xuất</th>
-                <th style="width: 13%">Nhà cung cấp</th>
-                <th style="width: 13%">Kho xuất</th>
-                <th style="width: 13%">Người xuất</th>
-                <th style="width: 13%">Ngày xuất</th>
-                <th style="width: 13%">Tổng tiền</th>
-                <!-- <th class="text-center" style="width: 20%">Trạng thái</th> -->
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>NK-01</td>
-                <td>Công ty ABC</td>
-                <td>Kho A</td>
-                <td>Supplier A</td>
-                <td>2025-03-15</td>
-                <td>Ghi chú mẫu</td>
-                <td>Hoàn thành</td>
-                <td class="phieu-actions text-right">
-                  <button class="btn btn-primary btn-sm" onclick="viewPhieu('Xuất kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
-                    <i class="fas fa-folder"></i> View
-                  </button>
-                  <button class="btn btn-info btn-sm" onclick="editPhieu('Xuất kho', 'NK001', '2025-03-11', 'Kho A', 'Công ty ABC', 'Ghi chú mẫu', 'Hoàn thành', [{ten: 'Sản phẩm A', soLuong: 10, donGia: 50000}])">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                  </button>
-                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(this)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 1.1.0
       </div>
+    </footer>
 
-      <!-- View Modal -->
-      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewModalLabel">Chi tiết phiếu</h5>
-            </div>
-            <div class="modal-body">
-              <p><strong>Mã phiếu xuất:</strong> <span id="viewMaPhieuXuat"></span></p>
-              <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p>
-              <p><strong>Kho xuất:</strong> <span id="viewKhoXuat"></span></p>
-              <p><strong>Người xuất:</strong> <span id="viewNguoiXuat"></span></p>
-              <p><strong>Ngày xuất:</strong> <span id="viewNgayXuat"></span></p>
-              <p><strong>Tổng tiền:</strong> <span id="viewTongTien"></span></p>
-              <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
-
-              <h5>Danh sách sản phẩm</h5>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                  </tr>
-                </thead>
-                <tbody id="viewDanhSachSanPham">
-                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
-                </tbody>
-              </table>
-            </div>
-            <!-- <div class="modal-body">
-                  <p><strong>Mã phiếu xuất:</strong> <span id="viewMaPhieuXuat"></span></p>
-                  <p><strong>Nhà cung cấp:</strong> <span id="viewNhaCungCap"></span></p>
-                  <p><strong>Kho xuất:</strong> <span id="viewKhoXuat"></span></p>
-                  <p><strong>Người xuất:</strong> <span id="viewNguoiXuat"></span></p>
-                  <p><strong>Ngày xuất:</strong> <span id="viewNgayXuat"></span></p>
-                  <p><strong>Tổng tiền:</strong> <span id="viewTongTien"></span></p>
-                  <p><strong>Trạng thái:</strong> <span id="viewTrangThai"></span></p>
-            -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('viewModal')">Đóng</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Edit Modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Chỉnh sửa phiếu</h5>
-            </div>
-            <div class="modal-body">
-              <label for="editMaPhieu" class="mt-2">Mã phiếu xuất:</label>
-              <input type="text" id="editMaPhieu" class="form-control" readonly>
-              
-              <label for="editNhaCungCap" class="mt-2">Nhà cung cấp:</label>
-              <input type="text" id="editNhaCungCap" class="form-control">
-
-              <label for="editKhoXuat" class="mt-2">Kho xuất:</label>
-              <input type="text" id="editKhoXuat" class="form-control">
-              
-              <label for="editNguoiXuat">Người xuất:</label>
-              <input type="text" id="editNguoiXuat" class="form-control">
-              
-              <label for="editNgayXuat" class="mt-2">Ngày xuất:</label>
-              <input type="date" id="editNgayXuat" class="form-control">
-
-              <label for="editTongTien" class="mt-2">Tổng tiền:</label>
-              <input id="editTongTien" class="form-control"></input>
-
-              <label for="editTrangThai" class="mt-2">Trạng thái:</label>
-              <input type="text" id="editTrangThai" class="form-control">
-
-              <h5 class="mt-3">Danh sách sản phẩm</h5>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody id="editDanhSachSanPham">
-                  <!-- Dữ liệu sẽ được cập nhật bằng JavaScript -->
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
-              <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Delete Modal -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Xóa phiếu</h5>
-            </div>
-            <div class="modal-body">
-              Bạn có chắc chắn muốn xóa phiếu này không?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-              <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <script>
-      // Hàm hiển thị danh sách phiếu
-      function loadInvoices() {
-        const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-        const tbody = document.querySelector(".phieu tbody");
-        tbody.innerHTML = "";
-
-        invoices.forEach((invoice, index) => {
-          const row = `
-            <tr>
-              <td>${index + 1}</td>
-              <td>${invoice.id}</td>
-              <td>${invoice.supplier}</td>
-              <td>${invoice.warehouse}</td>
-              <td>${invoice.user}</td>
-              <td>${invoice.date}</td>
-              <td>${invoice.amount}</td>
-              <td class="phieu-actions text-right">
-                <button class="btn btn-primary btn-sm" onclick='viewInvoice(${JSON.stringify(invoice)})'>
-                  <i class="fas fa-folder"></i> View
-                </button>
-                <button class="btn btn-info btn-sm" onclick='editInvoice(${JSON.stringify(invoice)})'>
-                  <i class="fas fa-pencil-alt"></i> Edit
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="deleteInvoice('${invoice.code}')">
-                  <i class="fas fa-trash"></i> Delete
-                </button>
-              </td>
-            </tr>
-          `;
-          tbody.innerHTML += row;
-        });
-      }
-
-      // Tải danh sách phiếu khi load trang
-      window.onload = loadInvoices;
-
-
-      let deleteCode = null; // Biến lưu trữ mã phiếu cần xóa
-
-      // Mở modal xác nhận xóa
-      function deleteInvoice(code) {
-        deleteCode = code; // Lưu mã phiếu cần xóa
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
-      }
-
-      // Xác nhận xóa phiếu
-      function confirmDelete() {
-        if (!deleteCode) return;
-
-        let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-        invoices = invoices.filter(invoice => invoice.code !== deleteCode);
-        localStorage.setItem("invoices", JSON.stringify(invoices));
-        
-        deleteCode = null; // Reset lại biến
-        loadInvoices(); // Cập nhật lại danh sách phiếu
-
-        // Ẩn modal sau khi xóa
-        const deleteModalElement = document.getElementById('deleteModal');
-        const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalElement);
-        deleteModalInstance.hide();
-
-        // Hiển thị toast thông báo
-        showDeleteToast();
-      }
-
-      // Hiển thị toast thông báo xóa
-      function showDeleteToast() {
-        const toastElement = document.getElementById('deleteToast');
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      }
-
-
-
-
-
-      // Hiển thị modal chi tiết phiếu
-      function viewInvoice(invoice) {
-        document.getElementById("viewNhaCungCap").textContent = invoice.supplier;
-        document.getElementById("viewKhoXuat").textContent = invoice.warehouse;
-        document.getElementById("viewNguoiXuat").textContent = invoice.user;
-        document.getElementById("viewNgayXuat").textContent = invoice.date;
-        document.getElementById("viewTongTien").textContent = invoice.amount;
-        document.getElementById("viewTrangThai").textContent = invoice.status;
-
-        const productList = document.getElementById("viewDanhSachSanPham");
-        productList.innerHTML = invoice.products.map(product => `
-          <tr>
-            <td>${product.name}</td>
-            <td>${product.quantity}</td>
-            <td>${product.price}</td>
-          </tr>
-        `).join("");
-
-        const viewModal = new bootstrap.Modal(document.getElementById("viewModal"));
-        viewModal.show();
-      }
-
-      // Hàm mở modal và đổ dữ liệu vào form
-      function editInvoice(invoice) {
-        if (!invoice || typeof invoice !== 'object') {
-          console.error('Dữ liệu phiếu không hợp lệ:', invoice);
-          return;
-        }
-
-        // Gán thông tin vào form chỉnh sửa
-        document.getElementById("editNguoiXuat").value = invoice.user || "";
-        document.getElementById("editMaPhieu").value = invoice.id || "";
-        document.getElementById("editNgayXuat").value = invoice.date || "";
-        document.getElementById("editKhoXuat").value = invoice.warehouse || "";
-        document.getElementById("editNhaCungCap").value = invoice.supplier || "";
-        document.getElementById("editTongTien").value = invoice.amount || "";
-        document.getElementById("editTrangThai").value = invoice.status || "";
-
-        // Xử lý danh sách sản phẩm
-        const editProductList = document.getElementById("editDanhSachSanPham");
-        editProductList.innerHTML = "";
-
-        if (Array.isArray(invoice.products) && invoice.products.length > 0) {
-          invoice.products.forEach((product, index) => {
-            const row = `
-              <tr id="productRow-${index}">
-                <td><input type="text" class="form-control" value="${product.name || ''}" id="editProductName-${index}"></td>
-                <td><input type="number" class="form-control" value="${product.quantity || 0}" id="editProductQuantity-${index}"></td>
-                <td><input type="number" class="form-control" value="${product.price || 0}" id="editProductPrice-${index}"></td>
-                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">Xóa</button></td>
-              </tr>
-            `;
-            editProductList.insertAdjacentHTML("beforeend", row);
-          });
-        } else {
-          editProductList.innerHTML = `<tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>`;
-        }
-
-        // Hiển thị modal chỉnh sửa
-        const editModal = new bootstrap.Modal(document.getElementById("editModal"));
-        editModal.show();
-      }
-
-      // Hàm xóa sản phẩm khỏi danh sách
-      function removeProduct(index) {
-        const productRow = document.getElementById(`productRow-${index}`);
-        if (productRow) {
-          productRow.remove();
-        }
-      }
-      
-      // Hàm mở modal
-      function openModal(id) {
-        const modal = new bootstrap.Modal(document.getElementById(id));
-        modal.show();
-      }
-
-      // Hàm đóng modal
-      function closeModal(modalId) {
-        const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-        if (modal) modal.hide();
-      }
-
-      // Hiển thị Toast thông báo
-      function showSaveToast() {
-        const toast = new bootstrap.Toast(document.getElementById('saveToast'));
-        toast.show();
-      }
-
-      // Cập nhật lại thông tin phiếu trên giao diện
-      // function updatePhieuOnUI(updatedPhieu) {
-      //   const phieuRow = document.querySelector(`[data-ma-phieu="${updatedPhieu.maPhieu}"]`);
-      //   if (phieuRow) {
-      //     phieuRow.querySelector('.phieu-loai').textContent = updatedPhieu.NguoiNhap;
-      //     phieuRow.querySelector('.phieu-ngay').textContent = updatedPhieu.ngayNhap;
-      //     phieuRow.querySelector('.phieu-kho').textContent = updatedPhieu.khoNhap;
-      //     phieuRow.querySelector('.phieu-ncc').textContent = updatedPhieu.NhaCungCap;
-      //     phieuRow.querySelector('.phieu-ghi-chu').textContent = updatedPhieu.TongTien;
-      //     phieuRow.querySelector('.phieu-trang-thai').textContent = updatedPhieu.trangThai;
-      //   }
-      // }
-
-      /// Hàm lưu thay đổi và hiển thị Toast thông báo
-      function saveChanges() {
-        const updatedInvoice = {
-          user: document.getElementById("editNguoiNhap").value,
-          id: document.getElementById("editMaPhieu").value,
-          date: document.getElementById("editNgayNhap").value,
-          warehouse: document.getElementById("editKhoNhap").value,
-          supplier: document.getElementById("editNhaCungCap").value,
-          amount: document.getElementById("editTongTien").value,
-          status: document.getElementById("editTrangThai").value,
-          products: []
-        };
-
-        const rows = document.querySelectorAll("#editDanhSachSanPham tr");
-        rows.forEach((row, index) => {
-          const name = document.getElementById(`editProductName-${index}`).value;
-          const quantity = parseInt(document.getElementById(`editProductQuantity-${index}`).value) || 0;
-          const price = parseFloat(document.getElementById(`editProductPrice-${index}`).value) || 0;
-
-          if (name && quantity > 0 && price > 0) {
-            updatedInvoice.products.push({ name, quantity, price });
-          }
-        });
-
-        console.log("Dữ liệu cập nhật:", updatedInvoice);
-
-        // Hiển thị thông báo thành công
-        showSaveToast();
-
-        closeModal('editModal');
-      }
-
-
-      // Khởi chạy: Tải danh sách phiếu khi trang load
-      window.addEventListener('DOMContentLoaded', loadPhieuList);
-
-    </script>
-
-    <!-- Toast thông báo -->
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
-      <div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            🟢 Đã lưu thay đổi thành công!
-          </div>
-          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Toast thông báo xóa -->
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
-      <div id="deleteToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            🔴 Đã xóa danh mục thành công!
-          </div>
-          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-      </div>
-    </div>
-    
-    
-    <!-- /.content -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
   </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2025 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.1.0
-    </div>
-  </footer>
+  <!-- ./wrapper -->
+  <script>
+    // Danh sách toàn cục
+    let productList = [];
+    let warehouseList = [];
+    let allOrders = []; // Lưu danh sách phiếu xuất
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+    // Hàm lấy danh sách phiếu xuất và hiển thị lên bảng
+    async function loadOrders() {
+      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
 
-<!-- jQuery -->
-<script src="../../../plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../../../plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../../../plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../../../plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../../../plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="../../../plugins/moment/moment.min.js"></script>
-<script src="../../../plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../../../plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../../dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../../dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../../../dist/js/pages/dashboard.js"></script>
-<!-- Bootstrap 5 JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/orders/getAllOrders", requestOptions);
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Lỗi: ${response.status} - ${errorText}`);
+        }
+
+        const result = await response.json();
+        allOrders = result.data; // Lưu danh sách
+        console.log("Danh sách phiếu xuất (tất cả):", allOrders);
+
+        const activeOrders = allOrders.filter(order => order.status === true);
+        console.log("Danh sách phiếu xuất (status = true):", activeOrders);
+
+        displayOrders(activeOrders); // Hiển thị chỉ các phiếu có status = true
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách phiếu xuất:", error);
+        alert(`Không thể lấy danh sách phiếu xuất: ${error.message}`);
+      }
+    }
+
+    // Hàm hiển thị dữ liệu lên bảng
+    function displayOrders(orders) {
+      const tbody = document.querySelector('.phieu tbody');
+      if (!tbody) {
+        console.error("Không tìm thấy tbody trong bảng .phieu");
+        return;
+      }
+      tbody.innerHTML = ''; // Xóa nội dung cũ
+
+      orders.forEach((order, index) => {
+        const orderTypeText = order.orderType === 1 ? 'Xuất nội bộ' : order.orderType === 2 ? 'Xuất ngoài' : 'N/A';
+        const row = document.createElement('tr');
+        row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${orderTypeText}</td>
+              <td>${order.customer || 'N/A'}</td>
+              <td>${order.dskhohang ? order.dskhohang.name : order.khoHangId || 'N/A'}</td>
+              <td>${order.user ? order.user.username : order.userId || 'N/A'}</td>
+              <td>${formatDate(order.createdAt) || 'N/A'}</td>
+              <td>${formatCurrency(order.finalAmount) || '0'}</td>
+              <td> 
+                  <button class="btn btn-primary btn-sm" onclick="openEditModal('${order.orderId}')">
+                      <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${order.orderId}')">
+                      <i class="fas fa-trash"></i> Delete
+                  </button>
+              </td>
+          `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Load sản phẩm từ API
+    async function loadProducts() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+
+        const response = await fetch('http://localhost:8080/api/products', {
+          method: 'GET',
+          headers: myHeaders
+        });
+
+        if (!response.ok) {
+          throw new Error('Lỗi khi gọi API: ' + response.status);
+        }
+
+        const data = await response.json();
+        productList = (data.data?.listProduct || []).filter(item => getProductData(item).status === true);
+        console.log('Danh sách sản phẩm (status = true):', productList);
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+        alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
+      }
+    }
+
+    // Chuẩn hóa dữ liệu sản phẩm
+    function getProductData(item) {
+      const isNested = item.product !== undefined;
+      return {
+        productId: isNested ? item.product.productId : item.productId,
+        category: isNested ? item.product.category : item.category,
+        productName: isNested ? item.product.productName : item.productName,
+        price: isNested ? item.product.price : item.price,
+        description: isNested ? item.product.description : item.description,
+        status: isNested ? item.product.status : item.status,
+        currentStock: isNested ? item.currentStock : undefined
+      };
+    }
+
+    // Load kho nhập hàng từ API
+    async function getWarehouses() {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${token}`);
+
+      try {
+        const response = await fetch('http://localhost:8080/api/dskhohangs', {
+          method: 'GET',
+          headers: myHeaders
+        });
+
+        if (!response.ok) {
+          throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
+        console.log('Danh sách kho (status = true):', warehouseList);
+      } catch (error) {
+        console.error('Lỗi khi lấy danh sách kho:', error);
+        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+      }
+    }
+
+    // Hiển thị dropdown sản phẩm trong modal
+    function showEditProductDropdown(inputElement, isFocus = false) {
+      const dropdownMenu = inputElement.nextElementSibling;
+      const searchText = inputElement.value.toLowerCase();
+
+      const filteredProducts = isFocus
+        ? productList
+        : productList.filter(product => {
+          const productData = getProductData(product);
+          return productData.productName.toLowerCase().includes(searchText) && productData.status === true;
+        });
+
+      dropdownMenu.innerHTML = '';
+
+      if (filteredProducts.length === 0) {
+        dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy sản phẩm</a>';
+      } else {
+        filteredProducts.forEach(product => {
+          const productData = getProductData(product);
+          const item = document.createElement('a');
+          item.classList.add('dropdown-item');
+          item.href = '#';
+          item.textContent = `${productData.productName} - ${productData.price || 0} VND${productData.currentStock !== undefined ? ` (Tồn: ${productData.currentStock})` : ''}`;
+          item.onclick = () => selectEditProduct(inputElement, productData);
+          dropdownMenu.appendChild(item);
+        });
+      }
+
+      dropdownMenu.classList.add('show');
+    }
+
+    // Chọn sản phẩm từ dropdown trong modal
+    function selectEditProduct(inputElement, product) {
+      const row = inputElement.closest('tr');
+      inputElement.value = product.productName;
+      inputElement.dataset.productId = product.productId;
+      row.querySelector('.price').value = product.price || 0;
+      row.querySelector('.dropdown-menu').classList.remove('show');
+      calculateEditRowTotal(row.querySelector('.quantity'));
+    }
+
+    // Hiển thị dropdown kho trong modal
+    function showEditWarehouseDropdown(inputElement, isFocus = false) {
+      const dropdownMenu = inputElement.nextElementSibling;
+      const searchText = inputElement.value.toLowerCase();
+
+      const filteredWarehouses = isFocus
+        ? warehouseList
+        : warehouseList.filter(warehouse => warehouse.name.toLowerCase().includes(searchText));
+
+      dropdownMenu.innerHTML = '';
+
+      if (filteredWarehouses.length === 0) {
+        dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy kho</a>';
+      } else {
+        filteredWarehouses.forEach(warehouse => {
+          const item = document.createElement('a');
+          item.classList.add('dropdown-item');
+          item.href = '#';
+          item.textContent = warehouse.name;
+          item.onclick = () => selectEditWarehouse(inputElement, warehouse);
+          dropdownMenu.appendChild(item);
+        });
+      }
+
+      dropdownMenu.classList.add('show');
+    }
+
+    // Chọn kho từ dropdown trong modal
+    function selectEditWarehouse(inputElement, warehouse) {
+      inputElement.value = warehouse.name;
+      inputElement.dataset.khoHangId = warehouse.khohangId;
+      inputElement.nextElementSibling.classList.remove('show');
+      console.log('Đã chọn kho:', { name: warehouse.name, id: warehouse.khohangId });
+    }
+
+    // Ẩn dropdown khi click ra ngoài
+    document.addEventListener('click', (event) => {
+      const dropdowns = document.querySelectorAll('.dropdown-menu');
+      dropdowns.forEach(dropdown => {
+        if (!dropdown.parentElement.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+    });
+
+    // Mở modal chỉnh sửa
+    async function openEditModal(orderId) {
+      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
+
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+
+      let order = allOrders.find(o => o.orderId === parseInt(orderId));
+      console.log("Phiếu xuất từ allOrders:", order); // Log để kiểm tra dữ liệu gốc
+
+      if (!order) {
+        try {
+          const myHeaders = new Headers();
+          myHeaders.append("Authorization", `Bearer ${token}`);
+          myHeaders.append("Content-Type", "application/json");
+
+          const response = await fetch(`http://localhost:8080/api/orders/${orderId}`, {
+            method: "GET",
+            headers: myHeaders
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Lỗi: ${response.status} - ${errorText}`);
+          }
+          order = await response.json();
+          console.log("Phiếu xuất từ API:", order); // Log dữ liệu từ API
+        } catch (error) {
+          console.error("Lỗi khi lấy chi tiết phiếu xuất:", error);
+          order = {
+            orderId: orderId,
+            orderType: 1,
+            status: "In progress",
+            khoHangId: null,
+            customer: null,
+            address: null,
+            totalAmount: 0,
+            vat: 0,
+            discount: 0,
+            finalAmount: 0,
+            orderDetails: [],
+            user: { username: "N/A" },
+            createdAt: new Date().toISOString().split('T')[0]
+          };
+          alert(`Phiếu xuất với ID ${orderId} không tồn tại. Modal sẽ mở với dữ liệu mặc định.`);
+        }
+      }
+
+      document.getElementById('editOrderType').value = order.orderType || '';
+      document.getElementById('editNhaCungCap').value = order.customer || '';
+      document.getElementById('editAddress').value = order.address || '';
+
+      // Gán khoHangId và tên kho
+      const warehouse = order.khoHangId ? warehouseList.find(w => w.khohangId === order.khoHangId) : null;
+      document.getElementById('editKhoXuat').value = warehouse ? warehouse.name : order.khoHangId ? `Kho ${order.khoHangId}` : '';
+      document.getElementById('editKhoXuat').dataset.khoHangId = order.khoHangId || ''; // Giữ nguyên giá trị khoHangId gốc
+      console.log("Giá trị khoHangId khi mở modal:", document.getElementById('editKhoXuat').dataset.khoHangId);
+
+      document.getElementById('editNguoiXuat').value = order.user?.username || 'N/A';
+      document.getElementById('editNgayXuat').value = order.createdAt ? order.createdAt.split('T')[0] : '';
+      document.getElementById('editTongTien').value = formatCurrency(order.finalAmount || 0);
+      document.getElementById('editTrangThai').value = order.status || '';
+
+      document.getElementById('editModal').dataset.orderId = orderId;
+
+      const tbody = document.getElementById('editDanhSachSanPham');
+      tbody.innerHTML = '';
+      (order.orderDetails || []).forEach(detail => {
+        addEditProductRow(detail);
+      });
+
+      handleEditExportTypeChange();
+
+      const modal = new bootstrap.Modal(document.getElementById('editModal'));
+      modal.show();
+      console.log("Phiếu xuất từ allOrders:", order);
+console.log("Phiếu xuất từ API:", order);
+    }
+
+    // Xử lý thay đổi loại phiếu trong modal
+    function handleEditExportTypeChange() {
+      const orderType = document.getElementById('editOrderType').value;
+      const warehouseGroup = document.getElementById('editWarehouseGroup');
+      const customerGroup = document.getElementById('editCustomerGroup');
+      const addressGroup = document.getElementById('editAddressGroup');
+
+      if (orderType === "1") {
+        // Xuất nội bộ: Hiển thị kho, ẩn khách hàng và địa chỉ
+        warehouseGroup.style.display = 'block';
+        customerGroup.style.display = 'none';
+        addressGroup.style.display = 'none';
+      } else if (orderType === "2") {
+        // Xuất ngoài: Ẩn kho, hiển thị khách hàng và địa chỉ
+        warehouseGroup.style.display = 'none';
+        customerGroup.style.display = 'block';
+        addressGroup.style.display = 'block';
+      }
+    }
+
+    // Thêm dòng sản phẩm vào modal
+    function addEditProductRow(detail = {}) {
+      const tbody = document.getElementById('editDanhSachSanPham');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>
+              <input type="text" class="form-control product-name" value="${detail.productName || ''}" data-product-id="${detail.productId || ''}" oninput="showEditProductDropdown(this)" onfocus="showEditProductDropdown(this, true)">
+              <div class="dropdown-menu"></div>
+          </td>
+          <td><input type="number" class="form-control quantity" value="${detail.quantity || 0}" oninput="calculateEditRowTotal(this)"></td>
+          <td><input type="number" class="form-control price" value="${detail.price || 0}" oninput="calculateEditRowTotal(this)"></td>
+          <td><input type="number" class="form-control vat" value="${detail.vat || 0}" oninput="calculateEditRowTotal(this)"></td>
+          <td><input type="number" class="form-control discount" value="${detail.discount || 0}" oninput="calculateEditRowTotal(this)"></td>
+          <td><input type="text" class="form-control totalAmount" value="${formatCurrency(detail.totalAmount || 0)}" readonly></td>
+          <td><button class="btn btn-danger btn-sm" onclick="removeEditProductRow(this)">Xóa</button></td>
+      `;
+      tbody.appendChild(row);
+    }
+
+    // Xóa dòng sản phẩm
+    function removeEditProductRow(button) {
+      const row = button.closest('tr');
+      if (document.getElementById('editDanhSachSanPham').children.length > 1) {
+        row.remove();
+        updateEditTotal();
+      } else {
+        alert('Phải có ít nhất một sản phẩm!');
+      }
+    }
+
+    // Tính tổng cho từng dòng
+    function calculateEditRowTotal(element) {
+      const row = element.closest('tr');
+      const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+      const price = parseFloat(row.querySelector('.price').value) || 0;
+      const vat = parseFloat(row.querySelector('.vat').value) || 0;
+      const discount = parseFloat(row.querySelector('.discount').value) || 0;
+
+      const subtotal = quantity * price * (1 - discount / 100);
+      const totalAmount = subtotal * (1 + vat / 100);
+      row.querySelector('.totalAmount').value = formatCurrency(totalAmount);
+
+      updateEditTotal();
+    }
+
+    // Cập nhật tổng tiền phiếu
+    function updateEditTotal() {
+      const rows = document.querySelectorAll('#editDanhSachSanPham tr');
+      let finalAmount = 0;
+      rows.forEach(row => {
+        const totalAmount = parseFloat(row.querySelector('.totalAmount').value.replace(/[^0-9.-]+/g, '')) || 0;
+        finalAmount += totalAmount;
+      });
+      document.getElementById('editTongTien').value = formatCurrency(finalAmount);
+    }
+
+    // Lưu thay đổi
+    async function saveChanges() {
+      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXI-taWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
+      if (!token) {
+          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          return;
+      }
+  
+      const orderType = document.getElementById('editOrderType').value;
+      const khoHangId = document.getElementById('editKhoXuat').dataset.khoHangId;
+      const orderId = document.getElementById('editModal').dataset.orderId;
+  
+      if (!orderId) {
+          alert('Không tìm thấy orderId!');
+          return;
+      }
+  
+      if (orderType === "1" && (!khoHangId || khoHangId === '' || isNaN(parseInt(khoHangId)))) {
+          alert('Vui lòng chọn kho xuất cho phiếu xuất nội bộ!');
+          return;
+      }
+  
+      if (orderType === "2") {
+          const customer = document.getElementById('editNhaCungCap').value;
+          const address = document.getElementById('editAddress').value;
+          if (!customer || !address) {
+              alert('Vui lòng nhập đầy đủ thông tin khách hàng và địa chỉ cho phiếu xuất ngoài!');
+              return;
+          }
+      }
+  
+      const rows = document.querySelectorAll('#editDanhSachSanPham tr');
+      const orderDetails = Array.from(rows).map(row => {
+          const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+          const price = parseFloat(row.querySelector('.price').value) || 0;
+          const discount = parseFloat(row.querySelector('.discount').value) || 0;
+          const subtotal = quantity * price * (1 - discount / 100);
+          const productId = parseInt(row.querySelector('.product-name').dataset.productId);
+  
+          if (!productId) {
+              alert('Vui lòng chọn sản phẩm hợp lệ!');
+              return null;
+          }
+  
+          return {
+              productId: productId,
+              quantity: quantity || 0,
+              subtotal: subtotal || 0,
+              vat: parseFloat(row.querySelector('.vat').value) || 0,
+              discount: discount || 0,
+              totalAmount: parseFloat(row.querySelector('.totalAmount').value.replace(/[^0-9.-]+/g, '')) || 0
+          };
+      }).filter(detail => detail !== null);
+  
+      if (orderDetails.length === 0) {
+          alert('Danh sách sản phẩm không hợp lệ!');
+          return;
+      }
+  
+      const finalAmount = parseFloat(document.getElementById('editTongTien').value.replace(/[^0-9.-]+/g, '')) || 0;
+  
+      // Lấy userId từ dữ liệu gốc trong openEditModal
+      let order = allOrders.find(o => o.orderId === parseInt(orderId));
+      const userId = order && order.user ? order.user.userId : 1; // Mặc định là 1 nếu không lấy được
+  
+      const updatedOrder = {
+          orderType: parseInt(orderType),
+          status: document.getElementById('editTrangThai').value || "In progress",
+          khoHangId: khoHangId ? parseInt(khoHangId) : null,
+          customer: document.getElementById('editNhaCungCap').value || null,
+          address: document.getElementById('editAddress').value || null,
+          totalAmount: finalAmount,
+          vat: orderDetails.length > 0 ? orderDetails[0].vat : 0,
+          discount: orderDetails.length > 0 ? orderDetails[0].discount : 0,
+          finalAmount: finalAmount,
+          orderDetails: orderDetails,
+          userId: userId // Thêm userId
+      };
+  
+      console.log("Dữ liệu gửi đi:", JSON.stringify(updatedOrder, null, 2));
+  
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+  
+      const requestOptions = {
+          method: "PUT",
+          headers: myHeaders,
+          body: JSON.stringify(updatedOrder),
+          redirect: "follow"
+      };
+  
+      try {
+          const response = await fetch(`http://localhost:8080/api/orders/update/${orderId}`, requestOptions);
+          const result = await response.text();
+          if (response.ok) {
+              alert("Cập nhật phiếu xuất thành công!");
+              const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+              modal.hide();
+              loadOrders();
+          } else {
+              throw new Error(`Lỗi: ${response.status} - ${result}`);
+          }
+      } catch (error) {
+          console.error("Lỗi khi cập nhật phiếu:", error);
+          alert("Đã có lỗi xảy ra khi cập nhật phiếu xuất: " + error.message);
+      }
+  }
+
+    function openDeleteModal(orderId) {
+      document.getElementById('deleteModal').dataset.orderId = orderId;
+      const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      modal.show();
+    }
+
+    // Xác nhận xóa phiếu xuất
+    async function confirmDelete() {
+      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
+      if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+      }
+
+      const orderId = document.getElementById('deleteModal').dataset.orderId;
+      if (!orderId) {
+        alert('Không tìm thấy orderId để xóa!');
+        return;
+      }
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token}`);
+
+      const raw = JSON.stringify([parseInt(orderId)]);
+
+      const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/orders/delete", requestOptions);
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Lỗi: ${response.status} - ${errorText}`);
+        }
+
+        const result = await response.text();
+        console.log("Kết quả xóa:", result);
+        alert(`Đã xóa phiếu xuất với ID ${orderId} thành công!`);
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
+        loadOrders();
+      } catch (error) {
+        console.error("Lỗi khi xóa phiếu xuất:", error);
+        alert("Đã có lỗi xảy ra khi xóa phiếu xuất: " + error.message);
+      }
+    }
+
+    // Đóng modal
+    function closeModal(modalId) {
+      const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+      modal.hide();
+    }
+
+    // Hàm định dạng ngày
+    function formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // Hàm định dạng tiền tệ
+    function formatCurrency(amount) {
+      const parsedAmount = parseFloat(amount);
+      if (isNaN(parsedAmount) || amount == null) {
+        return '0,00 đ';
+      }
+      return parsedAmount.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 6
+      });
+    }
+
+    // Gọi các hàm khi trang tải
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+      getWarehouses();
+      loadOrders();
+    });
+  </script>
+
+  <!-- jQuery -->
+  <script src="../../../plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="../../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- ChartJS -->
+  <script src="../../../plugins/chart.js/Chart.min.js"></script>
+  <!-- Sparkline -->
+  <script src="../../../plugins/sparklines/sparkline.js"></script>
+  <!-- JQVMap -->
+  <script src="../../../plugins/jqvmap/jquery.vmap.min.js"></script>
+  <script src="../../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="../../../plugins/jquery-knob/jquery.knob.min.js"></script>
+  <!-- daterangepicker -->
+  <script src="../../../plugins/moment/moment.min.js"></script>
+  <script src="../../../plugins/daterangepicker/daterangepicker.js"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="../../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- Summernote -->
+  <script src="../../../plugins/summernote/summernote-bs4.min.js"></script>
+  <!-- overlayScrollbars -->
+  <script src="../../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="../../../dist/js/adminlte.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="../../../dist/js/demo.js"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="../../../dist/js/pages/dashboard.js"></script>
+  <!-- Bootstrap 5 JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

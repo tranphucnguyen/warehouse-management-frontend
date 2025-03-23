@@ -640,7 +640,7 @@
 <script>
   let productList = []; // Danh sách sản phẩm (status = true)
 
-let warehouseList = []; // Danh sách kho (status = true)
+let warehouseList = []; // Danh sách kho (status = true)  
 // Thêm vào đầu file script
 const exportTypeSelect = document.querySelector('select.form-control');
 const warehouseGroup = document.getElementById('warehouseGroup');
@@ -687,36 +687,46 @@ function resetForm() {
 // Load sản phẩm từ API
 async function loadProducts() {
   const token = localStorage.getItem('accessToken');
+  
   if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
   }
-
 
   try {
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${token}`);
 
+      const response = await fetch('http://localhost:8080/api/products', {
+          method: 'GET',
+          headers: myHeaders
+      });
 
-    const response = await fetch('http://localhost:8080/api/products', {
-      method: 'GET',
-      headers: myHeaders
-    });
+      if (!response.ok) {
+          throw new Error('Lỗi khi gọi API: ' + response.status);
+      }
 
-
-    if (!response.ok) {
-      throw new Error('Lỗi khi gọi API: ' + response.status);
-    }
-
-
-    const data = await response.json();
-    productList = (data.data?.listProduct || []).filter(product => product.status === true);
-    console.log('Danh sách sản phẩm (status = true):', productList);
+      const data = await response.json();
+      productList = (data.data?.listProduct || []).filter(item => getProductData(item).status === true);
+      console.log('Danh sách sản phẩm (status = true):', productList);
   } catch (error) {
-    console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+      console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+      alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
   }
 }
-
+// Chuẩn hóa dữ liệu sản phẩm
+function getProductData(item) {
+  const isNested = item.product !== undefined;
+  return {
+      productId: isNested ? item.product.productId : item.productId,
+      category: isNested ? item.product.category : item.category,
+      productName: isNested ? item.product.productName : item.productName,
+      price: isNested ? item.product.price : item.price,
+      description: isNested ? item.product.description : item.description,
+      status: isNested ? item.product.status : item.status,
+      currentStock: isNested ? item.currentStock : undefined
+  };
+}
 
 
 
@@ -760,28 +770,29 @@ function showProductDropdown(inputElement, isFocus = false) {
   const dropdownMenu = inputElement.nextElementSibling;
   const searchText = inputElement.value.toLowerCase();
 
-
   const filteredProducts = isFocus
-    ? productList
-    : productList.filter(product => product.productName.toLowerCase().includes(searchText));
-
+      ? productList
+      : productList.filter(product => {
+          const productData = getProductData(product);
+          return productData.productName.toLowerCase().includes(searchText) && 
+                 productData.status === true;
+      });
 
   dropdownMenu.innerHTML = '';
 
-
   if (filteredProducts.length === 0) {
-    dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy sản phẩm</a>';
+      dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy sản phẩm</a>';
   } else {
-    filteredProducts.forEach(product => {
-      const item = document.createElement('a');
-      item.classList.add('dropdown-item');
-      item.href = '#';
-      item.textContent = product.productName;
-      item.onclick = () => selectProduct(inputElement, product);
-      dropdownMenu.appendChild(item);
-    });
+      filteredProducts.forEach(product => {
+          const productData = getProductData(product);
+          const item = document.createElement('a');
+          item.classList.add('dropdown-item');
+          item.href = '#';
+          item.textContent = `${productData.productName} - ${productData.price || 0} VND${productData.currentStock !== undefined ? ` (Tồn: ${productData.currentStock})` : ''}`;
+          item.onclick = () => selectProduct(inputElement, productData);
+          dropdownMenu.appendChild(item);
+      });
   }
-
 
   dropdownMenu.classList.add('show');
 }
@@ -791,7 +802,7 @@ function showProductDropdown(inputElement, isFocus = false) {
 function selectProduct(inputElement, product) {
   const row = inputElement.closest('tr');
   inputElement.value = product.productName;
-  inputElement.dataset.productId = product.productId; // Lưu productId
+  inputElement.dataset.productId = product.productId;
   row.querySelector('.price').value = product.price || 0;
   row.querySelector('.dropdown-menu').classList.remove('show');
   calculateTotal(row.querySelector('.quantity'));
@@ -957,6 +968,96 @@ document.addEventListener('DOMContentLoaded', () => {
 
   getWarehouses();
 });
+</script>
+<script>
+  async function saveInvoice() {
+    const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
+    
+    if (!token) {
+      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      return;
+    }
+    
+    const userId = getUserIdFromToken(token);
+    if (!userId) {
+      alert('Không thể lấy userId từ token!');
+      return;
+    }
+    
+    const exportType = exportTypeSelect.value;
+    const orderType = exportType === "Xuất ngoài" ? 2 : 1;
+    const khoHangId = exportType === "Xuất ngoài" ? null : document.getElementById('warehouseInput').dataset.warehouseId;
+    
+    // Kiểm tra kho hàng cho orderType 1
+    if (orderType === 1 && !khoHangId) {
+      alert('Vui lòng chọn kho hàng cho xuất nội bộ!');
+      return;
+    }
+  
+    // Thu thập dữ liệu chi tiết phiếu xuất từ các dòng sản phẩm
+    const rows = document.querySelectorAll('#productList tr');
+    const orderDetails = Array.from(rows).map(row => {
+      const productId = parseInt(row.querySelector('.product-name').dataset.productId);
+      const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+      const price = parseFloat(row.querySelector('.price').value) || 0;
+      const vat = parseFloat(row.querySelector('.vat').value) || 0;
+      const discount = parseFloat(row.querySelector('.discount').value) || 0;
+      const subtotal = quantity * price * (1 - discount / 100);
+      const totalAmount = subtotal * (1 + vat / 100);
+  
+      return {
+        productId: productId || 1,
+        quantity: quantity || 11,
+        subtotal: subtotal || 10,
+        vat: vat || 5,
+        discount: discount || 10.5,
+        totalAmount: totalAmount || 15
+      };
+    });
+  
+    // Tạo dữ liệu phiếu xuất
+    const invoiceData = {
+      orderType: orderType,
+      status: "In progress",
+      khohangId: orderType === 1 ? parseInt(khoHangId) : null, // Chỉ thêm khohangId cho orderType 1
+      customer: orderType === 2 ? document.getElementById('customerInput').value || null : null,
+      address: orderType === 2 ? document.getElementById('addressInput').value || null : null,
+      totalAmount: parseFloat(document.getElementById('totalBefore').value.replace(/[^0-9.-]+/g, '')) || 10,
+      vat: parseFloat(document.getElementById('vat').value) || 5,
+      discount: parseFloat(document.getElementById('discount').value) || 10,
+      finalAmount: parseFloat(document.getElementById('totalAfter').value.replace(/[^0-9.-]+/g, '')) || 10.5,
+      orderDetails: orderDetails
+    };
+  
+    console.log("Dữ liệu gửi đi:", JSON.stringify(invoiceData, null, 2));
+  
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+  
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(invoiceData),
+      redirect: "follow"
+    };
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/orders/create", requestOptions);
+      const result = await response.text();
+      
+      if (response.ok) {
+        alert("Lưu phiếu xuất thành công!");
+        console.log("Kết quả:", result);
+        resetForm();
+      } else {
+        throw new Error(`Lỗi: ${response.status} - ${result || 'Không có thông tin chi tiết từ server'}`);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lưu phiếu:", error);
+      alert("Đã có lỗi xảy ra khi lưu phiếu xuất: " + error.message);
+    }
+  }
 </script>
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>

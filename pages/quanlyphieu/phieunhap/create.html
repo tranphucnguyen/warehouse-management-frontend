@@ -640,453 +640,409 @@
 let supplierList = []; // Danh sách nhà cung cấp (status = true, nếu có)
 let warehouseList = []; // Danh sách kho (status = true)
 
-
 // Load sản phẩm từ API
 async function loadProducts() {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
-  }
-
-
-  try {
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${token}`);
-
-
-    const response = await fetch('http://localhost:8080/api/products', {
-      method: 'GET',
-      headers: myHeaders
-    });
-
-
-    if (!response.ok) {
-      throw new Error('Lỗi khi gọi API: ' + response.status);
+    const token = localStorage.getItem('accessToken');
+    
+    if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
     }
 
+    try {
+        const myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
 
-    const data = await response.json();
-    productList = (data.data?.listProduct || []).filter(product => product.status === true);
-    console.log('Danh sách sản phẩm (status = true):', productList);
-  } catch (error) {
-    console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-  }
-}
+        const response = await fetch('http://localhost:8080/api/products', {
+            method: 'GET',
+            headers: myHeaders
+        });
 
+        if (!response.ok) {
+            throw new Error('Lỗi khi gọi API: ' + response.status);
+        }
 
-// Load nhà cung cấp từ API
-async function getSuppliers() {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
-  }
-
-
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
-  myHeaders.append('Authorization', `Bearer ${token}`);
-
-
-  try {
-    const response = await fetch('http://localhost:8080/api/suppliers', {
-      method: 'GET',
-      headers: myHeaders
-    });
-
-
-    if (!response.ok) {
-      throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        const data = await response.json();
+        productList = (data.data?.listProduct || []).filter(item => getProductData(item).status === true);
+        console.log('Danh sách sản phẩm (status = true):', productList);
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+        alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
     }
-
-
-    const data = await response.json();
-    supplierList = (data.data?.listSupplier || []).filter(supplier =>
-      supplier.status === undefined || supplier.status === true
-    );
-    console.log('Danh sách nhà cung cấp (status = true):', supplierList);
-  } catch (error) {
-    console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
-    alert('Không thể tải danh sách nhà cung cấp!');
-  }
 }
 
-
-// Load kho nhập hàng từ API
-async function getWarehouses() {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
-  }
-
-
-  const myHeaders = new Headers();
-  myHeaders.append('Authorization', `Bearer ${token}`);
-
-
-  try {
-    const response = await fetch('http://localhost:8080/api/dskhohangs', {
-      method: 'GET',
-      headers: myHeaders
-    });
-
-
-    if (!response.ok) {
-      throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-    }
-
-
-    const data = await response.json();
-    warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
-    console.log('Danh sách kho (status = true):', warehouseList);
-  } catch (error) {
-    console.error('Lỗi khi lấy danh sách kho:', error);
-    alert('Không thể tải danh sách kho, vui lòng thử lại!');
-  }
+// Chuẩn hóa dữ liệu sản phẩm
+function getProductData(item) {
+    const isNested = item.product !== undefined;
+    return {
+        productId: isNested ? item.product.productId : item.productId,
+        category: isNested ? item.product.category : item.category,
+        productName: isNested ? item.product.productName : item.productName,
+        price: isNested ? item.product.price : item.price,
+        description: isNested ? item.product.description : item.description,
+        status: isNested ? item.product.status : item.status,
+        currentStock: isNested ? item.currentStock : undefined
+    };
 }
-
 
 // Hiển thị dropdown sản phẩm
 function showProductDropdown(inputElement, isFocus = false) {
-  const dropdownMenu = inputElement.nextElementSibling;
-  const searchText = inputElement.value.toLowerCase();
+    const dropdownMenu = inputElement.nextElementSibling;
+    const searchText = inputElement.value.toLowerCase();
 
+    const filteredProducts = isFocus
+        ? productList
+        : productList.filter(product => {
+            const productData = getProductData(product);
+            return productData.productName.toLowerCase().includes(searchText) && 
+                   productData.status === true;
+        });
 
-  const filteredProducts = isFocus
-    ? productList
-    : productList.filter(product => product.productName.toLowerCase().includes(searchText));
+    dropdownMenu.innerHTML = '';
 
+    if (filteredProducts.length === 0) {
+        dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy sản phẩm</a>';
+    } else {
+        filteredProducts.forEach(product => {
+            const productData = getProductData(product);
+            const item = document.createElement('a');
+            item.classList.add('dropdown-item');
+            item.href = '#';
+            item.textContent = `${productData.productName} - ${productData.price || 0} VND${productData.currentStock !== undefined ? ` (Tồn: ${productData.currentStock})` : ''}`;
+            item.onclick = () => selectProduct(inputElement, productData);
+            dropdownMenu.appendChild(item);
+        });
+    }
 
-  dropdownMenu.innerHTML = '';
-
-
-  if (filteredProducts.length === 0) {
-    dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy sản phẩm</a>';
-  } else {
-    filteredProducts.forEach(product => {
-      const item = document.createElement('a');
-      item.classList.add('dropdown-item');
-      item.href = '#';
-      item.textContent = product.productName;
-      item.onclick = () => selectProduct(inputElement, product);
-      dropdownMenu.appendChild(item);
-    });
-  }
-
-
-  dropdownMenu.classList.add('show');
+    dropdownMenu.classList.add('show');
 }
-
 
 // Chọn sản phẩm từ dropdown
 function selectProduct(inputElement, product) {
-  const row = inputElement.closest('tr');
-  inputElement.value = product.productName;
-  inputElement.dataset.productId = product.productId; // Lưu productId
-  row.querySelector('.price').value = product.price || 0;
-  row.querySelector('.dropdown-menu').classList.remove('show');
-  calculateTotal(row.querySelector('.quantity'));
+    const row = inputElement.closest('tr');
+    inputElement.value = product.productName;
+    inputElement.dataset.productId = product.productId;
+    row.querySelector('.price').value = product.price || 0;
+    row.querySelector('.dropdown-menu').classList.remove('show');
+    calculateTotal(row.querySelector('.quantity'));
 }
 
+// Load nhà cung cấp từ API
+async function getSuppliers() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+    }
 
-// Hiển thị dropdown nhà cung cấp
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    try {
+        const response = await fetch('http://localhost:8080/api/suppliers', {
+            method: 'GET',
+            headers: myHeaders
+        });
+
+        if (!response.ok) {
+            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        supplierList = (data.data?.listSupplier || []).filter(supplier =>
+            supplier.status === undefined || supplier.status === true
+        );
+        console.log('Danh sách nhà cung cấp (status = true):', supplierList);
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
+        alert('Không thể tải danh sách nhà cung cấp!');
+    }
+}
+
+// Load kho nhập hàng từ API
+async function getWarehouses() {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    try {
+        const response = await fetch('http://localhost:8080/api/dskhohangs', {
+            method: 'GET',
+            headers: myHeaders
+        });
+
+        if (!response.ok) {
+            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        warehouseList = (data.data?.listDskhohang || []).filter(warehouse => warehouse.status === true);
+        console.log('Danh sách kho (status = true):', warehouseList);
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách kho:', error);
+        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+    }
+}
+
+// Các hàm dropdown khác
 function showSupplierDropdown(inputElement, isFocus = false) {
-  const dropdownMenu = inputElement.nextElementSibling;
-  const searchText = inputElement.value.toLowerCase();
+    const dropdownMenu = inputElement.nextElementSibling;
+    const searchText = inputElement.value.toLowerCase();
 
+    const filteredSuppliers = isFocus
+        ? supplierList
+        : supplierList.filter(supplier => supplier.supplierName.toLowerCase().includes(searchText));
 
-  const filteredSuppliers = isFocus
-    ? supplierList
-    : supplierList.filter(supplier => supplier.supplierName.toLowerCase().includes(searchText));
+    dropdownMenu.innerHTML = '';
 
+    if (filteredSuppliers.length === 0) {
+        dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy nhà cung cấp</a>';
+    } else {
+        filteredSuppliers.forEach(supplier => {
+            const item = document.createElement('a');
+            item.classList.add('dropdown-item');
+            item.href = '#';
+            item.textContent = supplier.supplierName;
+            item.onclick = () => selectSupplier(inputElement, supplier);
+            dropdownMenu.appendChild(item);
+        });
+    }
 
-  dropdownMenu.innerHTML = '';
-
-
-  if (filteredSuppliers.length === 0) {
-    dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy nhà cung cấp</a>';
-  } else {
-    filteredSuppliers.forEach(supplier => {
-      const item = document.createElement('a');
-      item.classList.add('dropdown-item');
-      item.href = '#';
-      item.textContent = supplier.supplierName;
-      item.onclick = () => selectSupplier(inputElement, supplier);
-      dropdownMenu.appendChild(item);
-    });
-  }
-
-
-  dropdownMenu.classList.add('show');
+    dropdownMenu.classList.add('show');
 }
 
-
-// Chọn nhà cung cấp từ dropdown
 function selectSupplier(inputElement, supplier) {
-  inputElement.value = supplier.supplierName;
-  inputElement.dataset.supplierId = supplier.supplierId; // Lưu supplierId
-  inputElement.nextElementSibling.classList.remove('show');
+    inputElement.value = supplier.supplierName;
+    inputElement.dataset.supplierId = supplier.supplierId;
+    inputElement.nextElementSibling.classList.remove('show');
 }
 
-
-// Hiển thị dropdown kho nhập hàng
 function showWarehouseDropdown(inputElement, isFocus = false) {
-  const dropdownMenu = inputElement.nextElementSibling;
-  const searchText = inputElement.value.toLowerCase();
+    const dropdownMenu = inputElement.nextElementSibling;
+    const searchText = inputElement.value.toLowerCase();
 
+    const filteredWarehouses = isFocus
+        ? warehouseList
+        : warehouseList.filter(warehouse => warehouse.name.toLowerCase().includes(searchText));
 
-  const filteredWarehouses = isFocus
-    ? warehouseList
-    : warehouseList.filter(warehouse => warehouse.name.toLowerCase().includes(searchText));
+    dropdownMenu.innerHTML = '';
 
+    if (filteredWarehouses.length === 0) {
+        dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy kho</a>';
+    } else {
+        filteredWarehouses.forEach(warehouse => {
+            const item = document.createElement('a');
+            item.classList.add('dropdown-item');
+            item.href = '#';
+            item.textContent = warehouse.name;
+            item.onclick = () => selectWarehouse(inputElement, warehouse);
+            dropdownMenu.appendChild(item);
+        });
+    }
 
-  dropdownMenu.innerHTML = '';
-
-
-  if (filteredWarehouses.length === 0) {
-    dropdownMenu.innerHTML = '<a class="dropdown-item" href="#">Không tìm thấy kho</a>';
-  } else {
-    filteredWarehouses.forEach(warehouse => {
-      const item = document.createElement('a');
-      item.classList.add('dropdown-item');
-      item.href = '#';
-      item.textContent = warehouse.name;
-      item.onclick = () => selectWarehouse(inputElement, warehouse);
-      dropdownMenu.appendChild(item);
-    });
-  }
-
-
-  dropdownMenu.classList.add('show');
+    dropdownMenu.classList.add('show');
 }
-
-
-// Chọn kho từ dropdown
-
 
 function selectWarehouse(inputElement, warehouse) {
-  inputElement.value = warehouse.name;
-  inputElement.dataset.warehouseId = warehouse.khohangId; // Sử dụng warehouse.khohangId
-
-
-  inputElement.nextElementSibling.classList.remove('show');
-  console.log('Đã chọn kho:', { name: warehouse.name, id: warehouse.khohangId, dataset: inputElement.dataset }); // Debug
+    inputElement.value = warehouse.name;
+    inputElement.dataset.warehouseId = warehouse.khohangId;
+    inputElement.nextElementSibling.classList.remove('show');
 }
+
 // Ẩn dropdown khi click ra ngoài
 document.addEventListener('click', (event) => {
-  const dropdowns = document.querySelectorAll('.dropdown-menu');
-  dropdowns.forEach(dropdown => {
-    if (!dropdown.parentElement.contains(event.target)) {
-      dropdown.classList.remove('show');
-    }
-  });
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
+    dropdowns.forEach(dropdown => {
+        if (!dropdown.parentElement.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
 });
-
 
 // Tính toán tổng cho từng dòng sản phẩm
 function calculateTotal(element) {
-  const row = element.closest('tr');
-  const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
-  const price = parseFloat(row.querySelector('.price').value) || 0;
-  const vat = parseFloat(row.querySelector('.vat').value) || 0;
-  const discount = parseFloat(row.querySelector('.discount').value) || 0;
+    const row = element.closest('tr');
+    const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+    const price = parseFloat(row.querySelector('.price').value) || 0;
+    const vat = parseFloat(row.querySelector('.vat').value) || 0;
+    const discount = parseFloat(row.querySelector('.discount').value) || 0;
 
+    const subtotal = quantity * price * (1 - discount / 100);
+    row.querySelector('.subtotal').value = subtotal.toLocaleString('vi-VN');
 
-  const subtotal = quantity * price * (1 - discount / 100);
-  row.querySelector('.subtotal').value = subtotal.toLocaleString('vi-VN');
+    const totalAmount = subtotal * (1 + vat / 100);
+    row.querySelector('.totalAmount').value = totalAmount.toLocaleString('vi-VN');
 
-
-  const totalAmount = subtotal * (1 + vat / 100);
-  row.querySelector('.totalAmount').value = totalAmount.toLocaleString('vi-VN');
-
-
-  updateTotal(); // Cập nhật tổng phiếu
+    updateTotal();
 }
-
 
 // Cập nhật tổng phiếu
 function updateTotal() {
-  const rows = document.querySelectorAll('#productList tr');
-  let totalBefore = 0;
+    const rows = document.querySelectorAll('#productList tr');
+    let totalBefore = 0;
 
+    rows.forEach(row => {
+        const subtotal = parseFloat(row.querySelector('.subtotal').value.replace(/[^0-9.-]+/g, '')) || 0;
+        totalBefore += subtotal;
+    });
 
-  rows.forEach(row => {
-    const subtotal = parseFloat(row.querySelector('.subtotal').value.replace(/[^0-9.-]+/g, '')) || 0;
-    totalBefore += subtotal;
-  });
+    const vat = parseFloat(document.getElementById('vat').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
 
-
-  const vat = parseFloat(document.getElementById('vat').value) || 0;
-  const discount = parseFloat(document.getElementById('discount').value) || 0;
-
-
-  document.getElementById('totalBefore').value = totalBefore.toLocaleString('vi-VN');
-  const totalAfter = totalBefore * (1 - discount / 100) * (1 + vat / 100);
-  document.getElementById('totalAfter').value = totalAfter.toLocaleString('vi-VN');
+    document.getElementById('totalBefore').value = totalBefore.toLocaleString('vi-VN');
+    const totalAfter = totalBefore * (1 - discount / 100) * (1 + vat / 100);
+    document.getElementById('totalAfter').value = totalAfter.toLocaleString('vi-VN');
 }
-
 
 // Thêm dòng sản phẩm mới
 function addProduct() {
-  const tbody = document.getElementById('productList');
-  const newRow = tbody.querySelector('tr').cloneNode(true);
+    const tbody = document.getElementById('productList');
+    const newRow = tbody.querySelector('tr').cloneNode(true);
 
-
-  newRow.querySelectorAll('input').forEach(input => {
-    if (!input.classList.contains('bg-light')) input.value = '';
-    else input.value = '0';
-  });
-  newRow.querySelector('.vat').value = '0'; // Đảm bảo VAT mặc định là 0%
-  tbody.appendChild(newRow);
+    newRow.querySelectorAll('input').forEach(input => {
+        if (!input.classList.contains('bg-light')) input.value = '';
+        else input.value = '0';
+    });
+    newRow.querySelector('.vat').value = '0';
+    tbody.appendChild(newRow);
 }
-
 
 // Xóa dòng sản phẩm
 function removeProduct(button) {
-  const row = button.closest('tr');
-  if (document.querySelectorAll('#productList tr').length > 1) {
-    row.remove();
-    updateTotal();
-  } else {
-    alert('Phải có ít nhất một sản phẩm trong phiếu!');
-  }
+    const row = button.closest('tr');
+    if (document.querySelectorAll('#productList tr').length > 1) {
+        row.remove();
+        updateTotal();
+    } else {
+        alert('Phải có ít nhất một sản phẩm trong phiếu!');
+    }
 }
-
 
 // Reset form
 function resetForm() {
-  document.getElementById('invoiceForm').reset();
-  document.getElementById('supplierInput').dataset.supplierId = '';
-  document.getElementById('warehouseInput').dataset.warehouseId = '';
-  const tbody = document.getElementById('productList');
-  tbody.innerHTML = tbody.querySelector('tr').outerHTML; // Giữ lại một dòng mặc định
-  updateTotal();
+    document.getElementById('invoiceForm').reset();
+    document.getElementById('supplierInput').dataset.supplierId = '';
+    document.getElementById('warehouseInput').dataset.warehouseId = '';
+    const tbody = document.getElementById('productList');
+    tbody.innerHTML = tbody.querySelector('tr').outerHTML;
+    updateTotal();
 }
-
 
 // Lấy userId từ token
 function getUserIdFromToken(token) {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload['user-id']; // Lấy user-id từ payload
-  } catch (error) {
-    console.error('Lỗi khi giải mã token:', error);
-    return null;
-  }
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload['user-id'];
+    } catch (error) {
+        console.error('Lỗi khi giải mã token:', error);
+        return null;
+    }
 }
 
-
-// Tạo phiếu nhập
+// Tạo phiếu nhập và cập nhật currentStock
 async function saveInvoice() {
-  const token = localStorage.getItem('accessToken');
-  if (!token) {
-    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
-    return;
-  }
-
-
-  const userId = getUserIdFromToken(token);
-  if (!userId) {
-    alert('Không thể lấy userId từ token!');
-    return;
-  }
-
-
-  const supplierId = document.getElementById('supplierInput').dataset.supplierId;
-  const khohangId = document.getElementById('warehouseInput').dataset.warehouseId;
-  const importDate = document.getElementById('importDate').value;
-  const vat = parseFloat(document.getElementById('vat').value) || 0;
-  const discount = parseFloat(document.getElementById('discount').value) || 0;
-  const totalBefore = parseFloat(document.getElementById('totalBefore').value.replace(/[^0-9.-]+/g, '')) || 0;
-  const finalAmount = parseFloat(document.getElementById('totalAfter').value.replace(/[^0-9.-]+/g, '')) || 0;
-
-
-  // Thu thập chi tiết sản phẩm
-  const rows = document.querySelectorAll('#productList tr');
-  const importDetails = Array.from(rows).map(row => {
-    const productId = row.querySelector('.product-name').dataset.productId;
-    const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
-    const subtotal = parseFloat(row.querySelector('.subtotal').value.replace(/[^0-9.-]+/g, '')) || 0;
-    const vat = parseFloat(row.querySelector('.vat').value) || 0;
-    const discount = parseFloat(row.querySelector('.discount').value) || 0;
-    const totalAmount = parseFloat(row.querySelector('.totalAmount').value.replace(/[^0-9.-]+/g, '')) || 0;
-
-
-    return {
-      productId: parseInt(productId),
-      quantity,
-      subtotal,
-      vat,
-      discount,
-      totalAmount
-    };
-  });
-
-
-  // Kiểm tra dữ liệu đầu vào
-  if (!supplierId || !khohangId || !importDate || importDetails.length === 0 || !importDetails.every(detail => detail.productId)) {
-    if (!supplierId) alert('Vui lòng chọn Nhà cung cấp!');
-    else if (!khohangId) alert('Vui lòng chọn Kho nhập hàng!');
-    else if (!importDate) alert('Vui lòng chọn Ngày nhập!');
-    else if (importDetails.length === 0 || !importDetails.every(detail => detail.productId)) alert('Vui lòng thêm ít nhất một sản phẩm hợp lệ!');
-    return;
-  }
-
-
-  const invoiceData = {
-    userId: parseInt(userId),
-    khohangId: parseInt(khohangId),
-    supplierId: parseInt(supplierId),
-    importDate,
-    totalAmount: totalBefore,
-    vat,
-    discount,
-    finalAmount,
-    importDetails
-  };
-
-
-  console.log('Dữ liệu gửi lên API:', invoiceData); // Debug dữ liệu trước khi gửi
-
-
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
-  myHeaders.append('Authorization', `Bearer ${token}`);
-
-
-  try {
-    const response = await fetch('http://localhost:8080/api/import-invoices', {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(invoiceData),
-      redirect: 'follow'
-    });
-
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Lỗi: ${response.status} - ${errorText}`);
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        return;
     }
 
+    const userId = getUserIdFromToken(token);
+    if (!userId) {
+        alert('Không thể lấy userId từ token!');
+        return;
+    }
 
-    const result = await response.text();
-    console.log('Kết quả tạo phiếu:', result);
-    alert('Tạo phiếu nhập thành công!');
-    resetForm(); // Reset form sau khi lưu thành công
-  } catch (error) {
-    console.error('Lỗi khi tạo phiếu:', error);
-    alert(`Không thể tạo phiếu nhập: ${error.message}`);
-  }
+    const supplierId = document.getElementById('supplierInput').dataset.supplierId;
+    const khohangId = document.getElementById('warehouseInput').dataset.warehouseId;
+    const importDate = document.getElementById('importDate').value;
+    const vat = parseFloat(document.getElementById('vat').value) || 0;
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const totalBefore = parseFloat(document.getElementById('totalBefore').value.replace(/[^0-9.-]+/g, '')) || 0;
+    const finalAmount = parseFloat(document.getElementById('totalAfter').value.replace(/[^0-9.-]+/g, '')) || 0;
+
+    // Thu thập chi tiết sản phẩm
+    const rows = document.querySelectorAll('#productList tr');
+    const importDetails = Array.from(rows).map(row => {
+        const productId = row.querySelector('.product-name').dataset.productId;
+        const quantity = parseFloat(row.querySelector('.quantity').value) || 0;
+        const subtotal = parseFloat(row.querySelector('.subtotal').value.replace(/[^0-9.-]+/g, '')) || 0;
+        const vat = parseFloat(row.querySelector('.vat').value) || 0;
+        const discount = parseFloat(row.querySelector('.discount').value) || 0;
+        const totalAmount = parseFloat(row.querySelector('.totalAmount').value.replace(/[^0-9.-]+/g, '')) || 0;
+
+        return {
+            productId: parseInt(productId),
+            quantity, // Số lượng nhập, sẽ được cộng vào currentStock
+            subtotal,
+            vat,
+            discount,
+            totalAmount
+        };
+    });
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!supplierId || !khohangId || !importDate || importDetails.length === 0 || !importDetails.every(detail => detail.productId)) {
+        if (!supplierId) alert('Vui lòng chọn Nhà cung cấp!');
+        else if (!khohangId) alert('Vui lòng chọn Kho nhập hàng!');
+        else if (!importDate) alert('Vui lòng chọn Ngày nhập!');
+        else if (importDetails.length === 0 || !importDetails.every(detail => detail.productId)) alert('Vui lòng thêm ít nhất một sản phẩm hợp lệ!');
+        return;
+    }
+
+    const invoiceData = {
+        userId: parseInt(userId),
+        khohangId: parseInt(khohangId),
+        supplierId: parseInt(supplierId),
+        importDate,
+        totalAmount: totalBefore,
+        vat,
+        discount,
+        finalAmount,
+        importDetails // Gửi chi tiết sản phẩm bao gồm quantity
+    };
+
+    console.log('Dữ liệu gửi lên API:', invoiceData);
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    try {
+        const response = await fetch('http://localhost:8080/api/import-invoices', {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(invoiceData),
+            redirect: 'follow'
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Lỗi: ${response.status} - ${errorText}`);
+        }
+
+        const result = await response.text();
+        console.log('Kết quả tạo phiếu:', result);
+        alert('Tạo phiếu nhập thành công!');
+
+        // Cập nhật lại danh sách sản phẩm để phản ánh currentStock mới
+        await loadProducts();
+        resetForm();
+    } catch (error) {
+        console.error('Lỗi khi tạo phiếu:', error);
+        alert(`Không thể tạo phiếu nhập: ${error.message}`);
+    }
 }
 
-
 // Gọi các hàm khi trang tải
-document.addEventListener('DOMContentLoaded', () => {
-  loadProducts();
-  getSuppliers();
-  getWarehouses();
+document.addEventListener('DOMContentLoaded', async () => {
+    await Promise.all([loadProducts(), getSuppliers(), getWarehouses()]);
 });
 </script>
   <!-- jQuery -->
