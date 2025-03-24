@@ -742,7 +742,7 @@
               <td>${index + 1}</td>
               <td>${orderTypeText}</td>
               <td>${order.customer || 'N/A'}</td>
-              <td>${order.dskhohang ? order.dskhohang.name : order.khoHangId || 'N/A'}</td>
+              <td>${order.dskhohang ? order.dskhohang.name : order.khohangId || 'N/A'}</td>
               <td>${order.user ? order.user.username : order.userId || 'N/A'}</td>
               <td>${formatDate(order.createdAt) || 'N/A'}</td>
               <td>${formatCurrency(order.finalAmount) || '0'}</td>
@@ -904,7 +904,7 @@
     // Chọn kho từ dropdown trong modal
     function selectEditWarehouse(inputElement, warehouse) {
       inputElement.value = warehouse.name;
-      inputElement.dataset.khoHangId = warehouse.khohangId;
+      inputElement.dataset.khohangId = warehouse.khohangId;
       inputElement.nextElementSibling.classList.remove('show');
       console.log('Đã chọn kho:', { name: warehouse.name, id: warehouse.khohangId });
     }
@@ -954,7 +954,7 @@
             orderId: orderId,
             orderType: 1,
             status: "In progress",
-            khoHangId: null,
+            khohangId: null,
             customer: null,
             address: null,
             totalAmount: 0,
@@ -973,11 +973,11 @@
       document.getElementById('editNhaCungCap').value = order.customer || '';
       document.getElementById('editAddress').value = order.address || '';
 
-      // Gán khoHangId và tên kho
-      const warehouse = order.khoHangId ? warehouseList.find(w => w.khohangId === order.khoHangId) : null;
-      document.getElementById('editKhoXuat').value = warehouse ? warehouse.name : order.khoHangId ? `Kho ${order.khoHangId}` : '';
-      document.getElementById('editKhoXuat').dataset.khoHangId = order.khoHangId || ''; // Giữ nguyên giá trị khoHangId gốc
-      console.log("Giá trị khoHangId khi mở modal:", document.getElementById('editKhoXuat').dataset.khoHangId);
+      // Gán khohangId và tên kho
+      const warehouse = order.khohangId ? warehouseList.find(w => w.khohangId === order.khohangId) : null;
+      document.getElementById('editKhoXuat').value = warehouse ? warehouse.name : order.khohangId ? `Kho ${order.khohangId}` : '';
+      document.getElementById('editKhoXuat').dataset.khohangId = order.khohangId || ''; // Giữ nguyên giá trị khohangId gốc
+      console.log("Giá trị khohangId khi mở modal:", document.getElementById('editKhoXuat').dataset.khohangId);
 
       document.getElementById('editNguoiXuat').value = order.user?.username || 'N/A';
       document.getElementById('editNgayXuat').value = order.createdAt ? order.createdAt.split('T')[0] : '';
@@ -997,7 +997,7 @@
       const modal = new bootstrap.Modal(document.getElementById('editModal'));
       modal.show();
       console.log("Phiếu xuất từ allOrders:", order);
-console.log("Phiếu xuất từ API:", order);
+      console.log("Phiếu xuất từ API:", order);
     }
 
     // Xử lý thay đổi loại phiếu trong modal
@@ -1085,7 +1085,7 @@ console.log("Phiếu xuất từ API:", order);
       }
   
       const orderType = document.getElementById('editOrderType').value;
-      const khoHangId = document.getElementById('editKhoXuat').dataset.khoHangId;
+      const khohangId = document.getElementById('editKhoXuat').dataset.khohangId;
       const orderId = document.getElementById('editModal').dataset.orderId;
   
       if (!orderId) {
@@ -1093,7 +1093,7 @@ console.log("Phiếu xuất từ API:", order);
           return;
       }
   
-      if (orderType === "1" && (!khoHangId || khoHangId === '' || isNaN(parseInt(khoHangId)))) {
+      if (orderType === "1" && (!khohangId || khohangId === '' || isNaN(parseInt(khohangId)))) {
           alert('Vui lòng chọn kho xuất cho phiếu xuất nội bộ!');
           return;
       }
@@ -1144,7 +1144,7 @@ console.log("Phiếu xuất từ API:", order);
       const updatedOrder = {
           orderType: parseInt(orderType),
           status: document.getElementById('editTrangThai').value || "In progress",
-          khoHangId: khoHangId ? parseInt(khoHangId) : null,
+          khohangId: khohangId ? parseInt(khohangId) : null,
           customer: document.getElementById('editNhaCungCap').value || null,
           address: document.getElementById('editAddress').value || null,
           totalAmount: finalAmount,
@@ -1193,38 +1193,41 @@ console.log("Phiếu xuất từ API:", order);
 
     // Xác nhận xóa phiếu xuất
     async function confirmDelete() {
-      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
+      const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM4fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
       if (!token) {
         alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
-
+    
       const orderId = document.getElementById('deleteModal').dataset.orderId;
       if (!orderId) {
         alert('Không tìm thấy orderId để xóa!');
         return;
       }
-
+    
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${token}`);
-
-      const raw = JSON.stringify([parseInt(orderId)]);
-
+    
+      // Tạo dữ liệu gửi đi dưới dạng {"ids": [orderId]}
+      const raw = JSON.stringify({
+        "ids": [parseInt(orderId)]
+      });
+    
       const requestOptions = {
         method: "DELETE",
         headers: myHeaders,
         body: raw,
         redirect: "follow"
       };
-
+    
       try {
         const response = await fetch("http://localhost:8080/api/orders/delete", requestOptions);
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(`Lỗi: ${response.status} - ${errorText}`);
         }
-
+    
         const result = await response.text();
         console.log("Kết quả xóa:", result);
         alert(`Đã xóa phiếu xuất với ID ${orderId} thành công!`);
@@ -1270,7 +1273,7 @@ console.log("Phiếu xuất từ API:", order);
       getWarehouses();
       loadOrders();
     });
-  </script>
+</script>
 
   <!-- jQuery -->
   <script src="../../../plugins/jquery/jquery.min.js"></script>
