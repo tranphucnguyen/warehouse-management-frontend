@@ -503,102 +503,122 @@
 
 
               <div class="card-body">
-                <h3 class="m-2">Danh sách sản phẩm</h3>
-                <select class="form-control">
-                  <option value="" selected>Kiểu xuất</option>
-                  <option value="">Xuất nội bộ</option>
-                  <option value="">Xuất ngoài</option>
-                </select>
-                <!-- <button class="btn btn-primary mb-3" onclick="addProduct()">Thêm hàng hóa</button> -->
-                <table class="table table-bordered">
-                  <thead class="thead-light">
-                    <tr>
-                      <th style="width: 15%;" class="text-center">Tên SP</th>
-                      <th style="width: 10%;" class="text-center">Số lượng</th>
-                      <th style="width: 10%;" class="text-center">Đơn giá</th>
-                      <th style="width: 5%;" class="text-center">VAT (%)</th>
-                      <th style="width: 10%;" class="text-center">Chiết khấu (%)</th>
-                      <th style="width: 10%;" class="text-center">Thành tiền</th>
-                      <th style="width: 10%;" class="text-center">Thành tiền sau thuế</th>
-                      <th style="width: 6%;" class="text-center">Hành động</th>
-                    </tr>
-                  </thead>
-                  <tbody id="productList">
-                    <tr>
-                      <td>
+                <div class="row">
+                  <div class="col-md-8">
+                    <h3 class="m-2">Danh sách sản phẩm</h3>
+                    <select class="form-control mb-2">
+                      <option value="" selected>Kiểu xuất</option>
+                      <option value="">Xuất nội bộ</option>
+                      <option value="">Xuất ngoài</option>
+                    </select>
+                    <!-- <button class="btn btn-primary mb-3" onclick="addProduct()">Thêm hàng hóa</button> -->
+                    <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="width: 15%;" class="text-center">Tên SP</th>
+                          <th style="width: 10%;" class="text-center">Số lượng</th>
+                          <th style="width: 10%;" class="text-center">Đơn giá</th>
+                          <th style="width: 5%;" class="text-center">VAT (%)</th>
+                          <th style="width: 10%;" class="text-center">Chiết khấu (%)</th>
+                          <th style="width: 10%;" class="text-center">Thành tiền</th>
+                          <th style="width: 10%;" class="text-center">Thành tiền sau thuế</th>
+                          <th style="width: 6%;" class="text-center">Hành động</th>
+                        </tr>
+                      </thead>
+                      <tbody id="productList">
+                        <tr>
+                          <td>
+                            <div class="dropdown">
+                              <input type="text" class="form-control product-name" placeholder="Chọn sản phẩm"
+                                autocomplete="off" oninput="showProductDropdown(this)"
+                                onfocus="showProductDropdown(this, true)">
+                              <div class="dropdown-menu"></div>
+                            </div>
+                          </td>
+                          <td><input type="number" class="form-control quantity" oninput="calculateTotal(this)"></td>
+                          <td><input type="number" class="form-control price" oninput="calculateTotal(this)" readonly></td>
+                          <td>
+                            <select class="form-control vat" onchange="calculateTotal(this)">
+                              <option value="0" selected>0%</option>
+                              <option value="8">8%</option>
+                              <option value="10">10%</option>
+                            </select>
+                          </td>
+                          <td><input type="number" class="form-control discount" oninput="calculateTotal(this)"></td>
+                          <td><input type="text" class="form-control subtotal bg-light" readonly></td>
+                          <td><input type="text" class="form-control totalAmount bg-light" readonly></td>
+                          <td class="text-center"><button class="btn btn-danger btn-s"
+                              onclick="removeProduct(this)">Xóa</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <button class="btn btn-primary m-2" style="margin-right: 7px;" onclick="addProduct()">+ Thêm sản
+                      phẩm</button>
+                  </div>
+                  <hr />
+                  <div class="col-md-4">
+                    <h3 style="margin-bottom: 15px">Thông tin phiếu</h3>
+                    <form id="invoiceForm">
+                      <div class="form-group" id="warehouseGroup">
+                        <label for="warehouseInput">Kho xuất hàng</label>
                         <div class="dropdown">
-                          <input type="text" class="form-control product-name" placeholder="Chọn sản phẩm"
-                            autocomplete="off" oninput="showProductDropdown(this)"
-                            onfocus="showProductDropdown(this, true)">
+                          <input type="text" id="warehouseInput" class="form-control" placeholder="Chọn kho xuất hàng"
+                          autocomplete="off" oninput="showWarehouseDropdown(this)" onfocus="showWarehouseDropdown(this, true)">
                           <div class="dropdown-menu"></div>
                         </div>
-                      </td>
-                      <td><input type="number" class="form-control quantity" oninput="calculateTotal(this)"></td>
-                      <td><input type="number" class="form-control price" oninput="calculateTotal(this)" readonly></td>
-                      <td>
-                        <select class="form-control vat" onchange="calculateTotal(this)">
-                          <option value="0" selected>0%</option>
-                          <option value="8">8%</option>
-                          <option value="10">10%</option>
-                        </select>
-                      </td>
-                      <td><input type="number" class="form-control discount" oninput="calculateTotal(this)"></td>
-                      <td><input type="text" class="form-control subtotal bg-light" readonly></td>
-                      <td><input type="text" class="form-control totalAmount bg-light" readonly></td>
-                      <td class="text-center"><button class="btn btn-danger btn-s"
-                          onclick="removeProduct(this)">Xóa</button></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button class="btn btn-primary m-2" style="margin-right: 7px;" onclick="addProduct()">+ Thêm sản
-                  phẩm</button>
-                <hr />
-                <h3 style="margin-bottom: 15px">Thông tin phiếu</h3>
-                <form id="invoiceForm">
-                  <div class="form-group" id="warehouseGroup">
-                    <label for="warehouseInput">Kho nhập hàng</label>
-                    <div class="dropdown">
-                      <input type="text" id="warehouseInput" class="form-control" placeholder="Chọn kho nhập hàng"
-                        autocomplete="off" oninput="showWarehouseDropdown(this)" onfocus="showWarehouseDropdown(this, true)">
-                      <div class="dropdown-menu"></div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group" id="customerGroup" style="display: none;">
+                          <label for="customerInput">Khách hàng</label>
+                          <input type="text" id="customerInput" class="form-control" placeholder="Nhập tên khách hàng">
+                        </div>
+                        <div class="form-group" id="addressGroup" style="display: none;">
+                          <label for="addressInput">Địa chỉ</label>
+                          <input type="text" id="addressInput" class="form-control" placeholder="Nhập địa chỉ khách hàng">
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="importDate">Ngày nhập</label>
+                            <input type="date"id.Iterable "importDate" class="form-control">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="vat">VAT (%)</label>
+                            <input type="number" id="vat" class="form-control" value="0" oninput="updateTotal()">
+                        </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="discount">Chiết khấu (%)</label>
+                            <input type="number" id="discount" class="form-control" value="0" oninput="updateTotal()">
+                        </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="totalBefore">Tổng tiền (trước VAT & chiết khấu)</label>
+                            <input type="text" id="totalBefore" class="form-control readonly" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="totalAfter">Thanh toán (sau VAT & chiết khấu)</label>
+                            <input type="text" id="totalAfter" class="form-control readonly" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+    
+    
+    
+                    <div class="d-flex gap-2 mt-2">
+                      <button class="btn btn-success" style="margin-right: 7px;" onclick="saveInvoice()">Lưu Phiếu
+                        Xuất</button>
+                      <button class="btn btn-danger" onclick="resetForm()">Hủy</button>
                     </div>
                   </div>
-                  <div class="form-group" id="customerGroup" style="display: none;">
-                    <label for="customerInput">Khách hàng</label>
-                    <input type="text" id="customerInput" class="form-control" placeholder="Nhập tên khách hàng">
-                  </div>
-                  <div class="form-group" id="addressGroup" style="display: none;">
-                    <label for="addressInput">Địa chỉ</label>
-                    <input type="text" id="addressInput" class="form-control" placeholder="Nhập địa chỉ khách hàng">
-                  </div>
-                  <div class="form-group">
-                    <label for="importDate">Ngày nhập</label>
-                    <input type="date"id.Iterable "importDate" class="form-control">
-                  </div>
-                  <div class="form-group">
-                    <label for="vat">VAT (%)</label>
-                    <input type="number" id="vat" class="form-control" value="0" oninput="updateTotal()">
-                  </div>
-                  <div class="form-group">
-                    <label for="discount">Chiết khấu (%)</label>
-                    <input type="number" id="discount" class="form-control" value="0" oninput="updateTotal()">
-                  </div>
-                  <div class="form-group">
-                    <label for="totalBefore">Tổng tiền (trước VAT & chiết khấu)</label>
-                    <input type="text" id="totalBefore" class="form-control readonly" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="totalAfter">Thanh toán (sau VAT & chiết khấu)</label>
-                    <input type="text" id="totalAfter" class="form-control readonly" readonly>
-                  </div>
-                </form>
-
-
-
-                <div class="d-flex gap-2 mt-2">
-                  <button class="btn btn-success" style="margin-right: 7px;" onclick="saveInvoice()">Lưu Phiếu
-                    Nhập</button>
-                  <button class="btn btn-danger" onclick="resetForm()">Hủy</button>
                 </div>
               </div>
             </div>
