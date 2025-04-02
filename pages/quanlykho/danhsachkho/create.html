@@ -504,6 +504,20 @@
 
         </div>
       </div>
+
+     <!-- Toast Container: Bootstrap chuẩn -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <!-- Toast thành công -->
+      <div id="successToast" class="toast text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+          <div class="toast-body" id="successMessage"></div>
+      </div>
+
+      <!-- Toast lỗi -->
+      <div id="errorToast" class="toast text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+          <div class="toast-body" id="errorMessage"></div>
+      </div>
+    </div>
+
     </section>
 
 
@@ -532,6 +546,18 @@
 </div>
 <!-- ./wrapper -->
 <script>
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
   function addWarehouse() {
     let name = document.getElementById("inputNameWarehouse").value.trim();
     let address = document.getElementById("inputDescWarehouse").value.trim();
@@ -539,7 +565,7 @@
 
 
     if (!name || !address || !contact) {
-        alert("Vui lòng nhập đầy đủ thông tin!");
+        showErrorToast("Vui lòng nhập đầy đủ thông tin!");
         return;
     }
 
@@ -547,7 +573,7 @@
     // Lấy token từ LocalStorage
     let token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Bạn chưa đăng nhập hoặc token đã hết hạn!");
+        showErrorToast("Bạn chưa đăng nhập hoặc token đã hết hạn!");
         return;
     }
 
@@ -580,7 +606,7 @@
             return response.json();
         })
         .then(result => {
-            alert("Thêm kho thành công!");
+            showSuccessToast("Thêm kho thành công!");
             console.log("Kết quả API:", result);
 
 
@@ -591,7 +617,7 @@
         })
         .catch(error => {
             console.error("Lỗi khi gửi API:", error);
-            alert("Có lỗi xảy ra khi thêm kho, vui lòng thử lại!");
+            showErrorToast("Có lỗi xảy ra khi thêm kho, vui lòng thử lại!");
         });
 }
 

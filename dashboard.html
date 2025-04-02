@@ -700,6 +700,8 @@
               </div>
               <!-- /.card-body -->
             </div>
+
+            <canvas id="stockChart"></canvas>
             <!-- /.card -->
           </section>
           <!-- right col -->
@@ -726,6 +728,79 @@
 </div>
 <!-- ./wrapper -->
 
+
+<script>
+  const API_URL = 'http://localhost:8080/api/report/getAllStock';
+
+  async function fetchStockData() {
+      try {
+          // Lấy token từ localStorage với key đúng
+          let token = localStorage.getItem('accessToken');  
+          if (!token) {
+              throw new Error('❌ Không tìm thấy token trong localStorage.');
+          }
+          console.log('✅ Token từ localStorage:', token);
+
+          // Gọi API
+          const response = await fetch(API_URL, {
+              method: 'GET',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              },
+              credentials: 'include' // Nếu API yêu cầu cookie
+          });
+
+          if (!response.ok) throw new Error(`Lỗi API: ${response.status}`);
+
+          const data = await response.json();
+          console.log('📊 Dữ liệu từ API:', data);
+
+          renderChart(data);
+      } catch (error) {
+          console.error('Lỗi API:', error);
+      }
+  }
+
+  function renderChart(data) {
+      const labels = data.map(item => item.productName);
+      const stockData = data.map(item => item.stock);
+
+      const ctx = document.getElementById('stockChart').getContext('2d');
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Số lượng tồn kho',
+                  data: stockData,
+                  backgroundColor: stockData.map(value => value >= 0 ? 'rgba(54, 162, 235, 0.5)' : 'rgba(255, 99, 132, 0.5)'),
+                  borderColor: stockData.map(value => value >= 0 ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)'),
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: { beginAtZero: true }
+              }
+          }
+      });
+  }
+
+  // Kiểm tra nếu token chưa có, chờ nó được lưu rồi gọi API
+  function waitForToken() {
+      let token = localStorage.getItem('accessToken'); // 🔹 Đúng key
+      if (!token) {
+          console.warn('⏳ Đợi token...');
+          setTimeout(waitForToken, 500); // Kiểm tra lại sau 500ms
+      } else {
+          console.log('✅ Token đã có:', token);
+          fetchStockData();
+      }
+  }
+
+  waitForToken();
+</script>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -760,5 +835,6 @@
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

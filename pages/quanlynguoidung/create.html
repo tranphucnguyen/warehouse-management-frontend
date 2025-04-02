@@ -530,6 +530,24 @@
           <button type="submit" id="btnSubmit" class="btn btn-success float-right">Tạo tài khoản</button>
         </div>
       </div>
+
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
     </section>
 
 
@@ -562,6 +580,18 @@
 </div>
 <!-- ./wrapper -->
 <script>
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
   document.getElementById("btnSubmit").addEventListener("click", function () {
     let username = document.getElementById("inputName").value.trim();
     let fullname = document.getElementById("inputFullname").value.trim();
@@ -577,27 +607,27 @@
     let bankRegex = /^\d{8,16}$/;
  
     if (!username || !fullname || !password || !email || !cccd) {
-      alert("Vui lòng nhập đầy đủ thông tin!");
+      showErrorToast("Vui lòng nhập đầy đủ thông tin!");
       return;
     }
     if (!usernameRegex.test(username)) {
-      alert("Tên người dùng không được chứa ký tự đặc biệt!");
+      showErrorToast("Tên người dùng không được chứa ký tự đặc biệt!");
       return;
     }
     if (password.length < 6 || password.trim().length === 0) {
-      alert("Mật khẩu phải có ít nhất 6 ký tự và không chỉ chứa khoảng trắng!");
+      showErrorToast("Mật khẩu phải có ít nhất 6 ký tự và không chỉ chứa khoảng trắng!");
       return;
     }
     if (!emailRegex.test(email)) {
-      alert("Email không hợp lệ!");
+      showErrorToast("Email không hợp lệ!");
       return;
     }
     if (!cccdRegex.test(cccd)) {
-      alert("CCCD phải có đúng 12 số!");
+      showErrorToast("CCCD phải có đúng 12 số!");
       return;
     }
     if (banknumber && !bankRegex.test(banknumber)) {
-      alert("Số tài khoản ngân hàng không hợp lệ!");
+      showErrorToast("Số tài khoản ngân hàng không hợp lệ!");
       return;
     }
  
@@ -614,7 +644,7 @@
     // Lấy token từ localStorage
     let token = localStorage.getItem("accessToken");
     if (!token) {
-      alert("Bạn cần đăng nhập để thực hiện thao tác này!");
+      showErrorToast("Bạn cần đăng nhập để thực hiện thao tác này!");
       return;
     }
  
@@ -639,7 +669,7 @@
         return response.text();
       })
       .then((result) => {
-        alert("Thêm tài khoản thành công!");
+        showSuccessToast("Thêm tài khoản thành công!");
         console.log(result);
  
         // Xóa dữ liệu form
@@ -651,7 +681,7 @@
         document.getElementById("inputBanknumber").value = "";
       })
       .catch((error) => {
-        alert("Có lỗi xảy ra khi tạo tài khoản!");
+        showErrorToast("Có lỗi xảy ra khi tạo tài khoản!");
         console.error(error);
       });
   });

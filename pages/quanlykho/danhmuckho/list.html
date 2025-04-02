@@ -462,6 +462,11 @@
 
 
       <section class="content">
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm danh mục...">
+          </div>
+        </div>        
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Projects</h3>
@@ -592,7 +597,23 @@
 
 
 
-      <!--  -->
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
 
 
 
@@ -623,42 +644,54 @@
     let allCategories = []; // Lưu toàn bộ danh mục
     
     // Lấy danh sách danh mục từ API (toàn bộ)
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
+
     function getCategories() {
-      let token = localStorage.getItem("accessToken");
-    
-      if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
-        return;
-      }
-    
-      const myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${token}`);
-    
-      fetch(`http://localhost:8080/api/categories`, { // Bỏ tham số page và size
-        method: "GET",
-        headers: myHeaders
-      })
+        let token = localStorage.getItem("accessToken");
+        if (!token) {
+            showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
+            return;
+        }
+
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${token}`);
+
+        fetch(`http://localhost:8080/api/categories`, {
+            method: "GET",
+            headers: myHeaders
+        })
         .then(response => {
-          if (!response.ok) {
-            throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-          }
-          return response.json();
+            if (!response.ok) {
+                throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
         })
         .then(data => {
-          console.log("Danh sách danh mục:", data);
-          if (data.data && data.data.listCategory) {
-            allCategories = data.data.listCategory.filter(category => category.status === true); // Lọc status: true
-            totalItems = allCategories.length;
-            totalPages = Math.ceil(totalItems / itemsPerPage);
-            displayPage(currentPage); // Hiển thị trang hiện tại
-            updatePagination(); // Cập nhật phân trang
-          } else {
-            console.error("Dữ liệu không hợp lệ:", data);
-          }
+            if (data.data && data.data.listCategory) {
+                console.log("Danh sách danh mục:", data.data.listCategory);
+                allCategories = data.data.listCategory.filter(category => category.status === true);
+                totalItems = allCategories.length;
+                totalPages = Math.ceil(totalItems / itemsPerPage);
+                displayPage(currentPage);
+                updatePagination();
+            } else {
+                console.error("Dữ liệu không hợp lệ:", data);
+                showErrorToast("Dữ liệu trả về không hợp lệ.");
+            }
         })
         .catch(error => {
-          console.error("Lỗi khi lấy danh sách:", error);
-          alert("Không thể tải danh sách danh mục!");
+            console.error("Lỗi khi lấy danh sách:", error);
+            showErrorToast("Không thể tải danh sách danh mục!");
         });
     }
     
@@ -734,7 +767,7 @@
     function editCategory(categoryId) {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
       }
     
@@ -766,7 +799,7 @@
         })
         .catch(error => {
           console.error("Lỗi khi lấy thông tin danh mục:", error);
-          alert("Không thể tải thông tin danh mục: " + error.message);
+          showErrorToast("Không thể tải thông tin danh mục: " + error.message);
         });
     }
     
@@ -774,7 +807,7 @@
     function saveChanges() {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
       }
     
@@ -813,7 +846,7 @@
         })
         .catch(error => {
           console.error("Lỗi khi cập nhật danh mục:", error);
-          alert("Không thể cập nhật danh mục: " + error.message);
+          showErrorToast("Không thể cập nhật danh mục: " + error.message);
         });
     }
     
@@ -829,7 +862,7 @@
     function confirmDelete() {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
       }
     
@@ -866,7 +899,7 @@
         })
         .catch(error => {
           console.error("Lỗi khi xóa danh mục:", error);
-          alert("Không thể xóa danh mục: " + error.message);
+          showErrorToast("Không thể xóa danh mục: " + error.message);
         });
     }
     
@@ -882,6 +915,63 @@
     
     // Gọi API khi tải trang
     window.onload = () => getCategories();
+
+    let categoriesData = [];
+
+    // Lấy danh sách danh mục từ API
+    async function fetchCategories(searchText = "") {
+        try {
+          const token = localStorage.getItem("accessToken");
+          const response = await fetch(`http://localhost:8080/api/categories?searchText=${encodeURIComponent(searchText)}`, {
+              headers: { "Authorization": `Bearer ${token}` }
+          });
+            if (!response.ok) {
+                throw new Error(`Lỗi API: ${response.status}`);
+            }
+            const result = await response.json();
+            categoriesData = result.data.listCategory || [];
+            renderCategories();
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+        }
+    }
+
+    // Hiển thị danh mục lên bảng
+    function renderCategories() {
+        const tableBody = document.getElementById("categoryTableBody");
+        tableBody.innerHTML = "";
+        
+        const searchText = (document.getElementById("searchInput").value || "").toLowerCase();
+        let hasData = false;
+
+        categoriesData.forEach((category, index) => {
+            const name = category.categoryName ? category.categoryName.toLowerCase() : "";
+            if (name.includes(searchText)) {
+                hasData = true;
+                const row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${category.categoryName}</td>
+                    <td>${category.description}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" onclick="editCategory(${category.categoryId})">Sửa</button>
+                      <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${category.categoryId})">Xóa</button>
+                    </td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            }
+        });
+
+        if (!hasData) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center">Không tìm thấy dữ liệu phù hợp</td></tr>`;
+        }
+    }
+
+    // Lắng nghe sự kiện nhập vào ô filter
+    document.getElementById("searchInput").addEventListener("input", renderCategories);
+
+    // Gọi API khi tải trang
+    fetchCategories();
+
     </script>
 
   <script src="../../../dist/js/main.js"></script>

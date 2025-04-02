@@ -462,6 +462,20 @@
       <!-- Main content -->
 
       <section class="content">
+        <div class="row mb-3 p-3">
+          <div class="col-md-4">
+            <label for="filterCustomer">Khách hàng:</label>
+            <input type="text" id="filterCustomer" class="form-control" placeholder="Tên khách hàng" oninput="filterOrders()">
+          </div>
+          <div class="col-md-4">
+            <label for="filterStartDate">Ngày bắt đầu:</label>
+            <input type="date" id="filterStartDate" class="form-control" onchange="filterOrders()">
+          </div>
+          <div class="col-md-4">
+            <label for="filterEndDate">Ngày kết thúc:</label>
+            <input type="date" id="filterEndDate" class="form-control" onchange="filterOrders()">
+          </div>
+        </div>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Phiếu xuất</h3>
@@ -480,7 +494,7 @@
                 <tr>
                   <th style="width: 5%">#</th>
                   <th style="width: 13%">Loại phiếu xuất</th> <!-- Đổi từ "Mã phiếu xuất" thành "Loại phiếu xuất" -->
-                  <th style="width: 13%">Nhà cung cấp</th>
+                  <th style="width: 13%">Khách hàng</th>
                   <th style="width: 13%">Kho xuất</th>
                   <th style="width: 13%">Người xuất</th>
                   <th style="width: 13%">Ngày xuất</th>
@@ -489,8 +503,8 @@
                   <!-- <th class="text-center" style="width: 20%">Trạng thái</th> -->
                 </tr>
               </thead>
-              <tbody>
-
+              <tbody id="orderList">
+                <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
               </tbody>
             </table>
           </div>
@@ -661,6 +675,23 @@
         </div>
       </div>
 
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
 
       <!-- /.content -->
     </div>
@@ -686,12 +717,24 @@
     let warehouseList = [];
     let allOrders = []; // Lưu danh sách phiếu xuất
 
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
+
     // Hàm lấy danh sách phiếu xuất và hiển thị lên bảng
     async function loadOrders() {
       const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
 
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
 
@@ -722,7 +765,7 @@
         displayOrders(activeOrders); // Hiển thị chỉ các phiếu có status = true
       } catch (error) {
         console.error("Lỗi khi lấy danh sách phiếu xuất:", error);
-        alert(`Không thể lấy danh sách phiếu xuất: ${error.message}`);
+        showErrorToast(`Không thể lấy danh sách phiếu xuất: ${error.message}`);
       }
     }
 
@@ -763,7 +806,7 @@
     async function loadProducts() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
 
@@ -785,7 +828,7 @@
         console.log('Danh sách sản phẩm (status = true):', productList);
       } catch (error) {
         console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-        alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
+        showErrorToast('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
       }
     }
 
@@ -807,7 +850,7 @@
     async function getWarehouses() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
 
@@ -829,7 +872,7 @@
         console.log('Danh sách kho (status = true):', warehouseList);
       } catch (error) {
         console.error('Lỗi khi lấy danh sách kho:', error);
-        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+        showErrorToast('Không thể tải danh sách kho, vui lòng thử lại!');
       }
     }
 
@@ -924,7 +967,7 @@
       const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
 
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
 
@@ -965,7 +1008,7 @@
             user: { username: "N/A" },
             createdAt: new Date().toISOString().split('T')[0]
           };
-          alert(`Phiếu xuất với ID ${orderId} không tồn tại. Modal sẽ mở với dữ liệu mặc định.`);
+          showErrorToast(`Phiếu xuất với ID ${orderId} không tồn tại. Modal sẽ mở với dữ liệu mặc định.`);
         }
       }
 
@@ -1046,7 +1089,7 @@
         row.remove();
         updateEditTotal();
       } else {
-        alert('Phải có ít nhất một sản phẩm!');
+        showErrorToast('Phải có ít nhất một sản phẩm!');
       }
     }
 
@@ -1080,7 +1123,7 @@
     async function saveChanges() {
       const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXI-taWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
       if (!token) {
-          alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+          showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
           return;
       }
   
@@ -1089,12 +1132,12 @@
       const orderId = document.getElementById('editModal').dataset.orderId;
   
       if (!orderId) {
-          alert('Không tìm thấy orderId!');
+          showErrorToast('Không tìm thấy orderId!');
           return;
       }
   
       if (orderType === "1" && (!khohangId || khohangId === '' || isNaN(parseInt(khohangId)))) {
-          alert('Vui lòng chọn kho xuất cho phiếu xuất nội bộ!');
+          showErrorToast('Vui lòng chọn kho xuất cho phiếu xuất nội bộ!');
           return;
       }
   
@@ -1102,7 +1145,7 @@
           const customer = document.getElementById('editNhaCungCap').value;
           const address = document.getElementById('editAddress').value;
           if (!customer || !address) {
-              alert('Vui lòng nhập đầy đủ thông tin khách hàng và địa chỉ cho phiếu xuất ngoài!');
+              showErrorToast('Vui lòng nhập đầy đủ thông tin khách hàng và địa chỉ cho phiếu xuất ngoài!');
               return;
           }
       }
@@ -1116,7 +1159,7 @@
           const productId = parseInt(row.querySelector('.product-name').dataset.productId);
   
           if (!productId) {
-              alert('Vui lòng chọn sản phẩm hợp lệ!');
+              showErrorToast('Vui lòng chọn sản phẩm hợp lệ!');
               return null;
           }
   
@@ -1131,7 +1174,7 @@
       }).filter(detail => detail !== null);
   
       if (orderDetails.length === 0) {
-          alert('Danh sách sản phẩm không hợp lệ!');
+          showErrorToast('Danh sách sản phẩm không hợp lệ!');
           return;
       }
   
@@ -1172,7 +1215,7 @@
           const response = await fetch(`http://localhost:8080/api/orders/update/${orderId}`, requestOptions);
           const result = await response.text();
           if (response.ok) {
-              alert("Cập nhật phiếu xuất thành công!");
+              showSuccessToast("Cập nhật phiếu xuất thành công!");
               const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
               modal.hide();
               loadOrders();
@@ -1181,7 +1224,7 @@
           }
       } catch (error) {
           console.error("Lỗi khi cập nhật phiếu:", error);
-          alert("Đã có lỗi xảy ra khi cập nhật phiếu xuất: " + error.message);
+          showErrorToast("Đã có lỗi xảy ra khi cập nhật phiếu xuất: " + error.message);
       }
   }
 
@@ -1195,13 +1238,13 @@
     async function confirmDelete() {
       const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM4fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
     
       const orderId = document.getElementById('deleteModal').dataset.orderId;
       if (!orderId) {
-        alert('Không tìm thấy orderId để xóa!');
+        showErrorToast('Không tìm thấy orderId để xóa!');
         return;
       }
     
@@ -1230,13 +1273,13 @@
     
         const result = await response.text();
         console.log("Kết quả xóa:", result);
-        alert(`Đã xóa phiếu xuất với ID ${orderId} thành công!`);
+        showErrorToast(`Đã xóa phiếu xuất với ID ${orderId} thành công!`);
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
         modal.hide();
         loadOrders();
       } catch (error) {
         console.error("Lỗi khi xóa phiếu xuất:", error);
-        alert("Đã có lỗi xảy ra khi xóa phiếu xuất: " + error.message);
+        showErrorToast("Đã có lỗi xảy ra khi xóa phiếu xuất: " + error.message);
       }
     }
 
@@ -1273,6 +1316,126 @@
       getWarehouses();
       loadOrders();
     });
+
+    document.getElementById("filterStartDate").addEventListener("change", filterOrders);
+    document.getElementById("filterEndDate").addEventListener("change", filterOrders);
+    document.getElementById("filterCustomer").addEventListener("input", filterOrders);
+
+    let ordersData = []; // Lưu trữ dữ liệu ban đầu
+
+    // Hàm gọi API lấy danh sách phiếu xuất
+    async function fetchOrders() {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            console.error("Không tìm thấy token! Vui lòng đăng nhập.");
+            return;
+        }
+
+        // Lấy giá trị filter
+        const startDate = document.getElementById("filterStartDate").value;
+        const endDate = document.getElementById("filterEndDate").value;
+        const customerName = document.getElementById("filterCustomer").value.trim();
+
+        // Tạo URL query string
+        const params = new URLSearchParams();
+        if (startDate) params.append("fromDate", startDate);
+        if (endDate) params.append("toDate", endDate);
+        if (customerName) params.append("customer", customerName);
+
+        const apiUrl = `http://localhost:8080/api/orders/search?${params.toString()}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Lỗi API: ${response.status}`);
+            }
+
+            const data = await response.json();
+            ordersData = data.data || []; // Gán danh sách phiếu xuất
+            renderOrders(ordersData);
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+        }
+    }
+
+    function getOrderTypeName(orderType) {
+      const orderTypes = {
+          1: "Xuất nội bộ",
+          2: "Xuất ngoài"          
+    }
+      return orderTypes[orderType] || "N/A";
+    }
+
+
+    // Hàm hiển thị danh sách phiếu xuất lên bảng
+    function renderOrders(orders) {
+        const tableBody = document.getElementById("orderList");
+        tableBody.innerHTML = "";
+
+        if (!orders || orders.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Không tìm thấy phiếu xuất</td></tr>`;
+            return;
+        }
+
+        orders.forEach((order, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="text-left">${index + 1}</td>
+                <td class="text-left">${getOrderTypeName(order.orderType)}</td>
+                <td class="text-left">${order.customer}</td>
+                <td class="text-left">${order.dskhohang?.name || "N/A"}</td>
+                <td class="text-left">${order.user?.username || "N/A"}</td>
+                <td class="text-left">${order.createdAt.split("T")[0]}</td>
+                <td class="text-left">${order.totalAmount.toLocaleString()} VND</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" onclick="openEditModal('${order.orderId}')">
+                      <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${order.orderId}')">
+                      <i class="fas fa-trash"></i> Delete
+                  </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Hàm lọc danh sách phiếu xuất
+    function filterOrders() {
+        const startDate = document.getElementById("filterStartDate").value;
+        const endDate = document.getElementById("filterEndDate").value;
+        const customerName = document.getElementById("filterCustomer").value.toLowerCase();
+
+        if (!startDate && !endDate && !customerName) {
+            fetchOrders(); // Gọi API lại để lấy dữ liệu gốc
+            return;
+        }
+
+        const filteredOrders = ordersData.filter(order => {
+            const orderDate = order.createdAt.split("T")[0]; // Lấy ngày từ timestamp
+            const customer = order.customer?.toLowerCase() || "";
+
+            return (
+                (!startDate || orderDate >= startDate) &&
+                (!endDate || orderDate <= endDate) &&
+                (!customerName || customer.includes(customerName))
+            );
+        });
+
+        renderOrders(filteredOrders);
+    }
+
+
+    // Gọi API khi tải trang
+    fetchOrders();
+
 </script>
 
   <!-- jQuery -->

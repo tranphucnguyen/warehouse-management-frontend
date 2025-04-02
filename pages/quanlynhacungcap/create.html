@@ -485,6 +485,23 @@
 
         </div>
       </div>
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
     </section>
   </div>
 
@@ -513,12 +530,24 @@
 </div>
 <!-- ./wrapper -->
 <script>
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
  // Hàm tạo nhà cung cấp
 async function createSupplier() {
     // Lấy token từ LocalStorage
     let token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -528,7 +557,7 @@ async function createSupplier() {
 
     // Kiểm tra dữ liệu đầu vào
     if (!supplierName || !contactInfo) {
-        alert("Vui lòng điền đầy đủ thông tin nhà cung cấp!");
+        showErrorToast("Vui lòng điền đầy đủ thông tin nhà cung cấp!");
         return;
     }
 
@@ -558,7 +587,7 @@ async function createSupplier() {
 
         // Xử lý phản hồi
         if (response.ok) {
-            alert("Tạo nhà cung cấp thành công!");
+            showSuccessToast("Tạo nhà cung cấp thành công!");
             // Reset form
             document.getElementById("inputNameSupplier").value = "";
             document.getElementById("inputContactSupplier").value = "";
@@ -568,7 +597,7 @@ async function createSupplier() {
         }
     } catch (error) {
         console.error("Lỗi:", error);
-        alert("Có lỗi xảy ra khi tạo nhà cung cấp!");
+        showErrorToast("Có lỗi xảy ra khi tạo nhà cung cấp!");
     }
 }
 

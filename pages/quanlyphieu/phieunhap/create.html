@@ -628,6 +628,24 @@
             </div>
           </div>
 
+          <!-- Container để chứa tất cả toast -->
+          <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+            <!-- Toast thành công -->
+            <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="successMessage"></div>
+                </div>
+            </div>
+
+            <!-- Toast lỗi -->
+            <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="errorMessage"></div>
+                </div>
+            </div>
+          </div>
+    
+
 
           <!-- <div class="row">
         <div class="col-12">
@@ -662,6 +680,18 @@
   </div>
   <!-- ./wrapper -->
 <script>
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
   let productList = []; // Danh sách sản phẩm (status = true)
 let supplierList = []; // Danh sách nhà cung cấp (status = true, nếu có)
 let warehouseList = []; // Danh sách kho (status = true)
@@ -671,7 +701,7 @@ async function loadProducts() {
     const token = localStorage.getItem('accessToken');
     
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
@@ -693,7 +723,7 @@ async function loadProducts() {
         console.log('Danh sách sản phẩm (status = true):', productList);
     } catch (error) {
         console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-        alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
+        showErrorToast('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
     }
 }
 
@@ -757,7 +787,7 @@ function selectProduct(inputElement, product) {
 async function getSuppliers() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
@@ -782,7 +812,7 @@ async function getSuppliers() {
         console.log('Danh sách nhà cung cấp (status = true):', supplierList);
     } catch (error) {
         console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
-        alert('Không thể tải danh sách nhà cung cấp!');
+        showErrorToast('Không thể tải danh sách nhà cung cấp!');
     }
 }
 
@@ -790,7 +820,7 @@ async function getSuppliers() {
 async function getWarehouses() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
@@ -812,7 +842,7 @@ async function getWarehouses() {
         console.log('Danh sách kho (status = true):', warehouseList);
     } catch (error) {
         console.error('Lỗi khi lấy danh sách kho:', error);
-        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+        showErrorToast('Không thể tải danh sách kho, vui lòng thử lại!');
     }
 }
 
@@ -946,7 +976,7 @@ function removeProduct(button) {
         row.remove();
         updateTotal();
     } else {
-        alert('Phải có ít nhất một sản phẩm trong phiếu!');
+        showErrorToast('Phải có ít nhất một sản phẩm trong phiếu!');
     }
 }
 
@@ -975,13 +1005,13 @@ function getUserIdFromToken(token) {
 async function saveInvoice() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
     const userId = getUserIdFromToken(token);
     if (!userId) {
-        alert('Không thể lấy userId từ token!');
+        showErrorToast('Không thể lấy userId từ token!');
         return;
     }
 
@@ -1015,10 +1045,10 @@ async function saveInvoice() {
 
     // Kiểm tra dữ liệu đầu vào
     if (!supplierId || !khohangId || !importDate || importDetails.length === 0 || !importDetails.every(detail => detail.productId)) {
-        if (!supplierId) alert('Vui lòng chọn Nhà cung cấp!');
-        else if (!khohangId) alert('Vui lòng chọn Kho nhập hàng!');
-        else if (!importDate) alert('Vui lòng chọn Ngày nhập!');
-        else if (importDetails.length === 0 || !importDetails.every(detail => detail.productId)) alert('Vui lòng thêm ít nhất một sản phẩm hợp lệ!');
+        if (!supplierId) showErrorToast('Vui lòng chọn Nhà cung cấp!');
+        else if (!khohangId) showErrorToast('Vui lòng chọn Kho nhập hàng!');
+        else if (!importDate) showErrorToast('Vui lòng chọn Ngày nhập!');
+        else if (importDetails.length === 0 || !importDetails.every(detail => detail.productId)) showErrorToast('Vui lòng thêm ít nhất một sản phẩm hợp lệ!');
         return;
     }
 
@@ -1055,14 +1085,14 @@ async function saveInvoice() {
 
         const result = await response.text();
         console.log('Kết quả tạo phiếu:', result);
-        alert('Tạo phiếu nhập thành công!');
+        showSuccessToast('Tạo phiếu nhập thành công!');
 
         // Cập nhật lại danh sách sản phẩm để phản ánh currentStock mới
         await loadProducts();
         resetForm();
     } catch (error) {
         console.error('Lỗi khi tạo phiếu:', error);
-        alert(`Không thể tạo phiếu nhập: ${error.message}`);
+        showErrorToast(`Không thể tạo phiếu nhập: ${error.message}`);
     }
 }
 

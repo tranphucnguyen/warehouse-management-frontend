@@ -606,6 +606,24 @@
         </div>
       </div>
     </div>
+
+    <!-- Container để chứa tất cả toast -->
+    <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <!-- Toast thành công -->
+      <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+          <div class="d-flex">
+              <div class="toast-body" id="successMessage"></div>
+          </div>
+      </div>
+
+      <!-- Toast lỗi -->
+      <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+          <div class="d-flex">
+              <div class="toast-body" id="errorMessage"></div>
+          </div>
+      </div>
+    </div>
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -636,12 +654,24 @@
   let totalPages = 0; // Tổng số trang
   let filteredInvoices = []; // Danh sách đã lọc để phân trang
 
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
+
 
   // Lấy danh sách nhà cung cấp
   async function getSuppliers() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
       return;
     }
 
@@ -671,7 +701,7 @@
       populateSupplierDropdown();
     } catch (error) {
       console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
-      alert('Không thể tải danh sách nhà cung cấp!');
+      showErrorToast('Không thể tải danh sách nhà cung cấp!');
     }
   }
 
@@ -680,7 +710,7 @@
   async function getWarehouses() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
       return;
     }
 
@@ -707,7 +737,7 @@
       populateWarehouseDropdown();
     } catch (error) {
       console.error('Lỗi khi lấy danh sách kho:', error);
-      alert('Không thể tải danh sách kho, vui lòng thử lại!');
+      showErrorToast('Không thể tải danh sách kho, vui lòng thử lại!');
     }
   }
 
@@ -746,7 +776,7 @@
   async function loadInvoices(supplierName = '', contactInfo = '') {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
       return;
     }
 
@@ -786,7 +816,7 @@
       updatePagination();
     } catch (error) {
       console.error('Lỗi khi lấy danh sách phiếu nhập:', error);
-      alert(`Không thể tải danh sách phiếu nhập: ${error.message}`);
+      showErrorToast(`Không thể tải danh sách phiếu nhập: ${error.message}`);
       document.getElementById('invoiceList').innerHTML = `<tr><td colspan="7" class="text-center">Lỗi: ${error.message}</td></tr>`;
     }
   }
@@ -923,7 +953,7 @@
   async function updateInvoice() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
       return;
     }
 
@@ -986,11 +1016,11 @@
 
 
       console.log('Kết quả cập nhật:', result);
-      alert('Cập nhật phiếu nhập thành công!');
+      showSuccessToast('Cập nhật phiếu nhập thành công!');
       await loadInvoices();
     } catch (error) {
       console.error('Lỗi khi cập nhật phiếu:', error);
-      alert(`Không thể cập nhật phiếu: ${error.message}`);
+      showErrorToast(`Không thể cập nhật phiếu: ${error.message}`);
     }
   }
 
@@ -1046,14 +1076,14 @@
   async function deleteInvoice(invoicesId) {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+      showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
       return;
     }
 
 
     const idToDelete = Number(invoicesId);
     if (!idToDelete) {
-      alert('ID phiếu nhập không hợp lệ!');
+      showErrorToast('ID phiếu nhập không hợp lệ!');
       return;
     }
 
@@ -1088,7 +1118,7 @@
       await loadInvoices();
     } catch (error) {
       console.error('Lỗi khi xóa phiếu:', error);
-      alert('Không thể xóa phiếu!');
+      showErrorToast('Không thể xóa phiếu!');
     }
   }
 
@@ -1099,6 +1129,94 @@
     getSuppliers();
     getWarehouses();
   });
+
+  document.getElementById("filterStartDate").addEventListener("change", filterInvoices);
+  document.getElementById("filterEndDate").addEventListener("change", filterInvoices);
+  document.getElementById("filterNCC").addEventListener("input", filterInvoices);
+
+  let invoicesData = []; // Lưu trữ dữ liệu ban đầu
+
+  // Hàm gọi API lấy danh sách phiếu nhập
+  async function fetchInvoices() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+          console.error("Không tìm thấy token! Vui lòng đăng nhập.");
+          return;
+      }
+
+      try {
+          const response = await fetch("http://localhost:8080/api/import-invoices", {
+              method: "GET",
+              headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json"
+              }
+          });
+          if (!response.ok) {
+              throw new Error(`Lỗi API: ${response.status}`);
+          }
+          const data = await response.json();
+          invoicesData = data.data.listImportInvoices || [];
+          renderInvoices(invoicesData);
+      } catch (error) {
+          console.error("Lỗi khi gọi API:", error);
+      }
+  }
+
+  // Hàm hiển thị danh sách phiếu nhập lên bảng
+  function renderInvoices(invoices) {
+      const tableBody = document.getElementById("invoiceList");
+      tableBody.innerHTML = "";
+
+      if (!invoices || invoices.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Không tìm thấy phiếu nhập</td></tr>`;
+          return;
+      }
+
+      invoices.forEach((invoice, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+              <td class="text-center">${index + 1}</td>
+              <td class="text-center">${invoice.invoicesId}</td>
+              <td class="text-center">${invoice.dskhohang?.name || "N/A"}</td>
+              <td class="text-center">${invoice.supplier?.supplierName || "N/A"}</td>
+              <td class="text-center">${invoice.importDate}</td>
+              <td class="text-center">${invoice.totalAmount.toLocaleString()} VND</td>
+              <td class="text-center">
+                  <button class="btn btn-info btn-sm" onclick="editInvoice(${invoice.invoicesId})">
+                      <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteInvoice(${invoice.invoicesId})">
+                      <i class="fas fa-trash"></i> Delete
+                  </button>
+              </td>
+          `;
+          tableBody.appendChild(row);
+      });
+  }
+
+  // Hàm lọc danh sách phiếu nhập
+  function filterInvoices() {
+      const startDate = document.getElementById("filterStartDate").value;
+      const endDate = document.getElementById("filterEndDate").value;
+      const supplierName = document.getElementById("filterNCC").value.toLowerCase();
+
+      const filteredInvoices = invoicesData.filter(invoice => {
+          const invoiceDate = invoice.importDate;
+          const supplier = invoice.supplier?.supplierName.toLowerCase() || "";
+
+          return (
+              (!startDate || invoiceDate >= startDate) &&
+              (!endDate || invoiceDate <= endDate) &&
+              (!supplierName || supplier.includes(supplierName))
+          );
+      });
+
+      renderInvoices(filteredInvoices);
+  }
+
+  // Gọi API khi tải trang
+  fetchInvoices();
 </script>
 <!-- jQuery -->
 <script src="../../../plugins/jquery/jquery.min.js"></script>

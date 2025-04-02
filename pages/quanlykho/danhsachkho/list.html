@@ -472,6 +472,11 @@
 
 
       <section class="content">
+        <div class="row mb-3">
+          <div class="col">
+              <input type="text" id="searchWarehouse" class="form-control" placeholder="Tìm kiếm kho hàng...">
+          </div>
+        </div>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Warehouses</h3>
@@ -501,11 +506,11 @@
 
             </table>
             <!-- Phân trang -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center mt-3" id="pagination">
-      <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
-    </ul>
-  </nav>
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-3" id="pagination">
+                <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+              </ul>
+            </nav>
           </div>
         </div>
 
@@ -607,6 +612,24 @@
         </div>
       </div>
 
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
+
 
 
 
@@ -647,12 +670,24 @@
     const itemsPerPage = 10;  // Số mục trên mỗi trang
     let totalItems = 0; // Tổng số kho
     let totalPages = 0; // Tổng số trang
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
   
     // Load danh sách kho từ API
     async function getWarehouses() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
   
@@ -681,7 +716,7 @@
         updatePagination(); // Cập nhật giao diện phân trang
       } catch (error) {
         console.error('Lỗi khi lấy danh sách kho:', error);
-        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+        showErrorToast('Không thể tải danh sách kho, vui lòng thử lại!');
       }
     }
   
@@ -786,7 +821,7 @@
     async function saveChanges() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
   
@@ -817,7 +852,7 @@
         showToast('saveToast');
       } catch (error) {
         console.error('Lỗi khi lưu thay đổi:', error);
-        alert('Không thể lưu thay đổi!');
+        showErrorToast('Không thể lưu thay đổi!');
       }
     }
   
@@ -832,7 +867,7 @@
     async function confirmDelete() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
   
@@ -856,7 +891,7 @@
         showToast('deleteToast');
       } catch (error) {
         console.error('Lỗi khi "xóa" kho:', error);
-        alert('Không thể xóa kho!');
+        showErrorToast('Không thể xóa kho!');
       }
     }
   
@@ -894,6 +929,74 @@
     document.addEventListener('DOMContentLoaded', function() {
       getWarehouses();
     });
+
+    document.getElementById("searchWarehouse").addEventListener("input", function () {
+        fetchWarehouses(this.value);
+    });
+
+    // Lấy danh sách kho từ API
+    async function fetchWarehouses(searchText = "") {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+            console.error("Không tìm thấy token! Vui lòng đăng nhập.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/dskhohangs?searchText=${encodeURIComponent(searchText)}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Lỗi API: ${response.status}`);
+            }
+            const data = await response.json();
+            renderWarehouses(data.data.listDskhohang || []);
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+        }
+    }
+
+    // Hiển thị danh sách kho lên bảng
+    function renderWarehouses(warehouses) {
+        const tableBody = document.getElementById("warehouseList");
+        tableBody.innerHTML = "";
+
+        if (warehouses.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Không tìm thấy dữ liệu phù hợp</td></tr>`;
+            return;
+        }
+
+        warehouses.forEach((warehouse, index) => {
+            const status = warehouse.status ? "Hoạt động" : "Ngừng hoạt động";
+            const row = `<tr>
+                <td>${index + 1}</td>
+                <td>${warehouse.name || "N/A"}</td>
+                <td>${warehouse.address || "N/A"}</td>
+                <td>${warehouse.contact || "N/A"}</td>
+                <td>${status}</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" onclick="editWarehouse('${warehouse.khohangId}')">Sửa</button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${warehouse.khohangId}')">Xóa</button>
+                </td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Lắng nghe sự kiện nhập vào ô filter
+    const warehouseFilterInput = document.getElementById("warehouseFilter");
+    warehouseFilterInput.addEventListener("input", () => {
+        fetchWarehouses(warehouseFilterInput.value);
+    });
+
+    // Gọi API một lần khi tải trang
+    fetchWarehouses();
+
+
   </script>
   <!-- jQuery UI 1.11.4 -->
   <script src="../../../plugins/jquery-ui/jquery-ui.min.js"></script>

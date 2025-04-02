@@ -514,15 +514,45 @@
 
         </div>
       </div>
+
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+          <!-- Toast thành công -->
+          <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+              <div class="d-flex">
+                  <div class="toast-body" id="successMessage"></div>
+              </div>
+          </div>
+
+          <!-- Toast lỗi -->
+          <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+              <div class="d-flex">
+                  <div class="toast-body" id="errorMessage"></div>
+              </div>
+          </div>
+      </div>
+
     </section>
 
 
     <script>
+
+        function showSuccessToast(message) {
+            document.getElementById("successMessage").innerText = message;
+            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+            successToast.show();
+        }
+
+        function showErrorToast(message) {
+            document.getElementById("errorMessage").innerText = message;
+            var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+            errorToast.show();
+        }
       function loadCategories() {
           let token = localStorage.getItem("accessToken");
       
           if (!token) {
-              alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+              showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
               return;
           }
       
@@ -571,7 +601,7 @@
         let token = localStorage.getItem("accessToken");
       
         if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
           return;
         }
       
@@ -582,10 +612,10 @@
         const price = parseFloat(document.getElementById('nputPriceProduct').value);
       
         // Kiểm tra dữ liệu đầu vào
-        if (isNaN(category)) return alert('Vui lòng chọn danh mục hàng hóa!');
-        if (!name || name.length < 3 || name.length > 50) return alert('Tên hàng hóa phải từ 3-50 ký tự!');
-        if (!description || description.length < 3 || description.length > 200) return alert('Mô tả phải từ 3-200 ký tự!');
-        if (isNaN(price) || price <= 0 || price > 10000000) return alert('Giá phải từ 1 đến 10,000,000!');
+        if (isNaN(category)) return showErrorToast('Vui lòng chọn danh mục hàng hóa!');
+        if (!name || name.length < 3 || name.length > 50) return showErrorToast('Tên hàng hóa phải từ 3-50 ký tự!');
+        if (!description || description.length < 3 || description.length > 200) return showErrorToast('Mô tả phải từ 3-200 ký tự!');
+        if (isNaN(price) || price <= 0 || price > 10000000) return showErrorToast('Giá phải từ 1 đến 10,000,000!');
       
         // Tạo đối tượng hàng hóa
         const newProduct = {
@@ -612,15 +642,15 @@
           .then(data => {
             console.log("Kết quả từ API:", data);
             if (data.status === 200) {
-              alert("Tạo hàng hóa thành công!");
+              showSuccessToast("Tạo hàng hóa thành công!");
               window.location.href = './list.html';
             } else {
-              alert("Có lỗi xảy ra: " + JSON.stringify(data)); // Show detailed error
+              showErrorToast("Có lỗi xảy ra: " + JSON.stringify(data)); // Show detailed error
             }
           })
           .catch(error => {
             console.error("Lỗi khi gửi yêu cầu:", error);
-            alert("Lỗi kết nối đến API!");
+            showErrorToast("Lỗi kết nối đến API!");
           });
       }
     </script>

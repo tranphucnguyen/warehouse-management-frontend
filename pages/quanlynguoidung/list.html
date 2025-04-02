@@ -460,6 +460,14 @@
 
 
       <section class="content">
+        <div class="row mb-3">
+          <div class="col">
+              <input type="text" id="nameFilter" class="form-control" placeholder="Lọc theo tên người dùng...">
+          </div>
+          <div class="col">
+              <input type="text" id="emailFilter" class="form-control" placeholder="Lọc theo email...">
+          </div>
+        </div>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">User Management</h3>
@@ -490,81 +498,82 @@
               
             </table>
             <!-- Phân trang -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center mt-3" id="pagination">
-      <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
-    </ul>
-  </nav>
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center mt-3" id="pagination">
+                <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+              </ul>
+            </nav>
           </div>
+        </div>
 
-          <!-- View Modal -->
-          <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <!-- View Modal -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
+              </div>
+              <div class="modal-body">
+                <p><strong>Tên người dùng:</strong> <span id="viewUsername"></span></p>
+                <p><strong>Họ tên:</strong> <span id="viewFullname"></span></p>
+                <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+                <!-- Bỏ Chức vụ -->
+                <p><strong>CCCD:</strong> <span id="viewCccd"></span></p>
+                <p><strong>Số tài khoản ngân hàng:</strong> <span id="viewBanknumber"></span></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  onclick="closeModal('viewModal')">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <!-- Edit Modal -->
+          <!-- Edit Modal -->
+          <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="viewModalLabel">Chi tiết người dùng</h5>
+                  <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
                 </div>
                 <div class="modal-body">
-                  <p><strong>Tên người dùng:</strong> <span id="viewUsername"></span></p>
-                  <p><strong>Họ tên:</strong> <span id="viewFullname"></span></p>
-                  <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-                  <!-- Bỏ Chức vụ -->
-                  <p><strong>CCCD:</strong> <span id="viewCccd"></span></p>
-                  <p><strong>Số tài khoản ngân hàng:</strong> <span id="viewBanknumber"></span></p>
+                  <label for="editUsername">Tên người dùng:</label>
+                  <input type="text" id="editUsername" class="form-control" readonly>
+                  <label for="editFullname" class="mt-2">Họ tên:</label>
+                  <input type="text" id="editFullname" class="form-control">
+                  <label for="editEmail" class="mt-2">Email:</label>
+                  <input type="email" id="editEmail" class="form-control">
+                  <label for="editCccd" class="mt-2">CCCD:</label>
+                  <input type="text" id="editCccd" class="form-control">
+                  <label for="editBanknumber" class="mt-2">Số tài khoản ngân hàng:</label>
+                  <input type="text" id="editBanknumber" class="form-control">
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    onclick="closeModal('viewModal')">Đóng</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
+                  <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Edit Modal -->
-          <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Chỉnh sửa người dùng</h5>
-      </div>
-      <div class="modal-body">
-        <label for="editUsername">Tên người dùng:</label>
-        <input type="text" id="editUsername" class="form-control" readonly>
-        <label for="editFullname" class="mt-2">Họ tên:</label>
-        <input type="text" id="editFullname" class="form-control">
-        <label for="editEmail" class="mt-2">Email:</label>
-        <input type="email" id="editEmail" class="form-control">
-        <label for="editCccd" class="mt-2">CCCD:</label>
-        <input type="text" id="editCccd" class="form-control">
-        <label for="editBanknumber" class="mt-2">Số tài khoản ngân hàng:</label>
-        <input type="text" id="editBanknumber" class="form-control">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('editModal')">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="saveChanges()">Lưu thay đổi</button>
-      </div>
-    </div>
-  </div>
-</div>
-
           <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
-      </div>
-      <div class="modal-body">
-        Bạn có chắc chắn muốn xóa người dùng này không?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa</h5>
+                </div>
+                <div class="modal-body">
+                  Bạn có chắc chắn muốn xóa người dùng này không?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                  <button type="button" class="btn btn-danger" id="confirmDelete" onclick="confirmDelete()">Xóa</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- Toast thông báo -->
           <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
@@ -590,7 +599,25 @@
               </div>
             </div>
           </div>
+
+
+        <!-- Container để chứa tất cả toast -->
+        <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+          <!-- Toast thành công -->
+          <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+              <div class="d-flex">
+                  <div class="toast-body" id="successMessage"></div>
+              </div>
+          </div>
+
+          <!-- Toast lỗi -->
+          <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+              <div class="d-flex">
+                  <div class="toast-body" id="errorMessage"></div>
+              </div>
+          </div>
         </div>
+  
       </section>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -616,13 +643,25 @@
       document.addEventListener("DOMContentLoaded", function () {
         getUsers();
       });
+
+      function showSuccessToast(message) {
+          document.getElementById("successMessage").innerText = message;
+          var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+          successToast.show();
+      }
+
+      function showErrorToast(message) {
+          document.getElementById("errorMessage").innerText = message;
+          var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+          errorToast.show();
+      }
     
       // Lấy danh sách người dùng từ API
       function getUsers() {
         let token = localStorage.getItem("accessToken");
     
         if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
           console.error("Token không được tìm thấy trong localStorage.");
           return;
         }
@@ -655,7 +694,7 @@
           })
           .catch(error => {
             console.error("Lỗi khi lấy danh sách người dùng:", error);
-            alert("Không thể tải danh sách người dùng, vui lòng thử lại!");
+            showErrorToast("Không thể tải danh sách người dùng, vui lòng thử lại!");
           });
       }
     
@@ -761,7 +800,7 @@
       function saveChanges() {
         let token = localStorage.getItem("accessToken");
         if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
           return;
         }
     
@@ -776,24 +815,24 @@
         let bankRegex = /^\d{8,16}$/;
     
         if (!fullname || !email || !cccd) {
-          alert("Vui lòng nhập đầy đủ thông tin!");
+          showErrorToast("Vui lòng nhập đầy đủ thông tin!");
           return;
         }
         if (!emailRegex.test(email)) {
-          alert("Email không hợp lệ!");
+          showErrorToast("Email không hợp lệ!");
           return;
         }
         if (!cccdRegex.test(cccd)) {
-          alert("CCCD phải có đúng 12 số!");
+          showErrorToast("CCCD phải có đúng 12 số!");
           return;
         }
         if (banknumber && !bankRegex.test(banknumber)) {
-          alert("Số tài khoản ngân hàng không hợp lệ!");
+          showErrorToast("Số tài khoản ngân hàng không hợp lệ!");
           return;
         }
     
         if (!editUserId || isNaN(parseInt(editUserId))) {
-          alert("UserId người dùng không hợp lệ hoặc không tồn tại!");
+          showErrorToast("UserId người dùng không hợp lệ hoặc không tồn tại!");
           console.error("editUserId không hợp lệ:", editUserId);
           return;
         }
@@ -830,13 +869,13 @@
           })
           .then(result => {
             console.log("Kết quả cập nhật:", result);
-            alert("Cập nhật người dùng thành công!");
+            showSuccessToast("Cập nhật người dùng thành công!");
             closeModal('editModal');
             getUsers();
           })
           .catch(error => {
             console.error("Lỗi khi cập nhật người dùng:", error.message);
-            alert("Không thể cập nhật người dùng: " + error.message);
+            showErrorToast("Không thể cập nhật người dùng: " + error.message);
           });
       }
     
@@ -851,12 +890,12 @@
       function confirmDelete() {
         let token = localStorage.getItem("accessToken");
         if (!token) {
-          alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+          showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
           return;
         }
     
         if (!deleteUserId || isNaN(parseInt(deleteUserId))) {
-          alert("UserId người dùng không hợp lệ hoặc không tồn tại!");
+          showErrorToast("UserId người dùng không hợp lệ hoặc không tồn tại!");
           console.error("deleteUserId không hợp lệ:", deleteUserId);
           return;
         }
@@ -888,14 +927,14 @@
           })
           .then(result => {
             console.log("Kết quả xóa:", result);
-            alert("Xóa người dùng thành công!");
+            showErrorToast("Xóa người dùng thành công!");
             closeModal('deleteModal');
             showToast('deleteToast');
             getUsers();
           })
           .catch(error => {
             console.error("Lỗi khi xóa người dùng:", error.message);
-            alert("Không thể xóa người dùng: " + error.message);
+            showErrorToast("Không thể xóa người dùng: " + error.message);
           });
       }
     
@@ -918,6 +957,80 @@
         let toast = new bootstrap.Toast(toastElement);
         toast.show();
       }
+      let usersData = [];
+
+      // Gọi API lấy danh sách người dùng
+      async function fetchUsers() {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+              console.error("Không tìm thấy token! Vui lòng đăng nhập.");
+              return;
+          }
+
+          try {
+              const response = await fetch("http://localhost:8080/api/users", {
+                  method: "GET",
+                  headers: {
+                      "Authorization": `Bearer ${token}`,
+                      "Content-Type": "application/json"
+                  }
+              });
+
+              if (!response.ok) {
+                  throw new Error(`Lỗi API: ${response.status}`);
+              }
+
+              const data = await response.json();
+              usersData = data.data.listUsers || [];
+              renderUsers();
+          } catch (error) {
+              console.error("Lỗi khi gọi API:", error);
+          }
+      }
+
+      // Hiển thị danh sách người dùng
+      function renderUsers() {
+          const tableBody = document.getElementById("userList");
+          tableBody.innerHTML = "";
+
+          const nameFilter = (document.getElementById("nameFilter").value || "").toLowerCase();
+          const emailFilter = (document.getElementById("emailFilter").value || "").toLowerCase();
+
+          let hasData = false;
+
+          usersData.forEach((user, index) => {
+              const name = user.name ? user.name.toLowerCase() : "";
+              const email = user.email ? user.email.toLowerCase() : "";
+              const status = user.isActive ? "Hoạt động" : "Vô hiệu hóa";
+
+              if (name.includes(nameFilter) && email.includes(emailFilter)) {
+                  hasData = true;
+                  const row = `<tr>
+                      <td>${index + 1}</td>
+                      <td>${user.name || "N/A"}</td>
+                      <td>${user.email || "N/A"}</td>
+                      <td>${status}</td>
+                      <td>
+                          <button class="btn btn-primary btn-sm" onclick="editUser('${user.id}')">Sửa</button>
+                          <button class="btn btn-danger btn-sm" onclick="deleteUser('${user.id}')">Xóa</button>
+                      </td>
+                  </tr>`;
+                  tableBody.innerHTML += row;
+              }
+          });
+
+          if (!hasData) {
+              tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Không tìm thấy dữ liệu phù hợp</td></tr>`;
+          }
+      }
+
+      // Xử lý lọc dữ liệu khi nhập vào ô input
+      document.getElementById("nameFilter").addEventListener("input", renderUsers);
+      document.getElementById("emailFilter").addEventListener("input", renderUsers);
+
+      // Gọi API khi tải trang
+      fetchUsers();
+
     </script>
     <!-- jQuery UI 1.11.4 -->
     <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>

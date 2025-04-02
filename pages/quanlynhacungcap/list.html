@@ -466,6 +466,9 @@
 
 
       <section class="content">
+        <div class="mb-3">
+          <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm nhà cung cấp...">
+        </div>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Projects</h3>
@@ -599,6 +602,24 @@
         </div>
       </div>
 
+      <!-- Container để chứa tất cả toast -->
+      <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        <!-- Toast thành công -->
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="successMessage"></div>
+            </div>
+        </div>
+
+        <!-- Toast lỗi -->
+        <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+            </div>
+        </div>
+      </div>
+
+
 
 
 
@@ -640,6 +661,17 @@ let currentPage = 1;
 const itemsPerPage = 10; // Số lượng item mỗi trang
 let totalItems = 0;
 
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
 
 // Lấy danh sách nhà cung cấp từ API
 function getSuppliers(page = 1) {
@@ -647,7 +679,7 @@ function getSuppliers(page = 1) {
 
 
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -681,7 +713,7 @@ function getSuppliers(page = 1) {
     })
     .catch(error => {
         console.error("Lỗi khi lấy danh sách:", error);
-        alert("Không thể tải danh sách nhà cung cấp!");
+        showErrorToast("Không thể tải danh sách nhà cung cấp!");
     });
 }
 
@@ -761,7 +793,7 @@ let editingId = null;
 function editSupplier(supplierId) {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -795,7 +827,7 @@ function editSupplier(supplierId) {
     })
     .catch(error => {
         console.error("Lỗi khi lấy thông tin nhà cung cấp:", error);
-        alert("Không thể tải thông tin nhà cung cấp: " + error.message);
+        showErrorToast("Không thể tải thông tin nhà cung cấp: " + error.message);
     });
 }
 
@@ -804,7 +836,7 @@ function editSupplier(supplierId) {
 function saveChanges() {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -847,7 +879,7 @@ function saveChanges() {
     })
     .catch(error => {
         console.error("Lỗi khi cập nhật nhà cung cấp:", error);
-        alert("Không thể cập nhật nhà cung cấp: " + error.message);
+        showErrorToast("Không thể cập nhật nhà cung cấp: " + error.message);
     });
 }
 
@@ -865,7 +897,7 @@ function openDeleteModal(supplierId) {
 function confirmDelete() {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -906,7 +938,7 @@ function confirmDelete() {
     })
     .catch(error => {
         console.error("Lỗi khi cập nhật status nhà cung cấp:", error);
-        alert("Không thể cập nhật status nhà cung cấp: " + error.message);
+        showErrorToast("Không thể cập nhật status nhà cung cấp: " + error.message);
     });
 }
 
@@ -927,6 +959,105 @@ document.getElementById("confirmDeleteBtn").addEventListener("click", confirmDel
 window.onload = function() {
     getSuppliers();
 };
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const supplierTableBody = document.getElementById("supplierTableBody");
+    const pagination = document.getElementById("pagination");
+
+    // Hàm gọi API và cập nhật danh sách
+    function fetchSuppliers(searchText = "", pageNo = 1) {
+        const pageSize = 10; // Số lượng nhà cung cấp mỗi trang
+        const apiUrl = `http://localhost:8080/api/suppliers?searchText=${encodeURIComponent(searchText)}&pageNo=${pageNo}&pageSize=${pageSize}`;
+
+        fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}` // Lấy token từ localStorage
+          }
+        })
+        .then(response => {
+            console.log("API Status:", response.status);
+            return response.text(); // Lấy dữ liệu thô
+        })
+        .then(text => {
+            console.log("API Response:", text);
+            try {
+                const data = JSON.parse(text); // Chuyển đổi sang JSON
+                console.log("Parsed Data:", data);
+                if (data.status === 200 && data.data) {
+                    updateTable(data.data.listSupplier);
+                    updatePagination(data.data.pageNo, data.data.totalPage, searchText);
+                }
+            } catch (error) {
+                console.error("Lỗi khi parse JSON:", error);
+            }
+        })
+        .catch(error => console.error("Lỗi khi gọi API:", error));
+    }
+
+    // Hàm cập nhật bảng nhà cung cấp
+    function updateTable(suppliers) {
+        console.log("Danh sách nhà cung cấp nhận được:", suppliers); // Debug
+
+        const tableBody = document.getElementById("supplierTableBody");
+        tableBody.innerHTML = ""; // Xóa nội dung cũ
+
+        if (!suppliers || suppliers.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center">Không tìm thấy nhà cung cấp</td></tr>`;
+            return;
+        }
+
+        suppliers.forEach((supplier, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${supplier.supplierName}</td>
+                    <td>${supplier.contactInfo}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary">Sửa</button>
+                        <button class="btn btn-sm btn-danger">Xóa</button>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+
+
+    // Hàm cập nhật phân trang
+    function updatePagination(currentPage, totalPages, searchText) {
+        pagination.innerHTML = "";
+
+        if (totalPages <= 1) return;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement("li");
+            pageItem.classList.add("page-item");
+            if (i === currentPage) pageItem.classList.add("active");
+
+            const pageLink = document.createElement("a");
+            pageLink.classList.add("page-link");
+            pageLink.href = "#";
+            pageLink.innerText = i;
+            pageLink.addEventListener("click", function (e) {
+                e.preventDefault();
+                fetchSuppliers(searchText, i);
+            });
+
+            pageItem.appendChild(pageLink);
+            pagination.appendChild(pageItem);
+        }
+    }
+
+    // Gọi API khi nhập vào ô tìm kiếm
+    searchInput.addEventListener("input", function () {
+        fetchSuppliers(searchInput.value.trim());
+    });
+
+    // Gọi API lần đầu khi trang tải
+    fetchSuppliers();
+});
+
 </script>
   <script src="../../../dist/js/main.js"></script>
   <!-- jQuery -->

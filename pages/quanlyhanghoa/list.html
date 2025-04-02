@@ -465,6 +465,11 @@
     </div>
     <!-- /.content-header -->
     <section class="content">
+      <div class="row">
+        <div class="col">
+          <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+        </div>
+      </div>
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Products</h3>
@@ -489,16 +494,16 @@
                 <th style="width: 19%"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="productTableBody">
               <!-- Dữ liệu sẽ được thêm động từ JS -->
-            </tbody>
+          </tbody>
           </table>
           <!-- Phân trang -->
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center mt-3" id="pagination">
-      <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
-    </ul>
-  </nav>
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-3" id="pagination">
+              <!-- Các nút phân trang sẽ được thêm bằng JavaScript -->
+            </ul>
+          </nav>
         </div>
       </div>
     
@@ -608,6 +613,24 @@
     </div>
     <!-- Main content -->
    
+    <!-- Container để chứa tất cả toast -->
+    <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+      <!-- Toast thành công -->
+      <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+          <div class="d-flex">
+              <div class="toast-body" id="successMessage"></div>
+          </div>
+      </div>
+
+      <!-- Toast lỗi -->
+      <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+          <div class="d-flex">
+              <div class="toast-body" id="errorMessage"></div>
+          </div>
+      </div>
+    </div>
+
+
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -661,12 +684,24 @@ function closeModal(modalId) {
     modal.hide();
 }
 
+        function showSuccessToast(message) {
+            document.getElementById("successMessage").innerText = message;
+            var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+            successToast.show();
+        }
+
+        function showErrorToast(message) {
+            document.getElementById("errorMessage").innerText = message;
+            var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+            errorToast.show();
+        }
+
 // Tải danh mục cho select trong modal edit
 async function loadCategoriesForEdit(selectElement) {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -674,7 +709,7 @@ async function loadCategoriesForEdit(selectElement) {
         const myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${token}`);
 
-        const response = await fetch("http://localhost:8080/api/categories", {
+        const response = await fetch("http://localhost:8080/api/products", {
             method: "GET",
             headers: myHeaders
         });
@@ -704,7 +739,7 @@ async function editProduct(id) {
     console.log('Editing product with ID:', id);
     const token = localStorage.getItem("accessToken");
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
@@ -747,7 +782,7 @@ async function editProduct(id) {
         }
     } catch (error) {
         console.error('Lỗi khi tải thông tin sản phẩm:', error);
-        alert('Không thể tải thông tin sản phẩm.');
+        showErrorToast('Không thể tải thông tin sản phẩm.');
     }
 }
 
@@ -757,12 +792,12 @@ async function saveChanges() {
     const productId = document.getElementById('editModal').dataset.productId;
 
     if (!token) {
-        alert("Không tìm thấy token. Vui lòng đăng nhập lại.");
+        showErrorToast("Không tìm thấy token. Vui lòng đăng nhập lại.");
         return;
     }
 
     if (!productId) {
-        alert("Không tìm thấy ID sản phẩm để cập nhật.");
+        showErrorToast("Không tìm thấy ID sản phẩm để cập nhật.");
         return;
     }
 
@@ -792,12 +827,12 @@ async function saveChanges() {
 
         const result = await response.text();
         console.log('Update result:', result);
-        alert('Cập nhật sản phẩm thành công!');
+        showSuccessToast('Cập nhật sản phẩm thành công!');
         closeModal('editModal');
         loadProducts();
     } catch (error) {
         console.error('Lỗi khi cập nhật sản phẩm:', error);
-        alert('Có lỗi xảy ra khi cập nhật sản phẩm.');
+        showErrorToast('Có lỗi xảy ra khi cập nhật sản phẩm.');
     }
 }
 
@@ -821,7 +856,7 @@ async function loadProducts() {
     const tbody = document.querySelector('.products tbody');
 
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
@@ -964,7 +999,7 @@ function viewProduct(id) {
         document.getElementById('viewQuantity').textContent = productData.currentStock !== undefined ? productData.currentStock : productData.description || 'N/A'; // Hiển thị currentStock nếu có, nếu không thì description
         openModal('viewModal');
     } else {
-        alert('Không tìm thấy sản phẩm với ID: ' + id);
+        showErrorToast('Không tìm thấy sản phẩm với ID: ' + id);
     }
 }
 
@@ -978,7 +1013,7 @@ function openDeleteModal(id) {
 
     if (!deleteModal || !deleteProductNameElement) {
         console.error('Không tìm thấy deleteModal hoặc deleteProductName trong DOM');
-        alert('Có lỗi trong giao diện, vui lòng kiểm tra lại.');
+        showErrorToast('Có lỗi trong giao diện, vui lòng kiểm tra lại.');
         return;
     }
 
@@ -993,12 +1028,12 @@ async function deleteProduct() {
     const productId = parseInt(document.getElementById('deleteModal').dataset.productId);
 
     if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
     }
 
     if (!productId || isNaN(productId)) {
-        alert('Không tìm thấy ID sản phẩm để xóa.');
+        showErrorToast('Không tìm thấy ID sản phẩm để xóa.');
         return;
     }
 
@@ -1025,14 +1060,97 @@ async function deleteProduct() {
 
         const result = await response.text();
         console.log('Delete result:', result);
-        alert('Xóa sản phẩm thành công!');
+        showErrorToast('Xóa sản phẩm thành công!');
         closeModal('deleteModal');
         loadProducts(); // Tải lại danh sách sản phẩm
     } catch (error) {
         console.error('Lỗi khi xóa sản phẩm:', error);
-        alert('Có lỗi xảy ra khi xóa sản phẩm.');
+        showErrorToast('Có lỗi xảy ra khi xóa sản phẩm.');
     }
 }
+
+document.getElementById("searchInput").addEventListener("input", function () {
+    const searchText = this.value.trim();
+    fetchProducts(searchText);
+});
+
+// Lấy danh sách sản phẩm từ API
+async function fetchProducts(searchText = "") {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+        console.error("Không tìm thấy token! Vui lòng đăng nhập.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:8080/api/products", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Lỗi API: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Dữ liệu API nhận được:", data);
+
+        let products = data.data.listProduct || [];
+
+        // Lọc sản phẩm theo tên sản phẩm hoặc danh mục kho
+        if (searchText) {
+            products = products.filter(item =>
+                item.product.productName.toLowerCase().includes(searchText.toLowerCase()) ||
+                item.product.category.categoryName.toLowerCase().includes(searchText.toLowerCase())
+            );
+        }
+
+        renderProducts(products);
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+    }
+}
+
+
+// Hiển thị danh sách sản phẩm lên bảng
+function renderProducts(products) {
+    const tableBody = document.getElementById("productTableBody");
+    tableBody.innerHTML = "";
+
+    if (!products || products.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Không tìm thấy sản phẩm phù hợp</td></tr>`;
+        return;
+    }
+
+    products.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.product.category.categoryName}</td>
+            <td>${item.product.productName}</td>
+            <td>${item.product.price}</td>
+            <td>${item.currentStock}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="viewProduct(${item.product.productId})">
+                    <i class="fas fa-folder"></i> View
+                </button>
+                <button class="btn btn-info btn-sm" onclick="editProduct(${item.product.productId})">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${item.product.productId})">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Gọi API một lần khi tải trang
+fetchProducts();
+
 </script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>

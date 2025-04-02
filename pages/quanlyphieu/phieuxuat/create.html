@@ -578,7 +578,7 @@
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                            <label for="importDate">Ngày nhập</label>
+                            <label for="importDate">Ngày xuất</label>
                             <input type="date"id.Iterable "importDate" class="form-control">
                         </div>
                         </div>
@@ -624,6 +624,24 @@
             </div>
           </div>
 
+          <!-- Container để chứa tất cả toast -->
+          <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+            <!-- Toast thành công -->
+            <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="successMessage"></div>
+                </div>
+            </div>
+
+            <!-- Toast lỗi -->
+            <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                <div class="d-flex">
+                    <div class="toast-body" id="errorMessage"></div>
+                </div>
+            </div>
+          </div>
+    
+
 
           <!-- <div class="row">
         <div class="col-12">
@@ -658,6 +676,18 @@
   </div>
   <!-- ./wrapper -->
   <script>
+
+    function showSuccessToast(message) {
+        document.getElementById("successMessage").innerText = message;
+        var successToast = new bootstrap.Toast(document.getElementById("successToast"));
+        successToast.show();
+    }
+
+    function showErrorToast(message) {
+        document.getElementById("errorMessage").innerText = message;
+        var errorToast = new bootstrap.Toast(document.getElementById("errorToast"));
+        errorToast.show();
+    }
     let productList = [];
     let warehouseList = [];
   
@@ -703,7 +733,7 @@
     async function loadProducts() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
   
@@ -725,7 +755,7 @@
         console.log('Danh sách sản phẩm (status = true):', productList);
       } catch (error) {
         console.error('Lỗi khi lấy danh sách sản phẩm:', error);
-        alert('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
+        showErrorToast('Không thể tải danh sách sản phẩm. Vui lòng thử lại.');
       }
     }
   
@@ -745,7 +775,7 @@
     async function getWarehouses() {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
   
@@ -767,7 +797,7 @@
         console.log('Danh sách kho (status = true):', warehouseList);
       } catch (error) {
         console.error('Lỗi khi lấy danh sách kho:', error);
-        alert('Không thể tải danh sách kho, vui lòng thử lại!');
+        showErrorToast('Không thể tải danh sách kho, vui lòng thử lại!');
       }
     }
   
@@ -903,7 +933,7 @@
         row.remove();
         updateTotal();
       } else {
-        alert('Phải có ít nhất một sản phẩm trong phiếu!');
+        showErrorToast('Phải có ít nhất một sản phẩm trong phiếu!');
       }
     }
   
@@ -921,13 +951,13 @@
       const token = localStorage.getItem('accessToken') || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXItaWQiOjEsImV4cCI6MTc0MjkxMjIzOCwiaWF0IjoxNzQxOTEyMjM8fQ.u3o5eOTXJRQVJWCEYG6MZjUP8wtInEJVIDbsLJBUqG4BgYjEHcnO8issQE7_y9wsBFzGscNEAXz6O_BHLC_law";
       
       if (!token) {
-        alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+        showErrorToast('Không tìm thấy token. Vui lòng đăng nhập lại.');
         return;
       }
       
       const userId = getUserIdFromToken(token);
       if (!userId) {
-        alert('Không thể lấy userId từ token!');
+        showErrorToast('Không thể lấy userId từ token!');
         return;
       }
       
@@ -938,7 +968,7 @@
       const khoHangId = exportType === "Xuất ngoài" ? null : (warehouseInput ? warehouseInput.dataset.warehouseId : null);
       
       if (orderType === 1 && !khoHangId) {
-        alert('Vui lòng chọn kho hàng cho xuất nội bộ!');
+        showErrorToast('Vui lòng chọn kho hàng cho xuất nội bộ!');
         return;
       }
     
@@ -993,7 +1023,7 @@
         const result = await response.text();
         
         if (response.ok) {
-          alert("Lưu phiếu xuất thành công!");
+          showSuccessToast("Lưu phiếu xuất thành công!");
           console.log("Kết quả:", result);
           resetForm();
         } else {
@@ -1001,7 +1031,7 @@
         }
       } catch (error) {
         console.error("Lỗi khi lưu phiếu:", error);
-        alert("Đã có lỗi xảy ra khi lưu phiếu xuất: " + error.message);
+        showErrorToast("Đã có lỗi xảy ra khi lưu phiếu xuất: " + error.message);
       }
     }
   
