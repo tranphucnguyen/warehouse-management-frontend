@@ -759,8 +759,8 @@
           <td>${warehouse.contact || 'N/A'}</td>
           <td>${warehouse.status ? 'Hoạt động' : 'Không hoạt động'}</td>
           <td>
-            <button class="btn btn-primary btn-sm" onclick="editWarehouse('${warehouse.id}')">Sửa</button>
-            <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${warehouse.id}')">Xóa</button>
+            <button class="btn btn-primary btn-sm" onclick="editWarehouse('${warehouse.id}')"><i class="fas fa-pencil-alt"></i> Sửa</button>
+            <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${warehouse.id}')"><i class="fas fa-trash"></i> Xóa</button>
           </td>
         `;
         warehouseListElement.appendChild(row);

@@ -721,8 +721,8 @@
           <td>${category.categoryName || "N/A"}</td>
           <td>${category.description || "Không có mô tả"}</td>
           <td>
-            <button class="btn btn-sm btn-primary" onclick="editCategory(${category.categoryId})">Sửa</button>
-            <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${category.categoryId})">Xóa</button>
+            <button class="btn btn-sm btn-primary" onclick="editCategory(${category.categoryId})"><i class="fas fa-pencil-alt"></i> Sửa</button>
+            <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${category.categoryId})"><i class="fas fa-trash"></i> Xóa</button>
           </td>
         `;
         categoryTableBody.appendChild(row);

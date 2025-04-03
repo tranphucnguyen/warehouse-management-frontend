@@ -933,14 +933,11 @@ function displayPage(page) {
                 <td>${productData.price || 0} VND</td>
                 <td>${productData.currentStock !== undefined ? productData.currentStock : 'N/A'}</td> <!-- Hiển thị currentStock nếu có -->
                 <td class="product-actions text-right">
-                    <button class="btn btn-primary btn-sm" onclick="viewProduct(${productData.productId})">
-                        <i class="fas fa-folder"></i> View
-                    </button>
-                    <button class="btn btn-info btn-sm" onclick="editProduct(${productData.productId})">
-                        <i class="fas fa-pencil-alt"></i> Edit
+                    <button class="btn btn-primary btn-sm" onclick="editProduct(${productData.productId})">
+                        <i class="fas fa-pencil-alt"></i> Sửa
                     </button>
                     <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${productData.productId})">
-                        <i class="fas fa-trash"></i> Delete
+                        <i class="fas fa-trash"></i> Xoá
                     </button>
                 </td>
             </tr>

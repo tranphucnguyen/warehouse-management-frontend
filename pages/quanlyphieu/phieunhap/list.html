@@ -855,10 +855,10 @@
         <td class="text-center">${invoice.finalAmount ? invoice.finalAmount.toLocaleString('vi-VN') : 'N/A'}</td>
         <td class="text-center phieu-actions">
           <button class="btn btn-primary btn-sm" onclick="openEditModal('${invoice.invoicesId}')">
-            <i class="fas fa-edit"></i> Edit
+            <i class="fas fa-pencil-alt"></i> Sửa
           </button>
           <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${invoice.invoicesId}')">
-            <i class="fas fa-trash"></i> Delete
+            <i class="fas fa-trash"></i> Xoá
           </button>
         </td>`;
       invoiceListElement.appendChild(row);
