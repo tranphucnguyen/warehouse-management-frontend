@@ -46,7 +46,12 @@ Dự án **Giao diện Frontend Quản lý Kho** được phát triển dựa tr
 - Thêm, sửa, xóa nhân viên.
 - Phân quyền truy cập theo chức năng.
 
-### f. Báo cáo
+### f. Quản lý Phiếu nhập, Phiếu xuất
+- Xem danh sách phiếu nhập, phiếu xuất.
+- Chi tiết từng phiếu nhập, phiếu xuất (mã phiếu, ngày tạo, sản phẩm, số lượng, nhà cung cấp/khách hàng).
+- Tìm kiếm và lọc phiếu nhập, phiếu xuất theo ngày, sản phẩm hoặc nhà cung cấp.
+
+### g. Báo cáo
 
 - Thống kê nhập - xuất kho theo khoảng thời gian.
 - Biểu đồ doanh thu, chi phí.
